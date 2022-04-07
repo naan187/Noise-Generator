@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-//TODO: Make the animator accept any value of type float to animate
 namespace NoiseGenerator
 {
     [ExecuteInEditMode]
@@ -8,16 +7,18 @@ namespace NoiseGenerator
     {
         [SerializeField] private NoiseMapGenerator _noiseMapGenerator;
         [SerializeField] private bool _animate;
-
+        [SerializeField] private float _speed;
 
         private void Update()
         {
             if (!_animate) return;
 
-            _noiseMapGenerator.NoiseSettings._warpSettings.f += Time.deltaTime / 2;
+            ref var value = ref _noiseMapGenerator.NoiseSettings.f;
+
+            value += Time.deltaTime * _speed;
 
             if (_noiseMapGenerator.AutoUpdate)
-                NoiseMapGenerator.onGenerate?.Invoke();
+                NoiseMapGenerator.OnGenerate?.Invoke();
         }
     }
 }

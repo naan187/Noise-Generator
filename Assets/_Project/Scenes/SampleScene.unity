@@ -161,21 +161,21 @@ MonoBehaviour:
   _invertNoise: 0
   _noiseGradient:
     serializedVersion: 2
-    key0: {r: 0.83116925, g: 0.8490566, b: 0.40450338, a: 1}
-    key1: {r: 0.5158609, g: 0.7058824, b: 0.090196066, a: 1}
-    key2: {r: 0.23555952, g: 0.4627451, b: 0.019607844, a: 0}
-    key3: {r: 0.19269368, g: 0.4528302, b: 0, a: 0}
-    key4: {r: 0.5943396, g: 0.36861122, b: 0.21026166, a: 0}
-    key5: {r: 0.38679248, g: 0.2116821, b: 0.09669812, a: 0}
-    key6: {r: 0.3207547, g: 0.14127098, b: 0, a: 0}
+    key0: {r: 0.3773585, g: 0.01968827, b: 0, a: 1}
+    key1: {r: 0.8018868, g: 0, b: 0.11606289, a: 1}
+    key2: {r: 0.14784712, g: 0.020425422, b: 0.254717, a: 0}
+    key3: {r: 0.06041222, g: 0.42076248, b: 0.5838853, a: 0}
+    key4: {r: 0, g: 0.6973712, b: 0.8113208, a: 0}
+    key5: {r: 0.056096043, g: 0.745283, b: 0.05273228, a: 0}
+    key6: {r: 0.061599493, g: 1, b: 0, a: 0}
     key7: {r: 0, g: 0.3490566, b: 0.0012479908, a: 0}
-    ctime0: 3663
-    ctime1: 7587
-    ctime2: 16482
-    ctime3: 23938
-    ctime4: 36496
-    ctime5: 47222
-    ctime6: 65535
+    ctime0: 0
+    ctime1: 11699
+    ctime2: 34476
+    ctime3: 39963
+    ctime4: 43754
+    ctime5: 55389
+    ctime6: 60151
     ctime7: 65535
     atime0: 0
     atime1: 65535
@@ -186,7 +186,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 7
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
 --- !u!23 &647242602
 MeshRenderer:
@@ -269,14 +269,14 @@ MonoBehaviour:
     Width: 400
     Height: 233
     Offset: {x: 0, y: 0}
-    Scale: 30
-    OctaveAmount: 5
+    Scale: 26.75
+    OctaveAmount: 2
     Persistence: 0.5
     Lacunarity: 2
     WarpNoise: 1
     _warpSettings:
-      WarpAmount: 0.635
-      f: 7.5
+      WarpAmount: 0.25
+      f: 5
   AutoUpdate: 1
 --- !u!114 &647242606
 MonoBehaviour:

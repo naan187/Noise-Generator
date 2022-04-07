@@ -41,7 +41,7 @@ namespace NoiseGenerator
 
         private void OnValidate()
         {
-            if (GetComponent<NoiseMapGenerator>().AutoUpdate) NoiseMapGenerator.onGenerate?.Invoke();
+            if (GetComponent<NoiseMapGenerator>().AutoUpdate) NoiseMapGenerator.OnGenerate?.Invoke();
         }
     }
 }
