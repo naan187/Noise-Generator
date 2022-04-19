@@ -1,16 +1,23 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace NoiseGenerator.Editors
+namespace NoiseGenerator.Editor
 {
     [CustomEditor(typeof(NoiseMapGenerator))]
-    public class NoiseMapGeneratorEditor : Editor
+    public class NoiseMapGeneratorEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
+            
+            var t = (NoiseMapGenerator) target;
 
-            if (GUILayout.Button("Generate")) NoiseMapGenerator.OnGenerate?.Invoke();
+            if (GUILayout.Button("Generate"))
+                t.Generate();
+            if (GUILayout.Button("Save to Preset"))
+                t.Save();
+            if (GUILayout.Button("Revert"))
+                t.Undo();
         }
     }
 }

@@ -17,8 +17,8 @@ namespace NoiseGenerator
 
             value += Time.deltaTime * _speed;
 
-            if (_noiseMapGenerator.AutoUpdate)
-                NoiseMapGenerator.OnGenerate?.Invoke();
+            if (_noiseMapGenerator.AutoGenerate)
+                _noiseMapGenerator.Generate();
         }
     }
 }

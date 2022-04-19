@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b277c81a3d140598b75e4abce10484c, type: 3}
+  m_Name: Preset
+  m_EditorClassIdentifier: 
+  NoiseSettings:
+    Width: 0
+    Height: 0
+    Offset: {x: 0, y: 0}
+    Scale: 0
+    OctaveAmount: 0
+    Persistence: 0
+    Lacunarity: 0
+    WarpNoise: 0
+    WarpAmount: 0
+    f: 0

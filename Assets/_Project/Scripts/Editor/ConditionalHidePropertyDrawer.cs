@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using NoiseGenerator.Editors;
+using UnityEngine;
 using UnityEditor;
 
 //Original version of the ConditionalHideAttribute created by Brecht Lecluyse (www.brechtos.com)
 //Modified by: Sebastian Lague
 
-namespace NoiseGenerator.Editors
+namespace NoiseGenerator.Editor
 {
     [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
     public class ConditionalHidePropertyDrawer : PropertyDrawer
@@ -43,20 +44,20 @@ namespace NoiseGenerator.Editors
             if (!property.isArray)
             {
                 string propertyPath = property.propertyPath; //returns the property path of the property we want to apply the attribute to
-                string conditionPath = propertyPath.Replace(property.name, condHAtt.conditionalSourceField); //changes the path to the conditionalsource property path
+                string conditionPath = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
                 sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
 
                 //if the find failed->fall back to the old system
                 if (sourcePropertyValue == null)
                 {
                     //original implementation (doens't work with nested serializedObjects)
-                    sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.conditionalSourceField);
+                    sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField);
                 }
             }
             else
             {
                 //original implementation (doens't work with nested serializedObjects)
-                sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.conditionalSourceField);
+                sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField);
             }
 
 
@@ -76,7 +77,7 @@ namespace NoiseGenerator.Editors
                 case SerializedPropertyType.Boolean:
                     return sourcePropertyValue.boolValue;
                 case SerializedPropertyType.Enum:
-                    return sourcePropertyValue.enumValueIndex == condHAtt.enumIndex;
+                    return sourcePropertyValue.enumValueIndex == condHAtt.EnumIndex;
                 default:
                     Debug.LogError("Data type of the property used for conditional hiding [" + sourcePropertyValue.propertyType + "] is currently not supported");
                     return true;

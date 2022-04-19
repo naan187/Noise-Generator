@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &647242599
+--- !u!1 &374956515
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,51 +131,66 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 647242604}
-  - component: {fileID: 647242603}
-  - component: {fileID: 647242602}
-  - component: {fileID: 647242605}
-  - component: {fileID: 647242600}
-  - component: {fileID: 647242606}
+  - component: {fileID: 374956521}
+  - component: {fileID: 374956520}
+  - component: {fileID: 374956519}
+  - component: {fileID: 374956518}
+  - component: {fileID: 374956517}
+  - component: {fileID: 374956516}
   m_Layer: 0
   m_Name: Noise Display
-  m_TagString: EditorOnly
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &647242600
+--- !u!114 &374956516
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
+  m_GameObject: {fileID: 374956515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88650c6df55d49a0ba986f738ee80f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noiseMapGenerator: {fileID: 374956518}
+  _animate: 0
+  _speed: 0.28
+--- !u!114 &374956517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374956515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cea2ca359fb287546a2089a1455bdd07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textureRenderer: {fileID: 647242602}
-  _sampleFromCustomGradient: 0
+  _textureRenderer: {fileID: 374956519}
+  _sampleFromCustomGradient: 1
   _invertNoise: 0
   _noiseGradient:
     serializedVersion: 2
-    key0: {r: 0.3773585, g: 0.01968827, b: 0, a: 1}
-    key1: {r: 0.8018868, g: 0, b: 0.11606289, a: 1}
+    key0: {r: 0.23031326, g: 0.5377358, b: 0.48970103, a: 1}
+    key1: {r: 0.16960469, g: 0.15691078, b: 0.31671435, a: 1}
     key2: {r: 0.14784712, g: 0.020425422, b: 0.254717, a: 0}
-    key3: {r: 0.06041222, g: 0.42076248, b: 0.5838853, a: 0}
-    key4: {r: 0, g: 0.6973712, b: 0.8113208, a: 0}
-    key5: {r: 0.056096043, g: 0.745283, b: 0.05273228, a: 0}
-    key6: {r: 0.061599493, g: 1, b: 0, a: 0}
-    key7: {r: 0, g: 0.3490566, b: 0.0012479908, a: 0}
+    key3: {r: 0.4339623, g: 0.29231045, b: 0.29231045, a: 0}
+    key4: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
+    key5: {r: 0.6116339, g: 0.6698113, b: 0.17945886, a: 0}
+    key6: {r: 0.513232, g: 0.8301887, b: 0.17543605, a: 0}
+    key7: {r: 0.9763027, g: 1, b: 0.3622641, a: 0}
     ctime0: 0
-    ctime1: 11699
-    ctime2: 34476
-    ctime3: 39963
-    ctime4: 43754
-    ctime5: 55389
-    ctime6: 60151
+    ctime1: 22970
+    ctime2: 31202
+    ctime3: 37300
+    ctime4: 43399
+    ctime5: 50920
+    ctime6: 57729
     ctime7: 65535
     atime0: 0
     atime1: 65535
@@ -188,16 +203,43 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
---- !u!23 &647242602
+--- !u!114 &374956518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374956515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f7ee00d48c40c1825c57fb6f9dcf70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Preset: {fileID: 11400000, guid: 6b56be7aea1643d49817d394b586b50e, type: 2}
+  NoiseSettings:
+    _width: 250
+    _height: 250
+    Offset: {x: 0, y: 0}
+    Scale: 30
+    OctaveAmount: 3
+    Persistence: 0.458
+    Lacunarity: 2
+    WarpNoise: 1
+    Blend: 0
+    BlendAmount: 0.312
+    f: 1.24
+  AutoGenerate: 1
+  AutoSave: 0
+--- !u!23 &374956519
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
+  m_GameObject: {fileID: 374956515}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -213,7 +255,7 @@ MeshRenderer:
     firstSubMesh: 0
     subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
+  m_ProbeAnchor: {fileID: 374956521}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
@@ -230,65 +272,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &647242603
+--- !u!33 &374956520
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
+  m_GameObject: {fileID: 374956515}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &647242604
+--- !u!4 &374956521
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
+  m_GameObject: {fileID: 374956515}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 400, y: 1, z: 233}
+  m_LocalPosition: {x: 17.17, y: 0, z: 0}
+  m_LocalScale: {x: 250, y: 1, z: 250}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &647242605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f7ee00d48c40c1825c57fb6f9dcf70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NoiseSettings:
-    Width: 400
-    Height: 233
-    Offset: {x: 0, y: 0}
-    Scale: 26.75
-    OctaveAmount: 2
-    Persistence: 0.5
-    Lacunarity: 2
-    WarpNoise: 1
-    _warpSettings:
-      WarpAmount: 0.25
-      f: 5
-  AutoUpdate: 1
---- !u!114 &647242606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647242599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88650c6df55d49a0ba986f738ee80f70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _noiseMapGenerator: {fileID: 647242605}
-  _animate: 0

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NoiseGenerator
@@ -8,16 +9,18 @@ namespace NoiseGenerator
         [SerializeField] private bool _sampleFromCustomGradient;
         [SerializeField] private bool _invertNoise;
         [SerializeField] private Gradient _noiseGradient;
+        
+        private NoiseMapGenerator _noiseMapGenerator;
 
         public void UpdateTex(float[,] noiseVal, NoiseSettings noiseSettings)
         {
             int width = noiseVal.GetLength(0);
             int height = noiseVal.GetLength(1);
 
-            Texture2D tex = new Texture2D(noiseSettings.Width, noiseSettings.Height);
-            Color[] texColors = new Color[noiseSettings.Width * noiseSettings.Height];
+            Texture2D tex = new Texture2D(noiseSettings.MapDimensions.x, noiseSettings.MapDimensions.y);
+            Color[] texColors = new Color[noiseSettings.MapDimensions.x * noiseSettings.MapDimensions.y];
 
-            float v = 0;
+            float v;
 
             for (int y = 0; y < height; y++)
             {
@@ -41,7 +44,9 @@ namespace NoiseGenerator
 
         private void OnValidate()
         {
-            if (GetComponent<NoiseMapGenerator>().AutoUpdate) NoiseMapGenerator.OnGenerate?.Invoke();
+            _noiseMapGenerator ??= GetComponent<NoiseMapGenerator>();
+            
+            if (_noiseMapGenerator.AutoGenerate) _noiseMapGenerator.Generate();
         }
     }
 }
