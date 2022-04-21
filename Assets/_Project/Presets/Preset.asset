@@ -9,17 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b277c81a3d140598b75e4abce10484c, type: 3}
+  m_Script: {fileID: 11500000, guid: 351c7839e2963e14a966da44a397ee2d, type: 3}
   m_Name: Preset
   m_EditorClassIdentifier: 
   NoiseSettings:
-    Width: 0
-    Height: 0
+    Width: 150
+    Height: 150
     Offset: {x: 0, y: 0}
-    Scale: 0
-    OctaveAmount: 0
-    Persistence: 0
-    Lacunarity: 0
-    WarpNoise: 0
-    WarpAmount: 0
-    f: 0
+    Scale: 30
+    OctaveAmount: 3
+    Persistence: 0.5
+    Lacunarity: 2
+    WarpNoise: 1
+    Blend: 1
+    BlendAmount: 0.2675
+    f: 3.5

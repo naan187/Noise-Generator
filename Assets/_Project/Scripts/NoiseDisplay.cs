@@ -17,8 +17,8 @@ namespace NoiseGenerator
             int width = noiseVal.GetLength(0);
             int height = noiseVal.GetLength(1);
 
-            Texture2D tex = new Texture2D(noiseSettings.MapDimensions.x, noiseSettings.MapDimensions.y);
-            Color[] texColors = new Color[noiseSettings.MapDimensions.x * noiseSettings.MapDimensions.y];
+            Texture2D tex = new Texture2D(noiseSettings.Width, noiseSettings.Height);
+            Color[] texColors = new Color[noiseSettings.Width * noiseSettings.Height];
 
             float v;
 

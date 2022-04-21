@@ -1,14 +1,10 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace NoiseGenerator
 {
     public class NoiseMapGenerator : MonoBehaviour
     {
         public Preset Preset;
-        [Header("Noise Settings")]
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
@@ -17,14 +13,14 @@ namespace NoiseGenerator
 
         private float[,] GenerateNoiseMap(NoiseSettings noiseSettings)
         {
-            float[,] noiseValues = new float[noiseSettings.MapDimensions.x, noiseSettings.MapDimensions.y];
+            float[,] noiseValues = new float[noiseSettings.Width, noiseSettings.Height];
 
             float max = float.MinValue;
             float min = float.MaxValue;
 
-            for (int x = 0; x < noiseSettings.MapDimensions.x; x++)
+            for (int x = 0; x < noiseSettings.Width; x++)
             {
-                for (int y = 0; y < noiseSettings.MapDimensions.y; y++)
+                for (int y = 0; y < noiseSettings.Height; y++)
                 {
                     float amplitude = 1;
                     float freq = 1;
@@ -80,33 +76,4 @@ namespace NoiseGenerator
         }
     }
 
-    [Serializable]
-    public struct NoiseSettings
-    {
-        [Min(1), SerializeField] private int _width;
-        [Min(1), SerializeField] private int _height;
-
-        public Vector2Int MapDimensions
-        {
-            get => new (_width, _height);
-            set {
-                _width = value.x;
-                _height = value.y;
-            }
-        }
-
-        public Vector2 Offset;
-
-        [Min(.75f)] public float Scale;
-        [Range(1, 8)] public int OctaveAmount;
-        [Range(.05f, 1f)] public float Persistence;
-        public float Lacunarity;
-
-        [Header("Warp Settings")]
-        public bool WarpNoise;
-        public bool Blend;
-
-        [FormerlySerializedAs("WarpAmount")] [Range(0f, 1f)] public float BlendAmount;
-        public float f;
-    }
 }
