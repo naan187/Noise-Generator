@@ -16,6 +16,8 @@ namespace NoiseGenerator
         [Range(.05f, 1f)] public float Persistence;
         public float Lacunarity;
 
+        public AnimationCurve HeightCurve;
+
         [Header("Warp Settings")]
         public bool WarpNoise;
         public bool Blend;

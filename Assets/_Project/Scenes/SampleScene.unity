@@ -217,19 +217,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Preset: {fileID: 11400000, guid: 6b56be7aea1643d49817d394b586b50e, type: 2}
   NoiseSettings:
-    Width: 150
-    Height: 150
+    Width: 200
+    Height: 200
     Offset: {x: 0, y: 0}
-    Scale: 30
-    OctaveAmount: 3
+    Scale: 40.52
+    OctaveAmount: 5
     Persistence: 0.5
     Lacunarity: 2
-    WarpNoise: 1
+    HeightCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.49889532
+        value: 0.498343
+        inSlope: 0.1443482
+        outSlope: 0.1443482
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.18098797
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    WarpNoise: 0
     Blend: 1
     BlendAmount: 0.2675
     f: 3.5
   AutoGenerate: 1
   AutoSave: 0
+  _OctaveGenerationState: 0
 --- !u!23 &374956519
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -289,7 +323,7 @@ Transform:
   m_GameObject: {fileID: 374956515}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 150, y: 1, z: 150}
+  m_LocalScale: {x: 200, y: 1, z: 200}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
