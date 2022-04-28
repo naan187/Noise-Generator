@@ -221,7 +221,13 @@ MonoBehaviour:
     Height: 200
     Offset: {x: 0, y: 0}
     Scale: 40.52
-    OctaveAmount: 5
+    _OverrideOctaves: 0
+    Octaves:
+      OctaveAmount: 8
+      _EditOctaves: 0
+      _Octaves:
+      - Amplitude: 0.5
+        Frequency: 2
     Persistence: 0.5
     Lacunarity: 2
     HeightCurve:
@@ -230,27 +236,18 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.49889532
-        value: 0.498343
-        inSlope: 0.1443482
-        outSlope: 0.1443482
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.18098797
-      - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0

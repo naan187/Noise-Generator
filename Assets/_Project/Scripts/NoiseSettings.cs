@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NoiseGenerator
 {
+
     [Serializable]
     public class NoiseSettings
     {
@@ -12,7 +16,17 @@ namespace NoiseGenerator
         public Vector2 Offset;
 
         [Min(.75f)] public float Scale;
-        [Range(1, 8)] public int OctaveAmount;
+
+        public int OctaveAmount
+        {
+            get => Octaves.OctaveAmount;
+            set => Octaves.OctaveAmount = value;
+        }
+
+        [SerializeField] private bool _OverrideOctaves;
+
+        public OctaveArray Octaves;
+
         [Range(.05f, 1f)] public float Persistence;
         public float Lacunarity;
 
@@ -29,6 +43,8 @@ namespace NoiseGenerator
         {
             Width = width;
             Height = height;
+
+            Octaves = new OctaveArray();
         }
     }
 }

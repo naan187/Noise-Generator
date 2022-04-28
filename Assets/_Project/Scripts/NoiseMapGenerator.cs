@@ -27,16 +27,19 @@ namespace NoiseGenerator
 
             MinMax minMax = new ();
 
+            if (noiseSettings.Octaves.Length != noiseSettings.OctaveAmount)
+                noiseSettings.Octaves = new OctaveArray(noiseSettings.Octaves.OctaveAmount);
+
             IteratePointsOnMap(noiseSettings.Width, noiseSettings.Height, point =>
             {
-                float amplitude = 1;
                 float freq = 1;
+                float amplitude = 1;
                 float noiseHeight = 0;
 
                 int x = point.x;
                 int y = point.y;
 
-                for (int o = 0; o < noiseSettings.OctaveAmount; o++)
+                foreach (Octave o in noiseSettings.Octaves)
                 {
                     Vector2 sample = new Vector2(
                         x / noiseSettings.Scale * freq + noiseSettings.Offset.x,
@@ -54,15 +57,17 @@ namespace NoiseGenerator
 
                     amplitude *= noiseSettings.Persistence;
                     freq *= noiseSettings.Lacunarity;
+
+                    o.Amplitude = amplitude;
+                    o.Frequency = freq;
                 }
 
                 minMax.Update(noiseHeight);
 
-
                 noiseHeight = Mathf.InverseLerp(minMax.Min, minMax.Max, noiseHeight);
 
                 noiseHeight = noiseSettings.HeightCurve.Evaluate(noiseHeight);
-                
+
                 noiseValues[x, y] = noiseHeight;
             });
 
@@ -96,6 +101,8 @@ namespace NoiseGenerator
                 Generate();
             if (AutoSave)
                 Save();
+
+            NoiseSettings.OctaveAmount = NoiseSettings.Octaves.Length;
         }
     }
 }

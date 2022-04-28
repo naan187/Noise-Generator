@@ -1,5 +1,4 @@
-﻿using NoiseGenerator.Editors;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 //Original version of the ConditionalHideAttribute created by Brecht Lecluyse (www.brechtos.com)
