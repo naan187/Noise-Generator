@@ -8,7 +8,7 @@ namespace NoiseGenerator
         public int[] Triangles;
         public Vector2[] UVs;
 
-        private int _TriangleIndex = 0;
+        private int _TriangleIndex;
 
         public MeshData(int width, int height)
         {
@@ -19,7 +19,7 @@ namespace NoiseGenerator
         
         public void AddTriangle(int a, int b, int c)
         {
-            Triangles[_TriangleIndex    ] = a;
+            Triangles[_TriangleIndex] = a;
             Triangles[_TriangleIndex + 1] = b;
             Triangles[_TriangleIndex + 2] = c;
 
@@ -28,7 +28,7 @@ namespace NoiseGenerator
 
         public Mesh Get()
         {
-            Mesh mesh = new Mesh
+            var mesh = new Mesh
             {
                 vertices = Vertices,
                 triangles = Triangles,

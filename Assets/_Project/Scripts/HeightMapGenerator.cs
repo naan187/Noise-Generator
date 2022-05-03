@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NoiseGenerator
 {
@@ -10,9 +9,11 @@ namespace NoiseGenerator
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
-        
+
         private NoiseDisplay _NoiseDisplay;
-        
+        private MeshGenerator _MeshGenerator;
+
+
         private float[,] GenerateHeightMap(NoiseSettings noiseSettings)
         {
             float[,] noiseValues = new float[noiseSettings.Width, noiseSettings.Height];
@@ -22,14 +23,10 @@ namespace NoiseGenerator
             if (noiseSettings.octaveAmount != noiseSettings.Octaves.length)
                 noiseSettings.Octaves.Resize(noiseSettings.Octaves.OctaveAmount);
 
-            IteratePointsOnMap(noiseSettings.Width, noiseSettings.Height, point =>
-            {
+            Helpers.IteratePointsOnMap(noiseSettings.Width, noiseSettings.Height, (x, y) => {
                 float amplitude = 1;
                 float freq = 1;
                 float noiseHeight = 0;
-
-                int x = point.x;
-                int y = point.y;
 
                 foreach (Octave o in noiseSettings.Octaves)
                 {
@@ -69,22 +66,30 @@ namespace NoiseGenerator
                 noiseValues[x, y] = noiseHeight;
             });
 
+            transform.localScale = new Vector3(noiseSettings.Width * .5f, 1, noiseSettings.Height * .5f);
+
+            var meshGenerator = GetComponent<MeshGenerator>();
+            if (meshGenerator)
+                meshGenerator.GenerateMesh(noiseValues);
+            
             return noiseValues;
         }
 
-        private void IteratePointsOnMap(int width, int height, Action<Vector2Int> action)
+        public float[,] Generate(Vector2? mapDimensions = null)
         {
-            for (int x = 0; x < width; x++)
+            if (mapDimensions is not null)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    action(new Vector2Int(x, y));
-                }
+                NoiseSettings.Width = (int) mapDimensions.Value.x;
+                NoiseSettings.Height = (int) mapDimensions.Value.y;
             }
+            
+            var heightMap = GenerateHeightMap(NoiseSettings);
+
+            _NoiseDisplay?.UpdateTex(heightMap);
+
+            return heightMap;
         }
-        
-        
-        public void Generate() => _NoiseDisplay.UpdateTex(GenerateHeightMap(NoiseSettings), NoiseSettings);
+
         public void Save() => _Preset.NoiseSettings = NoiseSettings;
         public void Undo() {
             NoiseSettings = _Preset.NoiseSettings;
@@ -94,11 +99,6 @@ namespace NoiseGenerator
         private void OnValidate()
         {
             _NoiseDisplay ??= GetComponent<NoiseDisplay>();
-
-            if (AutoGenerate)
-                Generate();
-            if (AutoSave)
-                Save();
         }
     }
 }

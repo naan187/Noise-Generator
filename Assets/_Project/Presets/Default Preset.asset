@@ -19,10 +19,10 @@ MonoBehaviour:
     Scale: 30
     OverrideOctaves: 1
     Octaves:
-      BaseAmplitude: 0
-      BaseFrequency: 0
       OctaveAmount: 1
-      _Octaves: []
+      _Octaves:
+      - Amplitude: 0.5
+        Frequency: 2
     Persistence: 1
     Lacunarity: 1
     HeightCurve:
@@ -50,6 +50,5 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     WarpNoise: 0
-    Blend: 0
     BlendValue: 1
     f: 3.5

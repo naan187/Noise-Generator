@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace NoiseGenerator
@@ -6,36 +5,42 @@ namespace NoiseGenerator
     [RequireComponent(typeof(Renderer))]
     public class NoiseDisplay : MonoBehaviour
     {
-        [SerializeField] private Renderer _TextureRenderer;
-        [SerializeField] private bool _SampleFromCustomGradient;
-        [SerializeField] private bool _InvertNoise;
-        [SerializeField] private Gradient _NoiseGradient;
+        [SerializeField] 
+        private Renderer _TextureRenderer;
+        [SerializeField]
+        private FilterMode _FilterMode;
+        [SerializeField] 
+        private bool _SampleFromCustomGradient;
+        [SerializeField] 
+        private bool _InvertNoise;
+        [SerializeField] 
+        private Gradient _NoiseGradient;
         
         private HeightMapGenerator _HeightMapGenerator;
 
-        public void UpdateTex(float[,] noiseVal, NoiseSettings noiseSettings)
+        public void UpdateTex(float[,] noiseVal)
         {
             int width = noiseVal.GetLength(0);
             int height = noiseVal.GetLength(1);
 
-            Texture2D tex = new Texture2D(noiseSettings.Width, noiseSettings.Height);
-            Color[] texColors = new Color[noiseSettings.Width * noiseSettings.Height];
+            Texture2D tex = new Texture2D(width, height);
+
+            Color[] texColors = new Color[width * height];
 
             float v;
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    v = _InvertNoise ? Mathf.Abs(1 - noiseVal[x, y]) : noiseVal[x, y];
+            Helpers.IteratePointsOnMap(width, height, (x, y) => {
+                v = _InvertNoise ? Mathf.Abs(1 - noiseVal[x, y]) : noiseVal[x, y];
 
-                    if (_SampleFromCustomGradient)
-                        texColors[y * width + x] = _NoiseGradient.Evaluate(v);
-                    else
-                        texColors[y * width + x] = Color.Lerp(Color.black, Color.white, v);
-                }
-            }
+                if (_SampleFromCustomGradient)
+                    texColors[y * width + x] = _NoiseGradient.Evaluate(v);
+                else
+                    texColors[y * width + x] = Color.Lerp(Color.black, Color.white, v);
+            });
 
+            tex.filterMode = _FilterMode;
+
+            tex.wrapMode = TextureWrapMode.Clamp;
             tex.SetPixels(texColors);
             tex.Apply();
 
@@ -43,7 +48,7 @@ namespace NoiseGenerator
             _TextureRenderer.transform.localScale = new Vector3(width, 1, height);
         }
 
-        private void OnValidate()
+        public void OnValidate()
         {
             _HeightMapGenerator ??= GetComponent<HeightMapGenerator>();
             

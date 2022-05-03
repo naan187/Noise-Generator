@@ -4,13 +4,19 @@ using UnityEngine;
 namespace NoiseGenerator.Editor
 {
     [CustomEditor(typeof(HeightMapGenerator))]
-    public class NoiseMapGeneratorEditor : UnityEditor.Editor
+    public class HeightMapGeneratorEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-            
             var t = (HeightMapGenerator) target;
+            
+            if (DrawDefaultInspector())
+            {
+                if (t.AutoGenerate)
+                    t.Generate();
+                if (t.AutoSave)
+                    t.Save();
+            }
 
             if (GUILayout.Button("Generate"))
                 t.Generate();
