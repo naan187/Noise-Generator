@@ -221,13 +221,14 @@ MonoBehaviour:
     Height: 200
     Offset: {x: 0, y: 0}
     Scale: 40.52
-    _OverrideOctaves: 0
+    OverrideOctaves: 1
     Octaves:
-      OctaveAmount: 8
-      _EditOctaves: 0
+      OctaveAmount: 2
       _Octaves:
-      - Amplitude: 0.5
+      - Amplitude: 1
         Frequency: 2
+      - Amplitude: 5
+        Frequency: 4
     Persistence: 0.5
     Lacunarity: 2
     HeightCurve:

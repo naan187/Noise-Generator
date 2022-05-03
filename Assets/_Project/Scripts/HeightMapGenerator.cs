@@ -1,39 +1,31 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NoiseGenerator
 {
-    public class NoiseMapGenerator : MonoBehaviour
+    public class HeightMapGenerator : MonoBehaviour
     {
-        public Preset Preset;
+        [SerializeField]
+        private Preset _Preset;
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
         
-        private NoiseDisplay _noiseDisplay;
+        private NoiseDisplay _NoiseDisplay;
         
-        public enum OctaveGenerationState
-        {
-            Auto,
-            Manual
-        }
-
-        [SerializeField] private OctaveGenerationState _OctaveGenerationState;
-
-        private float[,] GenerateNoiseMap(NoiseSettings noiseSettings)
+        private float[,] GenerateHeightMap(NoiseSettings noiseSettings)
         {
             float[,] noiseValues = new float[noiseSettings.Width, noiseSettings.Height];
 
             MinMax minMax = new ();
 
-            if (noiseSettings.Octaves.Length != noiseSettings.OctaveAmount)
-                noiseSettings.Octaves = new OctaveArray(noiseSettings.Octaves.OctaveAmount);
+            if (noiseSettings.octaveAmount != noiseSettings.Octaves.length)
+                noiseSettings.Octaves.Resize(noiseSettings.Octaves.OctaveAmount);
 
             IteratePointsOnMap(noiseSettings.Width, noiseSettings.Height, point =>
             {
-                float freq = 1;
                 float amplitude = 1;
+                float freq = 1;
                 float noiseHeight = 0;
 
                 int x = point.x;
@@ -41,25 +33,31 @@ namespace NoiseGenerator
 
                 foreach (Octave o in noiseSettings.Octaves)
                 {
-                    Vector2 sample = new Vector2(
+                    amplitude = noiseSettings.OverrideOctaves ? amplitude : o.Amplitude;
+                    freq = noiseSettings.OverrideOctaves ? freq : o.Frequency;
+
+                    if (noiseSettings.OverrideOctaves)
+                    {
+                        amplitude *= noiseSettings.Persistence;
+                        freq *= noiseSettings.Lacunarity;
+                        
+                        o.Amplitude = amplitude;
+                        o.Frequency = freq;
+                    }
+
+                    Vector2 sample = new (
                         x / noiseSettings.Scale * freq + noiseSettings.Offset.x,
                         y / noiseSettings.Scale * freq + noiseSettings.Offset.y
                     );
 
-                    float value = noiseSettings.WarpNoise && noiseSettings.BlendAmount != 0
+                    float value = noiseSettings.WarpNoise && noiseSettings.BlendValue != 0
                         ? Mathf.Lerp(
                             Noise.Evaluate(new Vector2(sample.x, sample.y)),
                             Noise.Warp(new Vector2(sample.x, sample.y), noiseSettings.f),
-                            noiseSettings.BlendAmount) * 2 - 1
+                            noiseSettings.BlendValue) * 2 - 1
                         : Noise.Evaluate(new Vector2(sample.x, sample.y)) * 2 - 1;
-                        
+
                     noiseHeight += value * amplitude;
-
-                    amplitude *= noiseSettings.Persistence;
-                    freq *= noiseSettings.Lacunarity;
-
-                    o.Amplitude = amplitude;
-                    o.Frequency = freq;
                 }
 
                 minMax.Update(noiseHeight);
@@ -86,23 +84,21 @@ namespace NoiseGenerator
         }
         
         
-        public void Generate() => _noiseDisplay.UpdateTex(GenerateNoiseMap(NoiseSettings), NoiseSettings);
-        public void Save() => Preset.NoiseSettings = NoiseSettings;
+        public void Generate() => _NoiseDisplay.UpdateTex(GenerateHeightMap(NoiseSettings), NoiseSettings);
+        public void Save() => _Preset.NoiseSettings = NoiseSettings;
         public void Undo() {
-            NoiseSettings = Preset.NoiseSettings;
+            NoiseSettings = _Preset.NoiseSettings;
             Generate();
         }
 
         private void OnValidate()
         {
-            _noiseDisplay ??= GetComponent<NoiseDisplay>();
+            _NoiseDisplay ??= GetComponent<NoiseDisplay>();
 
             if (AutoGenerate)
                 Generate();
             if (AutoSave)
                 Save();
-
-            NoiseSettings.OctaveAmount = NoiseSettings.Octaves.Length;
         }
     }
 }

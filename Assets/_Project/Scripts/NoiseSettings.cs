@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NoiseGenerator
 {
@@ -10,34 +7,29 @@ namespace NoiseGenerator
     [Serializable]
     public class NoiseSettings
     {
-        [Min(1)] public int Width;
-        [Min(1)] public int Height;
+        [Min(1)] public int Width = 200;
+        [Min(1)] public int Height = 200;
 
         public Vector2 Offset;
 
-        [Min(.75f)] public float Scale;
+        [Min(.75f)] public float Scale = 30f;
 
-        public int OctaveAmount
-        {
-            get => Octaves.OctaveAmount;
-            set => Octaves.OctaveAmount = value;
-        }
+        public int octaveAmount => Octaves.OctaveAmount;
 
-        [SerializeField] private bool _OverrideOctaves;
+        public bool OverrideOctaves = true;
 
-        public OctaveArray Octaves;
+        public OctaveArray Octaves = new (4);
 
-        [Range(.05f, 1f)] public float Persistence;
-        public float Lacunarity;
+        [Range(.05f, 1f)] public float Persistence = .5f;
+        public float Lacunarity = 2;
 
-        public AnimationCurve HeightCurve;
+        public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
         [Header("Warp Settings")]
         public bool WarpNoise;
-        public bool Blend;
 
-        [Range(0f, 1f)] public float BlendAmount;
-        public float f;
+        [Range(0f, 1f)] public float BlendValue = 1;
+        public float f = 3.5f;
 
         public NoiseSettings(int width, int height)
         {

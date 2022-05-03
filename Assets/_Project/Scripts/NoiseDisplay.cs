@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace NoiseGenerator
 {
+    [RequireComponent(typeof(Renderer))]
     public class NoiseDisplay : MonoBehaviour
     {
-        [SerializeField] private Renderer _textureRenderer;
-        [SerializeField] private bool _sampleFromCustomGradient;
-        [SerializeField] private bool _invertNoise;
-        [SerializeField] private Gradient _noiseGradient;
+        [SerializeField] private Renderer _TextureRenderer;
+        [SerializeField] private bool _SampleFromCustomGradient;
+        [SerializeField] private bool _InvertNoise;
+        [SerializeField] private Gradient _NoiseGradient;
         
-        private NoiseMapGenerator _noiseMapGenerator;
+        private HeightMapGenerator _HeightMapGenerator;
 
         public void UpdateTex(float[,] noiseVal, NoiseSettings noiseSettings)
         {
@@ -26,10 +27,10 @@ namespace NoiseGenerator
             {
                 for (int x = 0; x < width; x++)
                 {
-                    v = _invertNoise ? Mathf.Abs(1 - noiseVal[x, y]) : noiseVal[x, y];
+                    v = _InvertNoise ? Mathf.Abs(1 - noiseVal[x, y]) : noiseVal[x, y];
 
-                    if (_sampleFromCustomGradient)
-                        texColors[y * width + x] = _noiseGradient.Evaluate(v);
+                    if (_SampleFromCustomGradient)
+                        texColors[y * width + x] = _NoiseGradient.Evaluate(v);
                     else
                         texColors[y * width + x] = Color.Lerp(Color.black, Color.white, v);
                 }
@@ -38,15 +39,15 @@ namespace NoiseGenerator
             tex.SetPixels(texColors);
             tex.Apply();
 
-            _textureRenderer.sharedMaterial.mainTexture = tex;
-            _textureRenderer.transform.localScale = new Vector3(width, 1, height);
+            _TextureRenderer.sharedMaterial.mainTexture = tex;
+            _TextureRenderer.transform.localScale = new Vector3(width, 1, height);
         }
 
         private void OnValidate()
         {
-            _noiseMapGenerator ??= GetComponent<NoiseMapGenerator>();
+            _HeightMapGenerator ??= GetComponent<HeightMapGenerator>();
             
-            if (_noiseMapGenerator.AutoGenerate) _noiseMapGenerator.Generate();
+            if (_HeightMapGenerator.AutoGenerate) _HeightMapGenerator.Generate();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace NoiseGenerator.Editor
 
         bool GetConditionalHideAttributeResult(ConditionalHideAttribute condHAtt, SerializedProperty property)
         {
-            SerializedProperty sourcePropertyValue = null;
+            SerializedProperty sourcePropertyValue;
 
             //Get the full relative property path of the sourcefield so we can have nested hiding.Use old method when dealing with arrays
             if (!property.isArray)
@@ -49,13 +49,13 @@ namespace NoiseGenerator.Editor
                 //if the find failed->fall back to the old system
                 if (sourcePropertyValue == null)
                 {
-                    //original implementation (doens't work with nested serializedObjects)
+                    //original implementation (doesn't work with nested serializedObjects)
                     sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField);
                 }
             }
             else
             {
-                //original implementation (doens't work with nested serializedObjects)
+                //original implementation (doesn't work with nested serializedObjects)
                 sourcePropertyValue = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField);
             }
 
