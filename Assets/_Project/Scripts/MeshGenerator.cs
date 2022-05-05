@@ -44,7 +44,7 @@ namespace NoiseGenerator
             });
             
             MeshFilter.sharedMesh = meshData.Get();
-            MeshFilter.transform.localScale = new Vector3(width, 1, height);
+            MeshFilter.transform.localScale = new Vector3(width * .1f, 1, height * .1f);
 
             return meshData;
         }

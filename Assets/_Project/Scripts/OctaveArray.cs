@@ -43,9 +43,7 @@ namespace NoiseGenerator
             
             var result = _Octaves;
 
-            bool check = newLength > length;
-
-            if (check)
+            if (newLength > length)
                 for (int i = length; i < newLength; i++)
                     result.Add(new Octave());
             else

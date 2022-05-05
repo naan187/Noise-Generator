@@ -9,18 +9,25 @@ namespace NoiseGenerator.Editor
         //TODO: this
         
         private bool _Foldout;
-        
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            //var t = (OctaveArray) fieldInfo.GetValue(property);
+            Rect foldoutRect = new Rect(position.x, position.y, position.width * .5f, position.height);
+            _Foldout = EditorGUI.Foldout(foldoutRect, _Foldout, label, true);
+
+            int octaveAmount = property.FindPropertyRelative("OctaveAmount").intValue;
+
+            octaveAmount = EditorGUI.IntSlider(
+                new Rect(position.width * .5f, position.y, position.width * .5f, 16),
+                octaveAmount, 1, 8
+            );
+
+            property.FindPropertyRelative("OctaveAmount").intValue = octaveAmount;
+
+            if (!_Foldout)
+                return;
 
 
-            Rect foldoutHeaderRect = new(32, position.y, 60, 16);
-            _Foldout = EditorGUI.BeginFoldoutHeaderGroup(foldoutHeaderRect, _Foldout, label);
-
-            EditorGUI.IntSlider(position, 2, 1, 8);
-            
-            EditorGUI.EndFoldoutHeaderGroup();
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

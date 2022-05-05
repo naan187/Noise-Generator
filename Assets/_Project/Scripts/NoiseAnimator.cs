@@ -7,7 +7,7 @@ namespace NoiseGenerator
 {
     public class NoiseAnimator : MonoBehaviour
     {
-        [FormerlySerializedAs("HeightMapGenerator")] [SerializeField] private HeightMapGenerator _HeightMapGenerator;
+        [SerializeField] private HeightMapGenerator _HeightMapGenerator;
         [FormerlySerializedAs("_animate")] [SerializeField] private bool _Animate;
         [FormerlySerializedAs("_speed")] [SerializeField] private float _Speed;
 

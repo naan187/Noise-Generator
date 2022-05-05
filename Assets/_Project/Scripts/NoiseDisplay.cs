@@ -45,7 +45,7 @@ namespace NoiseGenerator
             tex.Apply();
 
             _TextureRenderer.sharedMaterial.mainTexture = tex;
-            _TextureRenderer.transform.localScale = new Vector3(width, 1, height);
+            _TextureRenderer.transform.localScale = new Vector3(width * .1f, 1, height * .1f);
         }
 
         public void OnValidate()

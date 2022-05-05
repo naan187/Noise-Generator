@@ -11,7 +11,6 @@ namespace NoiseGenerator
         public bool AutoSave;
 
         private NoiseDisplay _NoiseDisplay;
-        private MeshGenerator _MeshGenerator;
 
 
         private float[,] GenerateHeightMap(NoiseSettings noiseSettings)
@@ -66,7 +65,7 @@ namespace NoiseGenerator
                 noiseValues[x, y] = noiseHeight;
             });
 
-            transform.localScale = new Vector3(noiseSettings.Width * .5f, 1, noiseSettings.Height * .5f);
+            transform.localScale = new Vector3(noiseSettings.Width * .1f, 1, noiseSettings.Height * .1f);
 
             var meshGenerator = GetComponent<MeshGenerator>();
             if (meshGenerator)
