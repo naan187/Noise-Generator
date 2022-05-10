@@ -53,7 +53,7 @@ namespace NoiseGenerator.Core
         {
             _HeightMapGenerator ??= GetComponent<HeightMapGeneratorMono>();
             
-            _HeightMapGenerator.PostGenerate += UpdateTex;
+            _HeightMapGenerator.PostGenerate_WithHeightmap += UpdateTex;
             
             if (_HeightMapGenerator.AutoGenerate) _HeightMapGenerator.Generate();
         }

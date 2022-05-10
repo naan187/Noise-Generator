@@ -10,7 +10,8 @@ namespace NoiseGenerator.Core
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
-        public event Action<float[,]> PostGenerate;
+        public event Action<float[,]> PostGenerate_WithHeightmap;
+        public event Action           PostGenerate;
 
         
         private float[,] GenerateHeightMap(NoiseSettings noiseSettings)
@@ -79,7 +80,8 @@ namespace NoiseGenerator.Core
 
             var heightMap = GenerateHeightMap(NoiseSettings);
 
-            PostGenerate?.Invoke(heightMap);
+            PostGenerate_WithHeightmap?.Invoke(heightMap);
+            PostGenerate?.Invoke();
             
             return heightMap;
         }

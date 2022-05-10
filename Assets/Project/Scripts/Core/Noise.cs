@@ -12,14 +12,5 @@ namespace NoiseGenerator.Core
 
             return Evaluate(p + f * q);
         }
-
-        public static float[,] EvaluateFromComputeShader(int size, ComputeShader noiseShader)
-        {
-            float[,] result = new float[size, size];
-
-            
-
-            return result;
-        }
     }
 }

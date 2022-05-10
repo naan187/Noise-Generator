@@ -133,9 +133,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1799874357}
   - component: {fileID: 1799874356}
+  - component: {fileID: 1799874358}
+  - component: {fileID: 1799874353}
   - component: {fileID: 1799874355}
   - component: {fileID: 1799874354}
-  - component: {fileID: 1799874353}
   m_Layer: 0
   m_Name: Noise Display
   m_TagString: Untagged
@@ -157,25 +158,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _TextureRenderer: {fileID: 1799874354}
   _FilterMode: 1
-  _SampleFromCustomGradient: 1
+  _SampleFromCustomGradient: 0
   _InvertNoise: 0
   _NoiseGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0.11938381, b: 1, a: 1}
-    key1: {r: 0.8544925, g: 0.9056604, b: 0.44770378, a: 1}
-    key2: {r: 0.09363808, g: 0.31132078, b: 0.089284435, a: 0}
-    key3: {r: 0.16100375, g: 0.4637972, b: 0.13532479, a: 0}
-    key4: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 0}
-    key5: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
-    key6: {r: 1, g: 1, b: 1, a: 0}
-    key7: {r: 1, g: 1, b: 1, a: 0}
-    ctime0: 915
-    ctime1: 1829
-    ctime2: 4574
-    ctime3: 28661
-    ctime4: 39638
-    ctime5: 50412
-    ctime6: 53664
+    key0: {r: 0.23031326, g: 0.5377358, b: 0.48970103, a: 1}
+    key1: {r: 0.16960469, g: 0.15691078, b: 0.31671435, a: 1}
+    key2: {r: 0.14784712, g: 0.020425422, b: 0.254717, a: 0}
+    key3: {r: 0.4339623, g: 0.29231045, b: 0.29231045, a: 0}
+    key4: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
+    key5: {r: 0.6116339, g: 0.6698113, b: 0.17945886, a: 0}
+    key6: {r: 0.513232, g: 0.8301887, b: 0.17543605, a: 0}
+    key7: {r: 0.9763027, g: 1, b: 0.3622641, a: 0}
+    ctime0: 0
+    ctime1: 22970
+    ctime2: 31202
+    ctime3: 37300
+    ctime4: 43399
+    ctime5: 50920
+    ctime6: 57729
     ctime7: 65535
     atime0: 0
     atime1: 65535
@@ -252,23 +253,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Preset: {fileID: 11400000, guid: 6bd63722d745d2843afc86bd84735959, type: 2}
   NoiseSettings:
-    Size: 200
+    Size: 128
     Offset: {x: 0, y: 0}
-    Scale: 55
+    Scale: 64
     OverrideOctaves: 1
     Octaves:
-      OctaveAmount: 5
+      OctaveAmount: 2
       _Octaves:
       - Amplitude: 0.5
         Frequency: 2
       - Amplitude: 0.25
         Frequency: 4
-      - Amplitude: 0.125
-        Frequency: 8
-      - Amplitude: 0.0625
-        Frequency: 16
-      - Amplitude: 0.03125
-        Frequency: 32
     Persistence: 0.5
     Lacunarity: 2
     HeightCurve:
@@ -277,9 +272,9 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
+        inSlope: 1
         outSlope: 1
-        tangentMode: 0
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -287,17 +282,17 @@ MonoBehaviour:
         time: 1
         value: 1
         inSlope: 1
-        outSlope: 0
-        tangentMode: 0
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WarpNoise: 0
-    BlendValue: 0.275
-    f: 3.5
+    WarpNoise: 1
+    BlendValue: 0.325
+    f: 0
   AutoGenerate: 1
   AutoSave: 0
 --- !u!4 &1799874357
@@ -309,12 +304,26 @@ Transform:
   m_GameObject: {fileID: 1799874352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 12.8, y: 1, z: 12.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1799874358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799874352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a06ce691191474bb8e0f839b4c667a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _HeightMapGenerator: {fileID: 1799874356}
+  _Speed: 0.5
 --- !u!1 &1989259560
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1989259562}
   - component: {fileID: 1989259561}
+  - component: {fileID: 1989259563}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -409,3 +419,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1989259563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989259560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}

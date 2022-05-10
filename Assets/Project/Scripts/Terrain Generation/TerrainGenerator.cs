@@ -1,5 +1,7 @@
-﻿using NoiseGenerator.Core;
+﻿using System;
+using NoiseGenerator.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
@@ -8,11 +10,11 @@ namespace NoiseGenerator.TerrainGeneration
     {
         public MeshFilter MeshFilter;
         public bool AutoGenerate;
+        [FormerlySerializedAs("_HeightMultiplier")] public float HeightMultiplier;
 
-        [SerializeField] 
-        private float _HeightMultiplier;
         [SerializeField]
         private HeightMapGeneratorMono _HeightMapGenerator;
+
         
         private TerrainMeshData _MeshData;
         private float[,] _HeightMap;
@@ -31,7 +33,7 @@ namespace NoiseGenerator.TerrainGeneration
 
             int vertexIndex = 0;
             Helpers.IteratePointsOnMap(size, (x, y) => {
-                _MeshData.Vertices[vertexIndex] = new Vector3(x - halfSize, heightMap[x, y] * _HeightMultiplier, y - halfSize);
+                _MeshData.Vertices[vertexIndex] = new Vector3(x - halfSize, heightMap[x, y], y - halfSize);
                 _MeshData.UVs[vertexIndex] = new Vector2(x / (float) size, y / (float) size);
 
                 if (x < size - 1 && y < size - 1)
@@ -43,24 +45,48 @@ namespace NoiseGenerator.TerrainGeneration
                 vertexIndex++;
             });
             
-            MeshFilter.sharedMesh = _MeshData.Get();
+            SetMeshScaled(size);
             MeshFilter.transform.localScale = new Vector3(size * .1f, 1, size * .1f);
+        }
+
+        private void SetMeshScaled(int size)
+        {
+            int i = 0;
+            Helpers.IteratePointsOnMap(size, (x, y) => {
+                _MeshData.Vertices[i].y *= HeightMultiplier;
+                i++;
+            });
+            
+            MeshFilter.sharedMesh = _MeshData.Get();
+            MeshFilter.sharedMesh.RecalculateNormals();
+
+            i = 0;
+            Helpers.IteratePointsOnMap(size, (x, y) => {
+                _MeshData.Vertices[i].y /= HeightMultiplier;
+                i++;
+            });
         }
 
         public void UpdateMesh()
         {
+            if (_HeightMap is null)
+            {
+                GenerateMesh();
+                return;
+            }
+            
             int size = _HeightMapGenerator.NoiseSettings.Size;
 
             int vertexIndex = 0;
             Helpers.IteratePointsOnMap(size, (x, y) =>
             {
-                _MeshData.Vertices[vertexIndex].y = _HeightMap[x, y] * _HeightMultiplier;
+                _MeshData.Vertices[vertexIndex].y = _HeightMap[x, y] * HeightMultiplier;
                 vertexIndex++;
             });
 
             MeshFilter.sharedMesh = _MeshData.Get();
         }
 
-        private void OnValidate() => _HeightMapGenerator.PostGenerate += GenerateMesh;
+        private void OnValidate() => _HeightMapGenerator.PostGenerate_WithHeightmap += GenerateMesh;
     }
 }
