@@ -1,10 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NoiseGenerator.Core
 {
-    public static class HeightMapGenerator
+    public class HeightMapGeneratorMono : MonoBehaviour
     {
-        public static float[,] GenerateHeightMap(NoiseSettings noiseSettings)
+        [FormerlySerializedAs("_Preset")] [SerializeField]
+        private NoisemapPreset NoisemapPreset;
+        public NoiseSettings NoiseSettings;
+        public bool AutoGenerate;
+        public bool AutoSave;
+        public event Action<float[,]> PostGenerate_WithHeightmap;
+        public event Action           PostGenerate;
+
+        
+        private float[,] GenerateHeightMap(NoiseSettings noiseSettings)
         {
             float[,] noiseValues = new float[noiseSettings.Size, noiseSettings.Size];
 
@@ -18,18 +29,18 @@ namespace NoiseGenerator.Core
                 float freq = 1;
                 float noiseHeight = 0;
 
-                foreach (Octave o in noiseSettings.Octaves)
+                foreach (Octave octave in noiseSettings.Octaves)
                 {
-                    amplitude = noiseSettings.OverrideOctaves ? amplitude : o.Amplitude;
-                    freq = noiseSettings.OverrideOctaves ? freq : o.Frequency;
+                    amplitude = noiseSettings.OverrideOctaves ? amplitude : octave.Amplitude;
+                    freq = noiseSettings.OverrideOctaves ? freq : octave.Frequency;
 
                     if (noiseSettings.OverrideOctaves)
                     {
                         amplitude *= noiseSettings.Persistence;
                         freq *= noiseSettings.Lacunarity;
                         
-                        o.Amplitude = amplitude;
-                        o.Frequency = freq;
+                        octave.Amplitude = amplitude;
+                        octave.Frequency = freq;
                     }
 
                     Vector2 sample = new (
@@ -52,50 +63,34 @@ namespace NoiseGenerator.Core
                 noiseHeight = Mathf.InverseLerp(minMax.Min, minMax.Max, noiseHeight);
 
                 noiseHeight = noiseSettings.HeightCurve.Evaluate(noiseHeight);
-
+                
                 noiseValues[x, y] = noiseHeight;
             });
 
+            transform.localScale = new Vector3(noiseSettings.Size * .1f, 1, noiseSettings.Size * .1f);
+
             return noiseValues;
         }
-        
-        public static float[,] GenerateHeightMap(int size, int octaveAmount)
+
+        public float[,] Generate(int size = 0)
         {
-            float[,] noiseValues = new float[size, size];
+            if (size is not 0)
+            {
+                NoiseSettings.Size = size;
+            }
 
-            MinMax minMax = new ();
+            var heightMap = GenerateHeightMap(NoiseSettings);
 
-            var octaves = new OctaveList(octaveAmount);
-
-            Helpers.IteratePointsOnMap(size, (x, y) => {
-                float amplitude = 1;
-                float freq = 1;
-                float noiseHeight = 0;
-
-                foreach (Octave o in octaves)
-                {
-                    o.Amplitude = amplitude *= .5f;
-                    o.Frequency = freq *= 2f;
-
-                    Vector2 sample = new (
-                        x * freq,
-                        y * freq
-                    );
-
-                    float value = Noise.Evaluate(new Vector2(sample.x, sample.y)) * 2 - 1;
-
-                    noiseHeight += value * amplitude;
-                }
-
-                minMax.Update(noiseHeight);
-
-                noiseHeight = Mathf.InverseLerp(minMax.Min, minMax.Max, noiseHeight);
-
-                noiseValues[x, y] = noiseHeight;
-            });
-
-            return noiseValues;
+            PostGenerate_WithHeightmap?.Invoke(heightMap);
+            PostGenerate?.Invoke();
+            
+            return heightMap;
         }
-        
+
+        public void Save() => NoisemapPreset.NoiseSettings = NoiseSettings;
+        public void Undo() {
+            NoiseSettings = NoisemapPreset.NoiseSettings;
+            Generate();
+        }
     }
 }
