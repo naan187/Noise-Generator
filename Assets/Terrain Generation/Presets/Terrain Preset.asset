@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7729f77912ca4a8a9d493bd2e6480d8c, type: 3}
+  m_Name: Terrain Preset
+  m_EditorClassIdentifier: 
+  NoiseSettings:
+    Seed: 0
+    Size: 256
+    Offset: {x: 0, y: 0}
+    Scale: 60
+    OverrideOctaves: 1
+    Octaves:
+      OctaveAmount: 5
+      _Octaves:
+      - Amplitude: 0.5
+        Frequency: 2
+      - Amplitude: 0.25
+        Frequency: 4
+      - Amplitude: 0.125
+        Frequency: 8
+      - Amplitude: 0.0625
+        Frequency: 16
+      - Amplitude: 0.03125
+        Frequency: 32
+    Persistence: 0.5
+    Lacunarity: 2
+    HeightCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.05920007
+        outSlope: 0.05920007
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.05021096
+        value: 0.0029724925
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.2768527
+        outWeight: 0.4132132
+      - serializedVersion: 3
+        time: 0.33473715
+        value: 0.05108414
+        inSlope: 0.48588476
+        outSlope: 0.17836758
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.13368322
+        outWeight: 0.39706877
+      - serializedVersion: 3
+        time: 0.5005544
+        value: 0.14923924
+        inSlope: 1.2046587
+        outSlope: 1.2046587
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.5703454
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.633338
+        value: 0.7854081
+        inSlope: 2.2127736
+        outSlope: 2.2127736
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.54522943
+        outWeight: 0.8768874
+      - serializedVersion: 3
+        time: 0.6942194
+        value: 0.884646
+        inSlope: 1.2760781
+        outSlope: 1.2760781
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.7933069
+        value: 0.9555446
+        inSlope: 0.42840084
+        outSlope: 0.42840084
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.63347745
+      - serializedVersion: 3
+        time: 0.9065244
+        value: 0.97695595
+        inSlope: 0.26564604
+        outSlope: 0.26564604
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.6762304
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.9948044
+        inSlope: 0.41412282
+        outSlope: 0.41412282
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.28344792
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    WarpNoise: 0
+    BlendValue: 0.304
+    f: 3.5
+  TerrainShaderSettings:
+    ColorGradient:
+      serializedVersion: 2
+      key0: {r: 0, g: 0.11938381, b: 1, a: 1}
+      key1: {r: 0.8544925, g: 0.9056604, b: 0.44770378, a: 1}
+      key2: {r: 0.09363808, g: 0.31132078, b: 0.089284435, a: 0}
+      key3: {r: 0.16100375, g: 0.4637972, b: 0.13532479, a: 0}
+      key4: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 0}
+      key5: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
+      key6: {r: 1, g: 1, b: 1, a: 0}
+      key7: {r: 1, g: 1, b: 1, a: 0}
+      ctime0: 915
+      ctime1: 2236
+      ctime2: 4574
+      ctime3: 28661
+      ctime4: 39638
+      ctime5: 50412
+      ctime6: 53664
+      ctime7: 65535
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 8
+      m_NumAlphaKeys: 2
+    SteepTerrainColor: {r: 0.3018868, g: 0.17568527, b: 0.10081878, a: 0}
+    SteepnessThreshold: 0.3
+    BlendAmount: 0.65

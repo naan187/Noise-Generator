@@ -1,0 +1,16 @@
+{
+    "name": "NoiseGenerator.Editor.Core",
+    "rootNamespace": "NoiseGenerator.Editor.Core",
+    "references": [
+        "GUID:fe395751f06aa674a954e726bc64e88d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
