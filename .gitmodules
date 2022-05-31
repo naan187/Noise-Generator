@@ -1,0 +1,3 @@
+[submodule "Hydraulic-Erosion"]
+	path = Hydraulic-Erosion
+	url = https://github.com/SebLague/Hydraulic-Erosion.git

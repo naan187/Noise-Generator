@@ -22,7 +22,8 @@ namespace NoiseGenerator.Core
 
         public OctaveList Octaves = new (4);
 
-        [Range(.05f, 1f)] public float Persistence = .5f;
+        [Range(.05f, 1f)]
+        public float Persistence = .5f;
         public float Lacunarity = 2;
 
         public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
@@ -32,12 +33,5 @@ namespace NoiseGenerator.Core
 
         [Range(0f, 1f)] public float BlendValue = 1;
         public float f = 3.5f;
-
-        public NoiseSettings(int size)
-        {
-            Size = size;
-
-            Octaves = new OctaveList();
-        }
     }
 }

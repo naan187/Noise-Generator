@@ -9,8 +9,8 @@ namespace NoiseGenerator.TerrainGeneration
     {
         [SerializeField] 
         private TerrainPreset _Preset;
-        [SerializeField]
-        private TerrainShaderSettings ShaderSettings;
+        [FormerlySerializedAs("ShaderSettings")] [SerializeField]
+        private TerrainShaderSettings _ShaderSettings;
         [SerializeField] 
         private Material _Material;
 
@@ -30,7 +30,7 @@ namespace NoiseGenerator.TerrainGeneration
         private static readonly int SteepColorPropertyId = Shader.PropertyToID("_SteepTerrainColor");
         private static readonly int HeightMultiplierPropertyId = Shader.PropertyToID("_HeightMultiplier");
         private static readonly int SteepnessThresholdPropertyId = Shader.PropertyToID("_SteepnessThreshold");
-        private static readonly int BlendAmountPropertyId = Shader.PropertyToID("_BlendAmount");
+        private static readonly int SharpnessPropertyId = Shader.PropertyToID("_Sharpness");
 
         public void UpdateShader()
         {
@@ -38,23 +38,23 @@ namespace NoiseGenerator.TerrainGeneration
 
             Color[] texColors = new Color[50];
             for (int i = 0; i < texColors.Length; i++)
-                texColors[i] = ShaderSettings.ColorGradient.Evaluate(i / 50f);
+                texColors[i] = _ShaderSettings.ColorGradient.Evaluate(i / 50f);
             
             gradientTex.SetPixels(texColors);
             gradientTex.wrapMode = TextureWrapMode.Repeat;
             gradientTex.Apply();
             
             _Material.SetTexture(GradientTexturePropertyId, gradientTex);
-            _Material.SetColor(SteepColorPropertyId, ShaderSettings.SteepTerrainColor);
-            _Material.SetFloat(SteepnessThresholdPropertyId, ShaderSettings.SteepnessThreshold);
-            _Material.SetFloat(BlendAmountPropertyId, ShaderSettings.BlendAmount);
+            _Material.SetColor(SteepColorPropertyId, _ShaderSettings.SteepTerrainColor);
+            _Material.SetFloat(SteepnessThresholdPropertyId, _ShaderSettings.SteepnessThreshold);
+            _Material.SetFloat(SharpnessPropertyId, _ShaderSettings.Sharpness);
             
             _Material.SetFloat(HeightMultiplierPropertyId, _TerrainGenerator.HeightMultiplier);
         }
         
-        public void Save() => _Preset.TerrainShaderSettings = ShaderSettings;
+        public void Save() => _Preset.TerrainShaderSettings = _ShaderSettings;
         public void Undo() {
-            ShaderSettings = _Preset.TerrainShaderSettings;
+            _ShaderSettings = _Preset.TerrainShaderSettings;
             UpdateShader();
         }
 

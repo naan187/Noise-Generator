@@ -15,11 +15,11 @@ namespace NoiseGenerator.TerrainGeneration
 
         private const int _Priority = 5000;
 
-
+        private TerrainShader _Shader;
         private TerrainMeshData _MeshData;
-        private float[,] _HeightMap;
+        private float[] _HeightMap;
         
-        public void GenerateMesh(float[,] heightMap = null)
+        public void GenerateMesh(float[] heightMap = null)
         {
             heightMap ??= _HeightMapGenerator.Generate();
             _HeightMap = heightMap;
@@ -31,10 +31,10 @@ namespace NoiseGenerator.TerrainGeneration
             float halfSize  = size * .5f;
 
             int vertexIndex = 0;
-            Helpers.IteratePointsOnMap(size, (x, y) => {
+            Helpers.IteratePointsOnMap(size, (x, y, i) => {
                 _MeshData.Vertices[vertexIndex] = new(
                     x - halfSize,
-                    heightMap[x, y] * HeightMultiplier,
+                    heightMap[i] * HeightMultiplier,
                     y - halfSize
                 );
                 
@@ -51,6 +51,8 @@ namespace NoiseGenerator.TerrainGeneration
             
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
+            
+            _Shader.UpdateShader();
         }
 
         public void UpdateMesh()
@@ -63,18 +65,18 @@ namespace NoiseGenerator.TerrainGeneration
             
             int size = _HeightMapGenerator.NoiseSettings.Size;
 
-            int vertexIndex = 0;
-            Helpers.IteratePointsOnMap(size, (x, y) =>
-            {
-                _MeshData.Vertices[vertexIndex].y = _HeightMap[x, y] * HeightMultiplier;
-                vertexIndex++;
-            });
+            for (int i = 0; i < size * size; i++) 
+                _MeshData.Vertices[i].y = _HeightMap[i] * HeightMultiplier;
 
             MeshFilter.sharedMesh = _MeshData.Get();
+
+            _Shader.UpdateShader();
         }
 
         private void OnValidate()
         {
+            _Shader ??= GetComponent<TerrainShader>();
+            
             _HeightMapGenerator.postGenerate.Register(GenerateMesh, _Priority);
         }
     }

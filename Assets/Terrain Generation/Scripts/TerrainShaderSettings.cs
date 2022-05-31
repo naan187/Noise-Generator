@@ -10,7 +10,7 @@ namespace NoiseGenerator.TerrainGeneration
 		public Color SteepTerrainColor;
 		[Range(0f, 1f)]
 		public float SteepnessThreshold;
-		[FormerlySerializedAs("Sharpness")] [Range(0f, 1f)]
-		public float BlendAmount;
+		[FormerlySerializedAs("BlendAmount")] [Range(0f, 1f)]
+		public float Sharpness;
 	}
 }
