@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Codice.Client.BaseCommands;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace NoiseGenerator.Core
@@ -56,10 +58,15 @@ namespace NoiseGenerator.Core
 
             foreach (var (priority, actionType) in sortedPriorities)
             {
-                if (actionType == 0)
-                    _PostGenerate[priority]?.Invoke();
-                else
-                    _PostGenerateWithHeightmap[priority]?.Invoke(heightmap);
+                switch (actionType)
+                {
+                    case 0:
+                        _PostGenerate[priority]?.Invoke();
+                        break;
+                    case 1:
+                        _PostGenerateWithHeightmap[priority]?.Invoke(heightmap);
+                        break;
+                }
             }
         }
     }

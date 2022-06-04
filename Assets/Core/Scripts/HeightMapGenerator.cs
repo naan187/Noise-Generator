@@ -6,7 +6,6 @@ namespace NoiseGenerator.Core
     {
         [SerializeField] private NoisemapPreset _Preset;
         public NoiseSettings NoiseSettings;
-        public bool UseWorldPosition;
         public bool AutoGenerate;
         public bool AutoSave;
 
@@ -51,18 +50,10 @@ namespace NoiseGenerator.Core
                         octave.Frequency = freq;
                     }
 
-                    Vector2 sample = new();
-
-                    if (UseWorldPosition)
-                        sample = new Vector2(
-                            (transform.position.x - halfSize) / noiseSettings.Scale * freq + globalOffset.x,
-                            (transform.position.z - halfSize) / noiseSettings.Scale * freq + globalOffset.y
-                        );
-                    else
-                        sample = new(
-                            (x - halfSize) / noiseSettings.Scale * freq + globalOffset.x,
-                            (y - halfSize) / noiseSettings.Scale * freq + globalOffset.y
-                        );
+                    Vector2 sample = new(
+                        (x - halfSize) / noiseSettings.Scale * freq + globalOffset.x,
+                        (y - halfSize) / noiseSettings.Scale * freq + globalOffset.y
+                    );
 
                     float value = noiseSettings.WarpNoise && noiseSettings.BlendValue != 0
                         ? Mathf.Lerp(

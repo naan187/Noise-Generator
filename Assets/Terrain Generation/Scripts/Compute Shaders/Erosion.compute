@@ -1,4 +1,6 @@
-﻿#pragma kernel CSMain
+﻿//Made by Sebastian Lague at: https://github.com/SebLague/Hydraulic-Erosion
+
+#pragma kernel CSMain
 
 RWStructuredBuffer<float> map;
 StructuredBuffer<int> randomIndices;
@@ -71,8 +73,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         float3 heightAndGradient = CalculateHeightAndGradient (posX, posY);
 
         // Update the droplet's direction and position (move position 1 unit regardless of speed)
-        dirX = (dirX * inertia - heightAndGradient.x * (1 - inertia));
-        dirY = (dirY * inertia - heightAndGradient.y * (1 - inertia));
+        dirX = dirX * inertia - heightAndGradient.x * (1 - inertia);
+        dirY = dirY * inertia - heightAndGradient.y * (1 - inertia);
         // Normalize direction
         float len = max(0.01,sqrt(dirX * dirX + dirY * dirY));
         dirX /= len;

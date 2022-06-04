@@ -26,12 +26,6 @@ namespace NoiseGenerator.TerrainGeneration
 
         private const int _Priority = 4999;
 
-        private static readonly int GradientTexturePropertyId = Shader.PropertyToID("_GradientTexture");
-        private static readonly int SteepColorPropertyId = Shader.PropertyToID("_SteepTerrainColor");
-        private static readonly int HeightMultiplierPropertyId = Shader.PropertyToID("_HeightMultiplier");
-        private static readonly int SteepnessThresholdPropertyId = Shader.PropertyToID("_SteepnessThreshold");
-        private static readonly int SharpnessPropertyId = Shader.PropertyToID("_Sharpness");
-
         public void UpdateShader()
         {
             Texture2D gradientTex = new Texture2D(50, 1);
@@ -44,12 +38,13 @@ namespace NoiseGenerator.TerrainGeneration
             gradientTex.wrapMode = TextureWrapMode.Repeat;
             gradientTex.Apply();
             
-            _Material.SetTexture(GradientTexturePropertyId, gradientTex);
-            _Material.SetColor(SteepColorPropertyId, _ShaderSettings.SteepTerrainColor);
-            _Material.SetFloat(SteepnessThresholdPropertyId, _ShaderSettings.SteepnessThreshold);
-            _Material.SetFloat(SharpnessPropertyId, _ShaderSettings.Sharpness);
-            
-            _Material.SetFloat(HeightMultiplierPropertyId, _TerrainGenerator.HeightMultiplier);
+            _Material.SetTexture("_GradientTexture", gradientTex);
+            _Material.SetColor("_SteepTerrainColor", _ShaderSettings.SteepTerrainColor);
+            _Material.SetFloat("_SteepnessThreshold", _ShaderSettings.SteepnessThreshold);
+            _Material.SetFloat("_Sharpness", _ShaderSettings.Sharpness);
+            _Material.SetFloat("_HeightMultiplier", _TerrainGenerator.HeightMultiplier);
+            _Material.SetColor("_WaterColor", _ShaderSettings.WaterColor);
+            _Material.SetFloat("_WaterLevel", _ShaderSettings.Waterlevel);
         }
         
         public void Save() => _Preset.TerrainShaderSettings = _ShaderSettings;

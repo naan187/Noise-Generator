@@ -1,5 +1,6 @@
 ﻿using NoiseGenerator.Core;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace NoiseGenerator.TerrainGeneration
 {
@@ -32,6 +33,7 @@ namespace NoiseGenerator.TerrainGeneration
 
             int vertexIndex = 0;
             Helpers.IteratePointsOnMap(size, (x, y, i) => {
+                
                 _MeshData.Vertices[vertexIndex] = new(
                     x - halfSize,
                     heightMap[i] * HeightMultiplier,
@@ -48,7 +50,8 @@ namespace NoiseGenerator.TerrainGeneration
                 
                 vertexIndex++;
             });
-            
+
+            MeshFilter.sharedMesh.indexFormat = IndexFormat.UInt32;
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
             

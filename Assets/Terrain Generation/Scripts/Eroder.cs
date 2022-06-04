@@ -25,11 +25,12 @@
  * 
  */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 using NoiseGenerator.Core;
+using Random = UnityEngine.Random;
 
 namespace NoiseGenerator.TerrainGeneration
 {
@@ -81,9 +82,9 @@ namespace NoiseGenerator.TerrainGeneration
             mapSize += borderSize;
         }
 
-        public void Erode()
+        public void Erode(float[] heightmap = null)
         {
-            GenerateHeightMap();
+            map = heightmap ?? heightMapGenerator.GenerateHeightMap(mapSize);
             
             int numThreads = numErosionIterations / 1024;
 
@@ -125,6 +126,7 @@ namespace NoiseGenerator.TerrainGeneration
                 int randomX = Random.Range(erosionBrushRadius, mapSize + erosionBrushRadius);
                 int randomY = Random.Range(erosionBrushRadius, mapSize + erosionBrushRadius);
                 randomIndices[i] = randomY * mapSize + randomX;
+                // Task.Delay(100);
             }
 
             // Send random indices to compute shader
@@ -163,57 +165,7 @@ namespace NoiseGenerator.TerrainGeneration
             brushWeightBuffer.Release();
         }
 
-        public void ConstructMesh()
-        {
-            Vector3[] verts = new Vector3[map.Length];
-            int[] triangles = new int[(mapSize - 1) * (mapSize - 1) * 6];
-            int t = 0;
-
-
-            for (int i = 0; i < map.Length; i++)
-            {
-                int x = i % mapSize;
-                int y = i / mapSize;
-                int meshMapIndex = y * mapSize + x;
-
-                Vector2 percent = new Vector2(x / (mapSize - 1f), y / (mapSize - 1f));
-                Vector3 pos = new Vector3(percent.x * 2 - 1, 0, percent.y * 2 - 1) * noiseSettings.Scale;
-
-                float normalizedHeight = map[meshMapIndex];
-                pos += Vector3.up * normalizedHeight * terrainGenerator.HeightMultiplier;
-                verts[meshMapIndex] = pos;
-
-                // Construct triangles
-                if (x != mapSize - 1 && y != mapSize - 1)
-                {
-                    t = (y * (mapSize - 1) + x) * 6;
-
-                    triangles[t + 0] = meshMapIndex + mapSize;
-                    triangles[t + 1] = meshMapIndex + mapSize + 1;
-                    triangles[t + 2] = meshMapIndex;
-
-                    triangles[t + 3] = meshMapIndex + mapSize + 1;
-                    triangles[t + 4] = meshMapIndex + 1;
-                    triangles[t + 5] = meshMapIndex;
-                }
-            }
-
-            if (mesh == null)
-                mesh = new Mesh();
-            else
-                mesh.Clear();
-
-            mesh.indexFormat = IndexFormat.UInt32;
-            mesh.vertices = verts;
-            mesh.triangles = triangles;
-            mesh.RecalculateNormals();
-
-            AssignMeshComponents();
-            meshFilter.sharedMesh = mesh;
-            meshRenderer.sharedMaterial = material;
-
-            material.SetFloat("_MaxHeight", terrainGenerator.HeightMultiplier);
-        }
+        public void ConstructMesh() => terrainGenerator.GenerateMesh(map);
 
         void AssignMeshComponents()
         {
@@ -227,5 +179,7 @@ namespace NoiseGenerator.TerrainGeneration
             meshRenderer = GetComponent<MeshRenderer>();
             meshFilter = GetComponent<MeshFilter>();
         }
+
+        private void OnValidate() => heightMapGenerator.postGenerate.Register(Erode, 4998);
     }
 }
