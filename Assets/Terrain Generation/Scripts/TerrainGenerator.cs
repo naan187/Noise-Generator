@@ -22,7 +22,7 @@ namespace NoiseGenerator.TerrainGeneration
         
         public void GenerateMesh(float[] heightMap = null)
         {
-            heightMap ??= _HeightMapGenerator.Generate();
+            heightMap ??= _HeightMapGenerator.GenerateHeightMap();
             _HeightMap = heightMap;
             
             _MeshData = new TerrainMeshData(_HeightMapGenerator.NoiseSettings.Size, _HeightMapGenerator.NoiseSettings.Size);

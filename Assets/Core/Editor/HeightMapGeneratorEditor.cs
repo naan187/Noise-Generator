@@ -21,7 +21,7 @@ namespace NoiseGenerator.Editor
 
             if (GUILayout.Button("Generate"))
                 t.Generate();
-            if (GUILayout.Button("Save to Preset"))
+            if (GUILayout.Button("Save Settings"))
                 t.Save();
             if (GUILayout.Button("Undo Changes"))
                 t.Undo();

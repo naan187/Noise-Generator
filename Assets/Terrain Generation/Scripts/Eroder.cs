@@ -25,7 +25,6 @@
  * 
  */
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,8 +46,6 @@ namespace NoiseGenerator.TerrainGeneration
             private set => noiseSettings.Size = value;
         }
 
-        public Material material;
-        
         [Header("Erosion Settings")]
         public ComputeShader erosion;
         public int numErosionIterations = 50000;
@@ -78,13 +75,22 @@ namespace NoiseGenerator.TerrainGeneration
         {
             borderSize = erosionBrushRadius * 2;
             mapSize -= borderSize;
-            map = FindObjectOfType<HeightMapGenerator>().GenerateHeightMap(mapSize + borderSize);
+            map = heightMapGenerator.GenerateHeightMap(mapSize + borderSize);
             mapSize += borderSize;
         }
 
+        
         public void Erode(float[] heightmap = null)
         {
-            map = heightmap ?? heightMapGenerator.GenerateHeightMap(mapSize);
+            switch (heightmap)
+            {
+                case null:
+                    GenerateHeightMap();
+                    break;
+                default:
+                    map = heightmap;
+                    break;
+            }
             
             int numThreads = numErosionIterations / 1024;
 

@@ -71,9 +71,9 @@ namespace NoiseGenerator.TerrainGeneration
 
                 if (eroder.printTimers)
                 {
-                    Debug.Log($"{eroder.mapSize}x{eroder.mapSize} heightmap generated in {heightMapTimer}ms");
-                    Debug.Log($"{numIterationsString} erosion iterations completed in {erosionTimer}ms");
-                    Debug.Log($"Mesh constructed in {meshTimer}ms");
+                    Debug.LogFormat("{0}x{0} heightmap generated in {1}ms", eroder.mapSize, heightMapTimer);
+                    Debug.LogFormat("{0} erosion iterations completed in {1}ms", numIterationsString, erosionTimer);
+                    Debug.LogFormat("Mesh constructed in {0}ms", meshTimer);
                 }
 
             }

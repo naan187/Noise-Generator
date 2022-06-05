@@ -14,6 +14,7 @@ namespace NoiseGenerator.Core
 
         //integer is the priority, byte is the action type(0 if takes in nothing, 1 if taking in heightmap)
         private readonly Dictionary<int, byte> _Priorities = new ();
+        
 
         public void Register(Action action, int priority)
         {
