@@ -105,7 +105,7 @@ Material:
     - _Float: 1
     - _GrassBlendAmount: 0.965
     - _GrassSlopeThreshold: 0.304
-    - _HeightMultiplier: 60.7
+    - _HeightMultiplier: 60
     - _HeightTransition: 0
     - _Metallic0: 0
     - _Metallic1: 0
@@ -114,12 +114,12 @@ Material:
     - _NumLayersCount: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Sharpness: 0.15
+    - _Sharpness: 0.325
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
     - _Smoothness3: 0.5
-    - _SteepnessThreshold: 0.095
+    - _SteepnessThreshold: 0.125
     - _WaterLevel: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
@@ -127,7 +127,7 @@ Material:
     - _ColorSteep: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0}
     - _GrassColour: {r: 0, g: 1, b: 0, a: 1}
     - _RockColour: {r: 0.3773585, g: 0.29179886, b: 0.16874331, a: 1}
-    - _SteepTerrainColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    - _SteepTerrainColor: {r: 0.26666668, g: 0.20000002, b: 0.14117648, a: 1}
     - _Vector4: {r: 0, g: 0, b: 0, a: 0}
     - _WaterColor: {r: 0.019607844, g: 0.0627451, b: 0.9960785, a: 0}
   m_BuildTextureStacks: []

@@ -8,7 +8,7 @@ namespace NoiseGenerator.Core
     {
         public int Seed;
 
-        [Range(1, 256)]
+        //[Range(1, 256)]
         public int Size = 200;
 
         public Vector2 Offset;
@@ -16,9 +16,8 @@ namespace NoiseGenerator.Core
         [Min(.75f)]
         public float Scale = 30f;
 
-        public int octaveAmount => Octaves.OctaveAmount;
-
-        public bool OverrideOctaves = true;
+        [Range(1, 8)]
+        public int OctaveAmount = 4;
 
         public OctaveList Octaves = new (4);
 
@@ -33,5 +32,7 @@ namespace NoiseGenerator.Core
 
         [Range(0f, 1f)] public float BlendValue = 1;
         public float f = 3.5f;
+
+        public void UpdateValues() => Octaves.OctaveAmount = OctaveAmount;
     }
 }

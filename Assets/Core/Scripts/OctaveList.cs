@@ -5,11 +5,10 @@ using UnityEngine;
 
 namespace NoiseGenerator.Core
 {
-    [Serializable]
     public class OctaveList : IEnumerable
     {
         [Range(1, 8)] public int OctaveAmount = 1;
-        [SerializeField] private List<Octave> _Octaves;
+        private List<Octave> _Octaves;
         
         public int length => _Octaves.Count;
 

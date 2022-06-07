@@ -1,3 +1,13 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 07f7ee00d48c40c1825c57fb6f9dcf70
-timeCreated: 1648138695
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _Preset: {instanceID: 0}
+  - HeightMapComputeShader: {fileID: 7200000, guid: 9d74b25d36636bc4a941250fbfefed2b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

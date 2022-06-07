@@ -30,28 +30,27 @@ namespace NoiseGenerator.TerrainGeneration
             int size = _HeightMapGenerator.NoiseSettings.Size;
 
             float halfSize  = size * .5f;
+            MeshFilter.sharedMesh.indexFormat = IndexFormat.UInt32;
 
-            int vertexIndex = 0;
-            Helpers.IteratePointsOnMap(size, (x, y, i) => {
-                
-                _MeshData.Vertices[vertexIndex] = new(
+            Helpers.IteratePointsOnMap(size, (x, y, i) => 
+            {
+                _MeshData.Vertices[i] = new(
                     x - halfSize,
                     heightMap[i] * HeightMultiplier,
                     y - halfSize
                 );
                 
-                _MeshData.UVs[vertexIndex] = new Vector2(x / (float) size, y / (float) size);
+                _MeshData.UVs[i] = new Vector2(x / (float) size, y / (float) size);
 
                 if (x < size - 1 && y < size - 1)
                 {
-                    _MeshData.AddTriangle(vertexIndex, vertexIndex + size + 1, vertexIndex + size);
-                    _MeshData.AddTriangle(vertexIndex + size + 1, vertexIndex, vertexIndex + 1);
+                    _MeshData.AddTriangle(i, i + size + 1, i + size);
+                    _MeshData.AddTriangle(i + size + 1, i, i + 1);
                 }
                 
-                vertexIndex++;
+                i++;
             });
 
-            MeshFilter.sharedMesh.indexFormat = IndexFormat.UInt32;
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
             
