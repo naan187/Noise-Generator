@@ -32,10 +32,10 @@ using Debug = UnityEngine.Debug;
 
 namespace NoiseGenerator.TerrainGeneration
 {
-    [CustomEditor(typeof(Eroder))]
+    [CustomEditor(typeof(Erosion))]
     public class EroderEditor : UnityEditor.Editor
     {
-        Eroder eroder;
+        Erosion _Erosion;
 
         public override void OnInspectorGUI()
         {
@@ -43,35 +43,35 @@ namespace NoiseGenerator.TerrainGeneration
 
             if (GUILayout.Button("Generate Mesh"))
             {
-                eroder.GenerateHeightMap();
-                eroder.ConstructMesh();
+                _Erosion.GenerateHeightMap();
+                _Erosion.ConstructMesh();
             }
 
-            string numIterationsString = eroder.numErosionIterations.ToString();
-            if (eroder.numErosionIterations >= 1000)
-                numIterationsString = eroder.numErosionIterations / 1000 + "k";
+            string numIterationsString = _Erosion.numErosionIterations.ToString();
+            if (_Erosion.numErosionIterations >= 1000)
+                numIterationsString = _Erosion.numErosionIterations / 1000 + "k";
 
             if (GUILayout.Button("Erode (" + numIterationsString + " iterations)"))
             {
                 var sw = new Stopwatch();
 
                 sw.Start();
-                eroder.GenerateHeightMap();
+                _Erosion.GenerateHeightMap();
                 int heightMapTimer = (int) sw.ElapsedMilliseconds;
                 sw.Reset();
 
                 sw.Start();
-                eroder.Erode();
+                _Erosion.Erode();
                 int erosionTimer = (int) sw.ElapsedMilliseconds;
                 sw.Reset();
 
                 sw.Start();
-                eroder.ConstructMesh();
+                _Erosion.ConstructMesh();
                 int meshTimer = (int) sw.ElapsedMilliseconds;
 
-                if (eroder.printTimers)
+                if (_Erosion.printTimers)
                 {
-                    Debug.LogFormat("{0}x{0} heightmap generated in {1}ms", eroder.mapSize, heightMapTimer);
+                    Debug.LogFormat("{0}x{0} heightmap generated in {1}ms", _Erosion.mapSize, heightMapTimer);
                     Debug.LogFormat("{0} erosion iterations completed in {1}ms", numIterationsString, erosionTimer);
                     Debug.LogFormat("Mesh constructed in {0}ms", meshTimer);
                 }
@@ -81,7 +81,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         void OnEnable()
         {
-            eroder = (Eroder) target;
+            _Erosion = (Erosion) target;
             Tools.hidden = true;
         }
 

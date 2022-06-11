@@ -63,9 +63,11 @@ namespace NoiseGenerator.Core
                 {
                     case 0:
                         _PostGenerate[priority]?.Invoke();
+                        Debug.Log(_PostGenerate[priority]);
                         break;
                     case 1:
                         _PostGenerateWithHeightmap[priority]?.Invoke(heightmap);
+                        Debug.Log(_PostGenerateWithHeightmap[priority]);
                         break;
                 }
             }

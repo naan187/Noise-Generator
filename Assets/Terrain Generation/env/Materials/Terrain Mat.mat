@@ -105,7 +105,7 @@ Material:
     - _Float: 1
     - _GrassBlendAmount: 0.965
     - _GrassSlopeThreshold: 0.304
-    - _HeightMultiplier: 60
+    - _HeightMultiplier: 150
     - _HeightTransition: 0
     - _Metallic0: 0
     - _Metallic1: 0
@@ -114,13 +114,13 @@ Material:
     - _NumLayersCount: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Sharpness: 0.325
+    - _Sharpness: 0.5
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
     - _Smoothness3: 0.5
-    - _SteepnessThreshold: 0.125
-    - _WaterLevel: 0
+    - _SteepnessThreshold: 0.2
+    - _WaterLevel: 0.439
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ColorFlat: {r: 0.10520938, g: 0.3679245, b: 0.09510499, a: 0}

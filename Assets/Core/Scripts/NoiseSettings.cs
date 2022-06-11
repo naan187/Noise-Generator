@@ -8,7 +8,7 @@ namespace NoiseGenerator.Core
     {
         public int Seed;
 
-        //[Range(1, 256)]
+        [Range(16, 256)]
         public int Size = 200;
 
         public Vector2 Offset;

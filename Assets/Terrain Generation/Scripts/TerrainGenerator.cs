@@ -1,6 +1,7 @@
 ﻿using NoiseGenerator.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
@@ -13,6 +14,12 @@ namespace NoiseGenerator.TerrainGeneration
 
         [SerializeField]
         private HeightMapGenerator _HeightMapGenerator;
+        [SerializeField]
+        private Erosion _Erosion;
+        [SerializeField]
+        private bool _Erode;
+        
+        
 
         private const int _Priority = 5000;
 
@@ -22,7 +29,7 @@ namespace NoiseGenerator.TerrainGeneration
         
         public void GenerateMesh(float[] heightMap = null)
         {
-            heightMap ??= _HeightMapGenerator.GenerateHeightMap();
+            heightMap ??= _Erode ? _Erosion.Erode(heightMap) : _HeightMapGenerator.GenerateHeightMap();
             _HeightMap = heightMap;
             
             _MeshData = new TerrainMeshData(_HeightMapGenerator.NoiseSettings.Size, _HeightMapGenerator.NoiseSettings.Size);
@@ -51,15 +58,16 @@ namespace NoiseGenerator.TerrainGeneration
                 i++;
             });
 
+            // _MeshData.CalculateNormals();
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
-            
+
             _Shader.UpdateShader();
         }
 
         public void UpdateMesh()
         {
-            if (_HeightMap is null)
+            if (_HeightMap is null || _MeshData is null)
             {
                 GenerateMesh();
                 return;
@@ -70,7 +78,9 @@ namespace NoiseGenerator.TerrainGeneration
             for (int i = 0; i < size * size; i++) 
                 _MeshData.Vertices[i].y = _HeightMap[i] * HeightMultiplier;
 
+            // _MeshData.CalculateNormals();
             MeshFilter.sharedMesh = _MeshData.Get();
+            MeshFilter.sharedMesh.RecalculateNormals();
 
             _Shader.UpdateShader();
         }

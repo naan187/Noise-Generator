@@ -32,44 +32,9 @@ namespace NoiseGenerator.TerrainGeneration
             {
                 vertices = Vertices,
                 triangles = Triangles,
-                uv = UVs,
-                normals = CalculateNormals()
+                uv = UVs
             };
             return mesh;
-        }
-        
-        public Vector3[] CalculateNormals()
-        {
-            Vector3[] vertexNormals = new Vector3[Vertices.Length];
-
-            for (int i = 0; i < vertexNormals.Length; i++)
-            {
-                int normalTriangleIndex = i * 3;
-
-                int vertexIndexA = Triangles[normalTriangleIndex];
-                int vertexIndexB = Triangles[normalTriangleIndex + 1];
-                int vertexIndexC = Triangles[normalTriangleIndex + 2];
-
-                Vector3 triangleNormal = SurfaceNormalFromIndices(vertexIndexA, vertexIndexB, vertexIndexC);
-
-                (vertexNormals[vertexIndexA] += triangleNormal).Normalize();
-                (vertexNormals[vertexIndexB] += triangleNormal).Normalize();
-                (vertexNormals[vertexIndexC] += triangleNormal).Normalize();
-            }
-
-            return vertexNormals;
-        }
-
-        private Vector3 SurfaceNormalFromIndices(int indexA, int indexB, int indexC)
-        {
-            Vector3 pointA = Vertices[indexA];
-            Vector3 pointB = Vertices[indexB];
-            Vector3 pointC = Vertices[indexC];
-
-            Vector3 sideAB = pointB - pointA;
-            Vector3 sideAC = pointC - pointA;
-
-            return Vector3.Cross(sideAB, sideAC).normalized;
         }
     }
 }
