@@ -14,7 +14,7 @@ namespace NoiseGenerator.Core
 
         public PostGenerateEvent postGenerate { get; } = new();
 
-        private static MinMax _GlobalMinMax;
+        private static MinMax _GlobalMinMax = new MinMax();
         private static int[] _GlobalMinMaxGPU = {1000 * 5, 0};
 
         private float[] GenerateHeightMapCPU(NoiseSettings noiseSettings)

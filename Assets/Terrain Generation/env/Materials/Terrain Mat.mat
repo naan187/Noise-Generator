@@ -105,7 +105,7 @@ Material:
     - _Float: 1
     - _GrassBlendAmount: 0.965
     - _GrassSlopeThreshold: 0.304
-    - _HeightMultiplier: 150
+    - _HeightMultiplier: 100
     - _HeightTransition: 0
     - _Metallic0: 0
     - _Metallic1: 0

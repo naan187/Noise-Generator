@@ -6,7 +6,7 @@ ___
   * [x] Weird shading when changing height multiplier on the terrain Generator Component
   * [ ] Terrain dissapearing when generating a second one
   * [ ] Fix Noise Scale Scrolling
-  * [ ] Terrain not Eroding after hitting Generate
+  * [ ] -> Terrain not Eroding after hitting Generate
 
 * ### New Features
   * [ ] Noise Post-Processing System
@@ -14,4 +14,4 @@ ___
   * [ ] Water Shader for Terrain
 
 * ### Improvements
-  * [ ] Improve Terrain Shader
+  * [ ] Improve Terrain Shader (Wierd Shading around Edges of the Mesh)
