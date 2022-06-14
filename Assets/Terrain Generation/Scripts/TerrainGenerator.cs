@@ -9,6 +9,7 @@ namespace NoiseGenerator.TerrainGeneration
     public class TerrainGenerator : MonoBehaviour
     {
         public MeshFilter MeshFilter;
+        public MeshCollider MeshCollider;
         public bool AutoGenerate;
         public float HeightMultiplier;
 
@@ -19,13 +20,12 @@ namespace NoiseGenerator.TerrainGeneration
         [SerializeField]
         private bool _Erode;
         
-        
-
-        private const int _Priority = 5000;
-
         private TerrainShader _Shader;
         private TerrainMeshData _MeshData;
         private float[] _HeightMap;
+
+        private const int _Priority = 5000;
+
         
         public void GenerateMesh(float[] heightMap = null)
         {
@@ -58,9 +58,9 @@ namespace NoiseGenerator.TerrainGeneration
                 i++;
             });
 
-            // _MeshData.CalculateNormals();
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
+            MeshCollider.sharedMesh = MeshFilter.sharedMesh;
 
             _Shader.UpdateShader();
         }

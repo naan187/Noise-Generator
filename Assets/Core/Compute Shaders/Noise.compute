@@ -1,7 +1,7 @@
 #pragma kernel fractalNoise
 
 RWStructuredBuffer<float> heightMap;
-RWStructuredBuffer<int> minMax;
+RWStructuredBuffer<float> minMax;
 
 int seed;
 int mapSize;
@@ -93,8 +93,6 @@ float snoise(float2 v)
 [numthreads(1,1,1)]
 void fractalNoise (uint3 id : SV_DispatchThreadID)
 {
-  static int floatToIntMultiplier = 1000;
-  
   int x = id.x / mapSize;
   int y = id.x % mapSize;
 
@@ -108,13 +106,11 @@ void fractalNoise (uint3 id : SV_DispatchThreadID)
     frequency *= persistence;
     amplitude *= lacunarity;
 
-    float2 sample = (float2(x - halfSize, y - halfSize) + globalOffset) / noiseScale * frequency;
+    float2 sample = float2(x - halfSize + globalOffset.x, y - halfSize +-globalOffset.y) / noiseScale * frequency;
     
     heightMap[id.x] += snoise(sample)*amplitude;
   }
-
-  float val = heightMap[id.x] * floatToIntMultiplier;
-
-  InterlockedMin(minMax[0], val);
-  InterlockedMax(minMax[1], val);
+  
+  minMax[0] = min(minMax[0], heightMap[id.x]);
+  minMax[1] = max(minMax[1], heightMap[id.x]);
 }

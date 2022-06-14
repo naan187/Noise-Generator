@@ -47,9 +47,9 @@ namespace NoiseGenerator.TerrainGeneration
                 _Erosion.ConstructMesh();
             }
 
-            string numIterationsString = _Erosion.numErosionIterations.ToString();
-            if (_Erosion.numErosionIterations >= 1000)
-                numIterationsString = _Erosion.numErosionIterations / 1000 + "k";
+            string numIterationsString = _Erosion.NumErosionIterations.ToString();
+            if (_Erosion.NumErosionIterations >= 1000)
+                numIterationsString = _Erosion.NumErosionIterations / 1000 + "k";
 
             if (GUILayout.Button("Erode (" + numIterationsString + " iterations)"))
             {

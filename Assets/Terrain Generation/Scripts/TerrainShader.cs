@@ -1,3 +1,4 @@
+using System;
 using NoiseGenerator.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -24,7 +25,9 @@ namespace NoiseGenerator.TerrainGeneration
         public bool AutoUpdate;
         public bool AutoSave;
 
-        private const int _Priority = 4999;
+        private const int _Priority = 4997;
+
+        private void Start() => UpdateShader();
 
         public void UpdateShader()
         {
@@ -43,8 +46,6 @@ namespace NoiseGenerator.TerrainGeneration
             _Material.SetFloat("_SteepnessThreshold", _ShaderSettings.SteepnessThreshold);
             _Material.SetFloat("_Sharpness", _ShaderSettings.Sharpness);
             _Material.SetFloat("_HeightMultiplier", _TerrainGenerator.HeightMultiplier);
-            _Material.SetColor("_WaterColor", _ShaderSettings.WaterColor);
-            _Material.SetFloat("_WaterLevel", _ShaderSettings.Waterlevel);
         }
         
         public void Save() => _Preset.TerrainShaderSettings = _ShaderSettings;
