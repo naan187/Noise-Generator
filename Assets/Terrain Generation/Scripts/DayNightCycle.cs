@@ -9,6 +9,6 @@ namespace NoiseGenerator.TerrainGeneration
         [SerializeField]
         private Transform _SunLightParent;
 
-        private void Update() => _SunLightParent.Rotate(Time.deltaTime * _CycleSpeed / 24f, 0f, 0f);
+        private void Update() => _SunLightParent.Rotate(Time.deltaTime * _CycleSpeed, 0f, 0f);
     }
 }

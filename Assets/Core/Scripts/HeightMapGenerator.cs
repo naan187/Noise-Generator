@@ -4,7 +4,8 @@ namespace NoiseGenerator.Core
 {
     public class HeightMapGenerator : MonoBehaviour
     {
-        [SerializeField] private NoisemapPreset _Preset;
+        [SerializeField]
+        private NoisemapPreset _Preset;
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
@@ -50,7 +51,7 @@ namespace NoiseGenerator.Core
                     octave.Amplitude = amplitude;
                     octave.Frequency = freq;
 
-                    Vector2 sample = new Vector2(x - halfSize + globalOffset.x, y - halfSize + globalOffset.y) / noiseSettings.Scale * freq;
+                    Vector2 sample = (new Vector2(x - halfSize, y - halfSize) + globalOffset) / noiseSettings.Scale * freq;
 
                     float value = noiseSettings.WarpNoise && noiseSettings.BlendValue != 0
                         ? Mathf.Lerp(
@@ -69,8 +70,8 @@ namespace NoiseGenerator.Core
                 noiseValue = noiseSettings.HeightCurve.Evaluate(noiseValue);
 
                 heightMap[i] = noiseValue;
-            };
-
+            }
+            
             return heightMap;
         }
         

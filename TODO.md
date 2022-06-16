@@ -5,9 +5,9 @@ ___
 * ### Fix Bugs
   * [x] Weird shading when changing height multiplier on the terrain Generator Component
   * [ ] Terrain dissapearing when generating a second one
-  * [ ] -> Fix Noise Scale Scrolling
-  * [ ] Fix Wierd Octave stuff, idk what to call it
-  * [ ] Terrain not Eroding after hitting Generate
+  * [x] Fix Noise Scale Scrolling
+  * [x] Fix Wierd Octave stuff, idk what to call it
+  * [ ] -> Terrain not Eroding after hitting Generate
 
 * ### New Features
   * [ ] Noise Post-Processing System
