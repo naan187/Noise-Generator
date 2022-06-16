@@ -64,6 +64,8 @@ namespace NoiseGenerator.TerrainGeneration
         [Range(0, 1)]
         public float Inertia = 0.3f;
 
+        [SerializeField] private bool _Erode;
+
         // Internal
         private float[] _Map;
         private Mesh _Mesh;
@@ -75,11 +77,8 @@ namespace NoiseGenerator.TerrainGeneration
         public void GenerateHeightMap() 
         {
             _BorderSize = ErosionBrushRadius * 2;
-            mapSize -= _BorderSize;
-            _Map = heightMapGenerator.GenerateHeightMap(mapSize + _BorderSize);
-            mapSize += _BorderSize;
+            _Map = heightMapGenerator.GenerateHeightMap(mapSize);
         }
-
         
         public float[] Erode(float[] heightmap = null)
         {
@@ -93,6 +92,9 @@ namespace NoiseGenerator.TerrainGeneration
                     break;
             }
             
+            if (!_Erode)
+                return _Map;
+
             int numThreads = NumErosionIterations / 1024;
 
             // Create brush
@@ -175,6 +177,9 @@ namespace NoiseGenerator.TerrainGeneration
         
         private void ErodeInternal(float[] heightmap)
         {
+            if (!_Erode)
+                return;
+            
             _Map = heightmap;
             
             int numThreads = NumErosionIterations / 1024;
@@ -253,6 +258,8 @@ namespace NoiseGenerator.TerrainGeneration
             randomIndexBuffer.Release();
             brushIndexBuffer.Release();
             brushWeightBuffer.Release();
+            
+            ConstructMesh();
         }
 
         public void ConstructMesh() => terrainGenerator.GenerateMesh(_Map);
