@@ -107,7 +107,7 @@ void fractalNoise (uint3 id : SV_DispatchThreadID)
     frequency *= persistence;
     amplitude *= lacunarity;
 
-    float2 sample = float2(x - halfSize, y - halfSize) / noiseScale * frequency + globalOffset;
+    float2 sample = (float2(x - halfSize, y - halfSize) / noiseScale) * frequency + globalOffset;
     
     heightMap[id.x] += snoise(sample)*amplitude;
   }

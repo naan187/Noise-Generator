@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NoiseGenerator.Core
 {
@@ -6,6 +8,9 @@ namespace NoiseGenerator.Core
     {
         [SerializeField]
         private NoisemapPreset _Preset;
+        [SerializeField]
+        private bool _RandomizeSeed;
+        
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
         public bool AutoSave;
@@ -15,49 +20,49 @@ namespace NoiseGenerator.Core
 
         public PostGenerateEvent postGenerate { get; } = new();
 
-        private float[] GenerateHeightMapCPU(NoiseSettings noiseSettings)
+        private float[] GenerateHeightMapCPU()
         {
-            float[] heightMap = new float[noiseSettings.Size * noiseSettings.Size];
+            float[] heightMap = new float[NoiseSettings.Size * NoiseSettings.Size];
             MinMax minMax = new MinMax{Max = 1000f * 5f, Min = 0f};
 
-            noiseSettings.UpdateValues();
+            NoiseSettings.UpdateValues();
             
-            if (noiseSettings.OctaveAmount != noiseSettings.Octaves.length)
-                noiseSettings.Octaves.Resize(noiseSettings.Octaves.OctaveAmount);
+            if (NoiseSettings.OctaveAmount != NoiseSettings.Octaves.length)
+                NoiseSettings.Octaves.Resize(NoiseSettings.Octaves.OctaveAmount);
 
-            var prng = new System.Random(noiseSettings.Seed);
+            var prng = new System.Random(NoiseSettings.Seed);
 
             var globalOffset = new Vector2(
-                prng.Next(-10000, 10000) + (noiseSettings.Offset.x + transform.localPosition.x),
-                prng.Next(-10000, 10000) - (noiseSettings.Offset.y + transform.localPosition.z)
+                prng.Next(-10000, 10000) + (NoiseSettings.Offset.x + transform.localPosition.x),
+                prng.Next(-10000, 10000) - (NoiseSettings.Offset.y + transform.localPosition.z)
             );
              
-            float halfSize = noiseSettings.Size / 2f;
+            float halfSize = NoiseSettings.Size / 2f;
 
             for (int i = 0; i < heightMap.Length; i++)
             {
-                int x = i % noiseSettings.Size;
-                int y = i / noiseSettings.Size;
+                int x = i % NoiseSettings.Size;
+                int y = i / NoiseSettings.Size;
                 
                 float amplitude = 1;
                 float freq = 1;
                 float noiseValue = 0;
 
-                foreach (Octave octave in noiseSettings.Octaves)
+                foreach (Octave octave in NoiseSettings.Octaves)
                 {
-                    amplitude *= noiseSettings.Persistence;
-                    freq *= noiseSettings.Lacunarity;
+                    amplitude *= NoiseSettings.Persistence;
+                    freq *= NoiseSettings.Lacunarity;
 
                     octave.Amplitude = amplitude;
                     octave.Frequency = freq;
 
-                    Vector2 sample = (new Vector2(x - halfSize, y - halfSize) + globalOffset) / noiseSettings.Scale * freq;
+                    Vector2 sample = (new Vector2(x - halfSize, y - halfSize) + globalOffset) / NoiseSettings.Scale * freq;
 
-                    float value = noiseSettings.WarpNoise && noiseSettings.BlendValue != 0
+                    float value = NoiseSettings.WarpNoise && NoiseSettings.BlendValue != 0
                         ? Mathf.Lerp(
                             Noise.Evaluate(sample),
-                            Noise.Warp(sample, noiseSettings.f),
-                            noiseSettings.BlendValue) * 2 - 1
+                            Noise.Warp(sample, NoiseSettings.f),
+                            NoiseSettings.BlendValue) * 2 - 1
                         : Noise.Evaluate(sample) * 2 - 1;
 
                     noiseValue += value * amplitude;
@@ -67,7 +72,7 @@ namespace NoiseGenerator.Core
 
                 noiseValue = Mathf.InverseLerp(minMax.Min, minMax.Max, noiseValue);
 
-                noiseValue = noiseSettings.HeightCurve.Evaluate(noiseValue);
+                noiseValue = NoiseSettings.HeightCurve.Evaluate(noiseValue);
 
                 heightMap[i] = noiseValue;
             }
@@ -75,31 +80,31 @@ namespace NoiseGenerator.Core
             return heightMap;
         }
         
-        private float[] GenerateHeightMapGPU(NoiseSettings noiseSettings)
+        private float[] GenerateHeightMapGPU()
         {
-            float[] heightMap = new float[noiseSettings.Size * noiseSettings.Size];
+            float[] heightMap = new float[NoiseSettings.Size * NoiseSettings.Size];
 
             ComputeBuffer heightMapBuffer = new ComputeBuffer(heightMap.Length, sizeof(float));
             heightMapBuffer.SetData(heightMap);
             HeightMapComputeShader.SetBuffer(0, "heightMap", heightMapBuffer);
 
-            var minMax = new []{1000f * noiseSettings.OctaveAmount, 0f};
+            var minMax = new []{1000f * NoiseSettings.OctaveAmount, 0f};
             ComputeBuffer minMaxBuffer = new ComputeBuffer(minMax.Length, sizeof(float));
             minMaxBuffer.SetData(minMax);
             HeightMapComputeShader.SetBuffer(0, "minMax", minMaxBuffer);
             
-            HeightMapComputeShader.SetInt("seed", noiseSettings.Seed);
-            HeightMapComputeShader.SetInt("mapSize", noiseSettings.Size);
-            HeightMapComputeShader.SetFloat("noiseScale", noiseSettings.Scale / 50);
-            HeightMapComputeShader.SetInt("numOctaves", noiseSettings.OctaveAmount);
-            HeightMapComputeShader.SetFloat("persistence", noiseSettings.Persistence);
-            HeightMapComputeShader.SetFloat("lacunarity", noiseSettings.Lacunarity);
+            HeightMapComputeShader.SetInt("seed", NoiseSettings.Seed);
+            HeightMapComputeShader.SetInt("mapSize", NoiseSettings.Size);
+            HeightMapComputeShader.SetFloat("noiseScale", NoiseSettings.Scale / 50);
+            HeightMapComputeShader.SetInt("numOctaves", NoiseSettings.OctaveAmount);
+            HeightMapComputeShader.SetFloat("persistence", NoiseSettings.Persistence);
+            HeightMapComputeShader.SetFloat("lacunarity", NoiseSettings.Lacunarity);
             
-            var prng = new System.Random(noiseSettings.Seed);
+            var prng = new System.Random(NoiseSettings.Seed);
 
             var globalOffset = new Vector2 (
-                prng.Next(-10000, 10000) + (noiseSettings.Offset.x + transform.position.x),
-                prng.Next(-10000, 10000) - (noiseSettings.Offset.y + transform.position.z)
+                prng.Next(-10000, 10000) + (NoiseSettings.Offset.x + transform.position.x),
+                prng.Next(-10000, 10000) - (NoiseSettings.Offset.y + transform.position.z)
             );
             
             HeightMapComputeShader.SetVector("globalOffset", globalOffset);
@@ -116,7 +121,7 @@ namespace NoiseGenerator.Core
             float max = minMax[1];
             
             for (int i = 0; i < heightMap.Length; i++)
-                heightMap[i] = noiseSettings.HeightCurve.Evaluate(Mathf.InverseLerp(min, max, heightMap[i]));
+                heightMap[i] = NoiseSettings.HeightCurve.Evaluate(Mathf.InverseLerp(min, max, heightMap[i]));
             
             return heightMap;
         }
@@ -127,15 +132,18 @@ namespace NoiseGenerator.Core
         /// <param name="size">the side-length of the generated heightmap</param>
         public float[] GenerateHeightMap(int size = 0)
         {
+            if (_RandomizeSeed)
+                NoiseSettings.Seed = UnityEngine.Random.Range(-100000, 100000);
+            
             int prevSize = NoiseSettings.Size;
             
             if (size is not 0)
                 NoiseSettings.Size = size;
 
-            var heightmap = UseComputeShader ? GenerateHeightMapGPU(NoiseSettings) : GenerateHeightMapCPU(NoiseSettings);
+            var heightmap = UseComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
 
             NoiseSettings.Size = prevSize;
-
+ 
             return heightmap;
         }
 
@@ -145,10 +153,13 @@ namespace NoiseGenerator.Core
         /// <param name="size">the side-length of the generated heightmap</param>
         public float[] Generate(int size = 0)
         {
+            if (_RandomizeSeed)
+                NoiseSettings.Seed = UnityEngine.Random.Range(-100000, 100000);
+            
             if (size is not 0)
                 NoiseSettings.Size = size;
 
-            var heightMap = UseComputeShader ? GenerateHeightMapGPU(NoiseSettings) : GenerateHeightMapCPU(NoiseSettings);
+            var heightMap = UseComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
             
             postGenerate?.Invoke(heightMap);
 

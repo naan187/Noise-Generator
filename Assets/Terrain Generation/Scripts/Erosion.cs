@@ -64,7 +64,8 @@ namespace NoiseGenerator.TerrainGeneration
         [Range(0, 1)]
         public float Inertia = 0.3f;
 
-        [SerializeField] private bool _Erode;
+        [SerializeField]
+        private bool _Erode;
 
         // Internal
         private float[] _Map;
