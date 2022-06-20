@@ -111,28 +111,28 @@ Material:
     - _Float: 1
     - _GrassBlendAmount: 0.965
     - _GrassSlopeThreshold: 0.304
-    - _HeightMultiplier: 50
+    - _HeightMultiplier: 65.76
     - _HeightTest: 0
     - _HeightTransition: 0
-    - _MaxGrassHeight: 0.396
+    - _MaxGrassHeight: 0.35
     - _Max_Grass_Height: 0.45
     - _Metallic0: 0
     - _Metallic1: 0
     - _Metallic2: 0
     - _Metallic3: 0
-    - _MinSnowHeight: 0.509
+    - _MinSnowHeight: 0.52
     - _Min_Snow_Height: 0.65
     - _NumLayersCount: 1
     - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Sharpness: 0.3
+    - _Sharpness: 0
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
     - _Smoothness3: 0.5
     - _SrcBlend: 1
-    - _SteepnessThreshold: 0.15
+    - _SteepnessThreshold: 0.3
     - _Surface: 0
     - _WaterLevel: 0.439
     - _WorkflowMode: 1
@@ -143,10 +143,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ColorFlat: {r: 0.10520938, g: 0.3679245, b: 0.09510499, a: 0}
     - _ColorSteep: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0}
-    - _GrassColor: {r: 0.14978635, g: 0.62264144, b: 0.20988807, a: 0}
+    - _GrassColor: {r: 0.15294118, g: 0.44705886, b: 0.05882353, a: 1}
     - _GrassColour: {r: 0, g: 1, b: 0, a: 1}
     - _RockColour: {r: 0.3773585, g: 0.29179886, b: 0.16874331, a: 1}
-    - _SnowColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SnowColor: {r: 1, g: 1, b: 1, a: 1}
     - _Snow_Color: {r: 1, g: 1, b: 1, a: 0}
     - _SteepTerrainColor: {r: 0.26666668, g: 0.20000002, b: 0.14117648, a: 1}
     - _SteepTerrainColor_1: {r: 1, g: 0.41666675, b: 0, a: 0}

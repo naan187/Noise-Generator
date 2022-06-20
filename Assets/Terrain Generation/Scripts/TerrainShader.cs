@@ -9,7 +9,7 @@ namespace NoiseGenerator.TerrainGeneration
     public class TerrainShader : MonoBehaviour
     {
         [SerializeField]
-        private WorkflowMode _WorkflowMode;
+        private TerrainShaderSettings.WorkflowMode _WorkflowMode;
 
         [SerializeField] 
         private TerrainPreset _Preset;
@@ -24,6 +24,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         public bool AutoUpdate;
         public bool AutoSave;
+
         private static readonly int _gradientTexture = Shader.PropertyToID("_GradientTexture");
         private static readonly int _steepTerrainColor = Shader.PropertyToID("_SteepTerrainColor");
         private static readonly int _steepnessThreshold = Shader.PropertyToID("_SteepnessThreshold");
@@ -38,37 +39,48 @@ namespace NoiseGenerator.TerrainGeneration
         {
             switch (_WorkflowMode)
             {
-                case WorkflowMode.GradientBased:
+                case TerrainShaderSettings.WorkflowMode.GradientBased:
                     UpdateShader_GradientBased();
                     break;
-                case WorkflowMode.FloatValues:
-                    UpdateShader_FloatValues();
+                case TerrainShaderSettings.WorkflowMode.IndividualValues:
+                    UpdateShader_IndividualValues();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void UpdateShader_GradientBased()
-        {
-            Texture2D gradientTex = new Texture2D(50, 1);
-
-            Color[] texColors = new Color[50];
-            for (int i = 0; i < texColors.Length; i++)
-                texColors[i] = _ShaderSettings.ColorGradient.Evaluate(i / 50f);
-
-            gradientTex.wrapMode = TextureWrapMode.Repeat;
-            gradientTex.SetPixels(texColors);
-            gradientTex.Apply();
             
-            _Material.SetTexture(_gradientTexture, gradientTex);
             _Material.SetColor(_steepTerrainColor, _ShaderSettings.SteepTerrainColor);
             _Material.SetFloat(_steepnessThreshold, _ShaderSettings.SteepnessThreshold);
             _Material.SetFloat(_sharpness, _ShaderSettings.Sharpness);
             _Material.SetFloat(_heightMultiplier, _TerrainGenerator.HeightMultiplier);
         }
 
-        private void UpdateShader_FloatValues()
+        private void UpdateShader_GradientBased()
         {
+            _Material.shader = Shader.Find("Shader Graphs/Terrain_GradientBased");
             
+            Texture2D gradientTex = new Texture2D(50, 1);
+
+            Color[] texColors = new Color[50];
+            for (int i = 0; i < texColors.Length; i++)
+                texColors[i] = _ShaderSettings.GradientBasedSettings.ColorGradient.Evaluate(i / 50f);
+
+            gradientTex.wrapMode = TextureWrapMode.Repeat;
+            gradientTex.SetPixels(texColors);
+            gradientTex.Apply();
+            
+            _Material.SetTexture(_gradientTexture, gradientTex);
+        }
+
+        private void UpdateShader_IndividualValues()
+        {
+            _Material.shader = Shader.Find("Shader Graphs/Terrain_IndividualValues");
+
+            _Material.SetColor("_GrassColor", _ShaderSettings.IndividualValuesSettings.GrassColor);
+            _Material.SetColor("_SnowColor", _ShaderSettings.IndividualValuesSettings.SnowColor);
+            _Material.SetFloat("_MinSnowHeight", _ShaderSettings.IndividualValuesSettings.MinSnowHeight);
+            _Material.SetFloat("_MaxGrassHeight", _ShaderSettings.IndividualValuesSettings.MaxGrassHeight);
+            _Material.SetFloat("_BlendDst", _ShaderSettings.IndividualValuesSettings.BlendDst);
         }
 
         public void Save() => _Preset.TerrainShaderSettings = _ShaderSettings;
@@ -80,12 +92,6 @@ namespace NoiseGenerator.TerrainGeneration
         private void OnValidate()
         {
             _HeightMapGenerator.postGenerate.Register(UpdateShader, _Priority);
-        }
-
-        enum WorkflowMode
-        {
-            GradientBased = 0,
-            FloatValues = 1
         }
     }
 }

@@ -1,16 +1,43 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
 	[System.Serializable]
 	public class TerrainShaderSettings
 	{
-		public Gradient ColorGradient;
 		public Color SteepTerrainColor;
 		[Range(0f, 1f)]
 		public float SteepnessThreshold;
 		[Range(0f, 1f)]
 		public float Sharpness;
+
+		
+		public GradientBased GradientBasedSettings;
+		public IndividualValues IndividualValuesSettings;
+
+		[System.Serializable]
+		public class GradientBased
+		{
+			public Gradient ColorGradient;
+		}
+		
+		[System.Serializable]
+		public class IndividualValues
+		{
+			public Color GrassColor = new Color(39, 114, 33);
+			public Color SnowColor = Color.white;
+			[Range(0f, 1f)]
+			public float MaxGrassHeight;
+			[Range(0f, 1f)]
+			public float MinSnowHeight;
+			[Range(0f, 1f)]
+			public float BlendDst;
+		}
+		
+		public enum WorkflowMode
+		{
+			GradientBased = 0,
+			IndividualValues = 1
+		}
 	}
 }
