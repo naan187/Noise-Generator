@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NoiseGenerator.Core;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace NoiseGenerator.TerrainGeneration
@@ -37,14 +38,10 @@ namespace NoiseGenerator.TerrainGeneration
     {
         public bool printTimers;
 
-        public HeightMapGenerator heightMapGenerator;
-        public TerrainGenerator terrainGenerator;
-        private NoiseSettings noiseSettings => heightMapGenerator.NoiseSettings;
-        public int mapSize
-        {
-            get => noiseSettings.Size;
-            private set => noiseSettings.Size = value;
-        }
+        [FormerlySerializedAs("heightMapGenerator")] public HeightMapGenerator HeightMapGenerator;
+        [FormerlySerializedAs("terrainGenerator")] public TerrainGenerator TerrainGenerator;
+        private NoiseSettings noiseSettings => HeightMapGenerator.NoiseSettings;
+        public int mapSize => noiseSettings.Size;
 
         [Header("Erosion Settings")]
         public ComputeShader ErosionComputeShader;
@@ -77,12 +74,13 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void GenerateHeightMap() 
         {
-            _BorderSize = ErosionBrushRadius * 2;
-            _Map = heightMapGenerator.GenerateHeightMap(mapSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize);
         }
         
         public float[] Erode(float[] heightmap = null)
         {
+            _BorderSize = ErosionBrushRadius * 2;
+
             switch (heightmap)
             {
                 case null:
@@ -181,6 +179,8 @@ namespace NoiseGenerator.TerrainGeneration
             if (!_Erode)
                 return;
             
+            _BorderSize = ErosionBrushRadius * 2;
+
             _Map = heightmap;
             
             int numThreads = NumErosionIterations / 1024;
@@ -263,8 +263,8 @@ namespace NoiseGenerator.TerrainGeneration
             ConstructMesh();
         }
 
-        public void ConstructMesh() => terrainGenerator.GenerateMesh(_Map);
+        public void ConstructMesh() => TerrainGenerator.GenerateMesh(_Map);
 
-        private void OnValidate() => heightMapGenerator.postGenerate.Register(ErodeInternal, 4998);
+        private void OnValidate() => HeightMapGenerator.postGenerate.Register(ErodeInternal, 4998);
     }
 }

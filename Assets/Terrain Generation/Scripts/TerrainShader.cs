@@ -1,10 +1,12 @@
 using System;
 using NoiseGenerator.Core;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
+    [InitializeOnLoad]
     [RequireComponent(typeof(HeightMapGenerator))]
     public class TerrainShader : MonoBehaviour
     {

@@ -1,15 +1,16 @@
 ﻿using System;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 namespace NoiseGenerator.Core
 {
     public class HeightMapGenerator : MonoBehaviour
     {
-        [SerializeField]
-        private NoisemapPreset _Preset;
-        [SerializeField]
-        private bool _RandomizeSeed;
+        [FormerlySerializedAs("_Preset")] public HeightmapPreset Preset;
+        public bool RandomizeSeed;
         
         public NoiseSettings NoiseSettings;
         public bool AutoGenerate;
@@ -20,10 +21,11 @@ namespace NoiseGenerator.Core
 
         public PostGenerateEvent postGenerate { get; } = new();
 
+
         private float[] GenerateHeightMapCPU()
         {
             float[] heightMap = new float[NoiseSettings.Size * NoiseSettings.Size];
-            MinMax minMax = new MinMax{Max = 1000f * 5f, Min = 0f};
+            MinMax minMax = new MinMax{Max = float.MinValue, Min = float.MaxValue};
 
             NoiseSettings.UpdateValues();
             
@@ -44,34 +46,27 @@ namespace NoiseGenerator.Core
                 int x = i % NoiseSettings.Size;
                 int y = i / NoiseSettings.Size;
                 
-                float amplitude = 1;
-                float freq = 1;
+                float weight = 1;
+                float scale = NoiseSettings.Scale / 20f;
                 float noiseValue = 0;
 
-                foreach (Octave octave in NoiseSettings.Octaves)
+                for (int o = 0; o < NoiseSettings.OctaveAmount; o++)
                 {
-                    amplitude *= NoiseSettings.Persistence;
-                    freq *= NoiseSettings.Lacunarity;
+                    Vector2 samplePoint = 
+                        new Vector2(x - halfSize, y - halfSize) / NoiseSettings.Size * scale + globalOffset;
 
-                    octave.Amplitude = amplitude;
-                    octave.Frequency = freq;
+                    float value = Noise.Evaluate(samplePoint);
 
-                    Vector2 sample = (new Vector2(x - halfSize, y - halfSize) + globalOffset) / NoiseSettings.Scale * freq;
-
-                    float value = NoiseSettings.WarpNoise && NoiseSettings.BlendValue != 0
-                        ? Mathf.Lerp(
-                            Noise.Evaluate(sample),
-                            Noise.Warp(sample, NoiseSettings.f),
-                            NoiseSettings.BlendValue) * 2 - 1
-                        : Noise.Evaluate(sample) * 2 - 1;
-
-                    noiseValue += value * amplitude;
+                    noiseValue += value * weight;
+                    
+                    weight *= NoiseSettings.Persistence;
+                    scale *= NoiseSettings.Lacunarity;
                 }
 
                 minMax.Update(noiseValue);
 
                 noiseValue = Mathf.InverseLerp(minMax.Min, minMax.Max, noiseValue);
-
+                
                 noiseValue = NoiseSettings.HeightCurve.Evaluate(noiseValue);
 
                 heightMap[i] = noiseValue;
@@ -103,8 +98,8 @@ namespace NoiseGenerator.Core
             var prng = new System.Random(NoiseSettings.Seed);
 
             var globalOffset = new Vector2 (
-                prng.Next(-10000, 10000) + (NoiseSettings.Offset.x + transform.position.x),
-                prng.Next(-10000, 10000) - (NoiseSettings.Offset.y + transform.position.z)
+                prng.Next(-10000, 10000) + (NoiseSettings.Offset.y + transform.position.x),
+                prng.Next(-10000, 10000) - (NoiseSettings.Offset.x + transform.position.z)
             );
             
             HeightMapComputeShader.SetVector("globalOffset", globalOffset);
@@ -130,17 +125,17 @@ namespace NoiseGenerator.Core
         ///     Generates a heightmap without invoking Listener Methods
         /// </summary>
         /// <param name="size">the side-length of the generated heightmap</param>
-        public float[] GenerateHeightMap(int size = 0)
+        public float[] GenerateHeightMap(bool useComputeShader, int size = 0)
         {
-            if (_RandomizeSeed)
+            if (RandomizeSeed)
                 NoiseSettings.Seed = UnityEngine.Random.Range(-100000, 100000);
-            
+             
             int prevSize = NoiseSettings.Size;
             
             if (size is not 0)
                 NoiseSettings.Size = size;
 
-            var heightmap = UseComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
+            var heightmap = useComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
 
             NoiseSettings.Size = prevSize;
  
@@ -151,27 +146,27 @@ namespace NoiseGenerator.Core
         ///     Generates a heightmap and invokes Listener Methods
         /// </summary>
         /// <param name="size">the side-length of the generated heightmap</param>
-        public float[] Generate(int size = 0)
+        public float[] Generate(bool useComputeShader, int size = 0)
         {
-            if (_RandomizeSeed)
+            if (RandomizeSeed)
                 NoiseSettings.Seed = UnityEngine.Random.Range(-100000, 100000);
             
             if (size is not 0)
                 NoiseSettings.Size = size;
 
-            var heightMap = UseComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
+            var heightMap = useComputeShader ? GenerateHeightMapGPU() : GenerateHeightMapCPU();
             
             postGenerate?.Invoke(heightMap);
 
             return heightMap;
         }
 
-        public void Save() => _Preset.NoiseSettings = NoiseSettings;
+        public void Save() => Preset.NoiseSettings = NoiseSettings;
 
         public void Undo()
         {
-            NoiseSettings = _Preset.NoiseSettings;
-            Generate();
+            NoiseSettings = Preset.NoiseSettings;
+            Generate(UseComputeShader);
         }
     }
 }

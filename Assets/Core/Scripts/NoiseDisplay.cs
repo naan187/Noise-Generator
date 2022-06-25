@@ -57,7 +57,7 @@ namespace NoiseGenerator.Core
             
             _HeightMapGenerator.postGenerate.Register(UpdateTex, _Priority);
             
-            if (_HeightMapGenerator.AutoGenerate) _HeightMapGenerator.Generate();
+            if (_HeightMapGenerator.AutoGenerate) _HeightMapGenerator.Generate(_HeightMapGenerator.UseComputeShader);
         }
     }
 }

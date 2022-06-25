@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7729f77912ca4a8a9d493bd2e6480d8c, type: 3}
-  m_Name: Terrain Preset
+  m_Name: Example Terrain
   m_EditorClassIdentifier: 
   NoiseSettings:
     Seed: 0

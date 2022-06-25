@@ -1,10 +1,12 @@
 ﻿using NoiseGenerator.Core;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
+    [InitializeOnLoad]
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class TerrainGenerator : MonoBehaviour
     {
@@ -29,7 +31,9 @@ namespace NoiseGenerator.TerrainGeneration
         
         public void GenerateMesh(float[] heightMap = null)
         {
-            heightMap ??= _Erode ? _Erosion.Erode(heightMap) : _HeightMapGenerator.GenerateHeightMap();
+            heightMap ??= _Erode ? _Erosion.Erode(heightMap) 
+                                 : _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
+            
             _HeightMap = heightMap;
             
             _MeshData = new TerrainMeshData(_HeightMapGenerator.NoiseSettings.Size, _HeightMapGenerator.NoiseSettings.Size);
@@ -81,6 +85,7 @@ namespace NoiseGenerator.TerrainGeneration
             // _MeshData.CalculateNormals();
             MeshFilter.sharedMesh = _MeshData.Get();
             MeshFilter.sharedMesh.RecalculateNormals();
+            MeshCollider.sharedMesh = MeshFilter.sharedMesh;
 
             _Shader.UpdateShader();
         }
