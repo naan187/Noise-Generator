@@ -16,8 +16,13 @@ namespace NoiseGenerator.Editor
 
             EditorGUI.BeginChangeCheck();
 
+            
+            EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Preset"));
+            
+            if (EditorGUI.EndChangeCheck())
+                t.Undo();
 
             t.UseComputeShader = EditorGUILayout.Toggle("Use Compute Shader", t.UseComputeShader);
 
@@ -33,8 +38,6 @@ namespace NoiseGenerator.Editor
                 GUI.contentColor = Color.white * 2f;
                 GUI.backgroundColor = new Color(1.4f, 1.4f, 1.4f);
 
-                var settings = t.NoiseSettings;
-                
                 EditorGUI.indentLevel += 1;
                 EditorGUILayout.BeginHorizontal();
 
@@ -46,8 +49,8 @@ namespace NoiseGenerator.Editor
                         GUILayout.Width(100)
                     );
                 
-                settings.Seed =
-                    EditorGUILayout.IntField(settings.Seed, GUILayout.Width(75), GUILayout.ExpandWidth(true));
+                t.NoiseSettings.Seed =
+                    EditorGUILayout.IntField(t.NoiseSettings.Seed, GUILayout.Width(75), GUILayout.ExpandWidth(true));
                 
                 EditorGUILayout.EndHorizontal();
 
@@ -55,32 +58,33 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Map Size", GUILayout.Width(85));
-                settings.Size = EditorGUILayout.IntSlider(settings.Size, 16, 256);
+                t.NoiseSettings.Size = EditorGUILayout.IntSlider(t.NoiseSettings.Size, 16, 256);
                 
                 EditorGUILayout.EndHorizontal();
 
                 
-                settings.Offset = EditorGUILayout.Vector2Field("Offset", settings.Offset, GUILayout.ExpandHeight(false));
+                t.NoiseSettings.Offset = EditorGUILayout.Vector2Field("Offset", t.NoiseSettings.Offset, GUILayout.ExpandHeight(false));
                 
                 EditorGUILayout.Separator();
 
-                settings.Scale = EditorGUILayout.FloatField("Noise Scale", settings.Scale);
+                t.NoiseSettings.Scale = EditorGUILayout.FloatField("Noise Scale", t.NoiseSettings.Scale);
+                if (t.NoiseSettings.Scale <= .75f)
+                    t.NoiseSettings.Scale = .75f;
 
-                
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Octave Amount");
-                settings.OctaveAmount = EditorGUILayout.IntSlider(settings.OctaveAmount, 1, 8);
+                t.NoiseSettings.OctaveAmount = EditorGUILayout.IntSlider(t.NoiseSettings.OctaveAmount, 1, 8);
                 
                 EditorGUILayout.EndHorizontal();
                 
                 EditorGUILayout.Separator();
 
-                settings.Persistence = EditorGUILayout.Slider("Persistence", settings.Persistence, 0f, 1f);
+                t.NoiseSettings.Persistence = EditorGUILayout.Slider("Persistence", t.NoiseSettings.Persistence, 0f, 1f);
                 
-                settings.Lacunarity = EditorGUILayout.FloatField("Lacunarity", settings.Lacunarity);
+                t.NoiseSettings.Lacunarity = EditorGUILayout.FloatField("Lacunarity", t.NoiseSettings.Lacunarity);
 
-                settings.HeightCurve = EditorGUILayout.CurveField("HeightCurve", settings.HeightCurve);
+                t.NoiseSettings.HeightCurve = EditorGUILayout.CurveField("HeightCurve", t.NoiseSettings.HeightCurve);
 
                 EditorGUILayout.Separator();
 

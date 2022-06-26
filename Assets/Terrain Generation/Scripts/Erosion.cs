@@ -38,8 +38,8 @@ namespace NoiseGenerator.TerrainGeneration
     {
         public bool printTimers;
 
-        [FormerlySerializedAs("heightMapGenerator")] public HeightMapGenerator HeightMapGenerator;
-        [FormerlySerializedAs("terrainGenerator")] public TerrainGenerator TerrainGenerator;
+        public HeightMapGenerator HeightMapGenerator;
+        public TerrainGenerator TerrainGenerator;
         private NoiseSettings noiseSettings => HeightMapGenerator.NoiseSettings;
         public int mapSize => noiseSettings.Size;
 
@@ -74,7 +74,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void GenerateHeightMap() 
         {
-            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize + _BorderSize);
         }
         
         public float[] Erode(float[] heightmap = null)
