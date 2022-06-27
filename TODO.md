@@ -10,10 +10,8 @@ ___
   * [x] Fix Offset weirdness
 
 * ### New Features
-  * [ ] Textures for Terrain Shader
   * [x] Terrain Shader Workflow Modes
-  * [ ] Water Shader for Terrain
   * [ ] => Custom Inspectors
     * [x] Heightmap Generator
-    * [ ] => Terrain Shader
-    * [ ] Terrain Generator
+    * [x] Terrain Shader
+    * [ ] => Terrain Generator

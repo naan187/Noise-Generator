@@ -24,7 +24,7 @@ namespace NoiseGenerator.TerrainGeneration
 		[System.Serializable]
 		public class IndividualValues
 		{
-			public Color GrassColor = new Color(39, 114, 33);
+			public Color GrassColor = new (39, 114, 33);
 			public Color SnowColor = Color.white;
 			[Range(0f, 1f)]
 			public float MaxGrassHeight;
@@ -34,7 +34,7 @@ namespace NoiseGenerator.TerrainGeneration
 			public float BlendDst;
 		}
 		
-		public enum WorkflowMode
+		public enum WorkflowModes
 		{
 			GradientBased = 0,
 			IndividualValues = 1

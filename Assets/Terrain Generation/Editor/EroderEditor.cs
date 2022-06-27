@@ -43,7 +43,6 @@ namespace NoiseGenerator.TerrainGeneration
 
             if (GUILayout.Button("Generate Mesh"))
             {
-                _Erosion.GenerateHeightMap();
                 _Erosion.ConstructMesh();
             }
 
@@ -82,7 +81,7 @@ namespace NoiseGenerator.TerrainGeneration
         void OnEnable()
         {
             _Erosion = (Erosion) target;
-            Tools.hidden = true;
+            //Tools.hidden = true;
         }
 
         void OnDisable()

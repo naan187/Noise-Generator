@@ -8,30 +8,27 @@ namespace NoiseGenerator.Editor
     [CustomEditor(typeof(HeightMapGenerator))]
     public class HeightMapGeneratorEditor : UEditor.Editor
     {
-        private bool _SettingsFoldout = true;
-        
         public override void OnInspectorGUI()
         {
             var t = target as HeightMapGenerator;
 
             EditorGUI.BeginChangeCheck();
 
-            
             EditorGUI.BeginChangeCheck();
-
+            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Preset"));
+            serializedObject.ApplyModifiedProperties();
             
             if (EditorGUI.EndChangeCheck())
                 t.Undo();
 
-            t.UseComputeShader = EditorGUILayout.Toggle("Use Compute Shader", t.UseComputeShader);
 
             _SettingsFoldout = 
                 EditorGUILayout.BeginFoldoutHeaderGroup(_SettingsFoldout, "Noise Settings");
             
             if (_SettingsFoldout)
             {
-                EditorGUILayout.BeginVertical(EditorStyles.objectField);
+                EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
                 
                 EditorGUILayout.Separator();
                 
@@ -50,8 +47,12 @@ namespace NoiseGenerator.Editor
                     );
                 
                 t.NoiseSettings.Seed =
-                    EditorGUILayout.IntField(t.NoiseSettings.Seed, GUILayout.Width(75), GUILayout.ExpandWidth(true));
-                
+                    EditorGUILayout.IntField(
+                        t.NoiseSettings.Seed,
+                        GUILayout.Width(75),
+                        GUILayout.ExpandWidth(true)
+                    );
+                 
                 EditorGUILayout.EndHorizontal();
 
                 
@@ -63,7 +64,8 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.EndHorizontal();
 
                 
-                t.NoiseSettings.Offset = EditorGUILayout.Vector2Field("Offset", t.NoiseSettings.Offset, GUILayout.ExpandHeight(false));
+                t.NoiseSettings.Offset =
+                    EditorGUILayout.Vector2Field("Offset", t.NoiseSettings.Offset, GUILayout.ExpandHeight(false));
                 
                 EditorGUILayout.Separator();
 
@@ -74,31 +76,37 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Octave Amount");
-                t.NoiseSettings.OctaveAmount = EditorGUILayout.IntSlider(t.NoiseSettings.OctaveAmount, 1, 8);
+                t.NoiseSettings.OctaveAmount =
+                    EditorGUILayout.IntSlider(t.NoiseSettings.OctaveAmount, 1, 8);
                 
                 EditorGUILayout.EndHorizontal();
                 
                 EditorGUILayout.Separator();
 
-                t.NoiseSettings.Persistence = EditorGUILayout.Slider("Persistence", t.NoiseSettings.Persistence, 0f, 1f);
+                t.NoiseSettings.Persistence =
+                    EditorGUILayout.Slider("Persistence", t.NoiseSettings.Persistence, 0f, 1f);
                 
-                t.NoiseSettings.Lacunarity = EditorGUILayout.FloatField("Lacunarity", t.NoiseSettings.Lacunarity);
+                t.NoiseSettings.Lacunarity =
+                    EditorGUILayout.FloatField("Lacunarity", t.NoiseSettings.Lacunarity);
 
-                t.NoiseSettings.HeightCurve = EditorGUILayout.CurveField("HeightCurve", t.NoiseSettings.HeightCurve);
+                t.NoiseSettings.HeightCurve =
+                    EditorGUILayout.CurveField("HeightCurve", t.NoiseSettings.HeightCurve);
 
                 EditorGUILayout.Separator();
 
                 GUI.backgroundColor = Color.gray * 2f;
                 GUI.backgroundColor = Color.gray * 2f;
-
+ 
                 EditorGUILayout.EndVertical();
 
                 EditorGUI.indentLevel -= 1;
             }
             
             EditorGUILayout.EndFoldoutHeaderGroup();
-
             
+ 
+            t.UseComputeShader = EditorGUILayout.Toggle("Use Compute Shader", t.UseComputeShader)!;
+
             if (EditorGUI.EndChangeCheck())
             {
                 if (t.AutoGenerate)
@@ -106,9 +114,9 @@ namespace NoiseGenerator.Editor
                 if (t.AutoSave)
                     t.Save();
             }
-
-            EditorGUILayout.BeginHorizontal();
             
+            EditorGUILayout.BeginHorizontal();
+
             if (GUILayout.Button("Generate", GUILayout.MaxWidth(225)))
                 t.Generate(t.UseComputeShader);
             
@@ -136,7 +144,9 @@ namespace NoiseGenerator.Editor
             EditorGUILayout.EndHorizontal();
             
             if (GUILayout.Button("Undo Changes", GUILayout.MaxWidth(225)))
-                t.Undo(); 
+                t.Undo();
         }
+
+        private bool _SettingsFoldout = true;
     }
 }

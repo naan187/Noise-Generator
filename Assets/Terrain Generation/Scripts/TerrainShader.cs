@@ -6,17 +6,17 @@ using UnityEngine.Serialization;
 
 namespace NoiseGenerator.TerrainGeneration
 {
-    [InitializeOnLoad]
     [RequireComponent(typeof(HeightMapGenerator))]
     public class TerrainShader : MonoBehaviour
     {
-        [SerializeField]
-        private TerrainShaderSettings.WorkflowMode _WorkflowMode;
+        [FormerlySerializedAs("_WorkflowMode")]
+        public TerrainShaderSettings.WorkflowModes WorkflowMode;
 
-        [SerializeField] 
-        private TerrainPreset _Preset;
-        [FormerlySerializedAs("ShaderSettings")] [SerializeField]
-        private TerrainShaderSettings _ShaderSettings;
+        public TerrainPreset Preset;
+        
+        [FormerlySerializedAs("_ShaderSettings")]
+        public TerrainShaderSettings Settings;
+        
         [SerializeField] 
         private Material _Material;
         [SerializeField] 
@@ -39,21 +39,21 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void UpdateShader()
         {
-            switch (_WorkflowMode)
+            switch (WorkflowMode)
             {
-                case TerrainShaderSettings.WorkflowMode.GradientBased:
+                case TerrainShaderSettings.WorkflowModes.GradientBased:
                     UpdateShader_GradientBased();
                     break;
-                case TerrainShaderSettings.WorkflowMode.IndividualValues:
+                case TerrainShaderSettings.WorkflowModes.IndividualValues:
                     UpdateShader_IndividualValues();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             
-            _Material.SetColor(_steepTerrainColor, _ShaderSettings.SteepTerrainColor);
-            _Material.SetFloat(_steepnessThreshold, _ShaderSettings.SteepnessThreshold);
-            _Material.SetFloat(_sharpness, _ShaderSettings.Sharpness);
+            _Material.SetColor(_steepTerrainColor, Settings.SteepTerrainColor);
+            _Material.SetFloat(_steepnessThreshold, Settings.SteepnessThreshold);
+            _Material.SetFloat(_sharpness, Settings.Sharpness);
             _Material.SetFloat(_heightMultiplier, _TerrainGenerator.HeightMultiplier);
         }
 
@@ -65,7 +65,7 @@ namespace NoiseGenerator.TerrainGeneration
 
             Color[] texColors = new Color[50];
             for (int i = 0; i < texColors.Length; i++)
-                texColors[i] = _ShaderSettings.GradientBasedSettings.ColorGradient.Evaluate(i / 50f);
+                texColors[i] = Settings.GradientBasedSettings.ColorGradient.Evaluate(i / 50f);
 
             gradientTex.wrapMode = TextureWrapMode.Repeat;
             gradientTex.SetPixels(texColors);
@@ -78,16 +78,16 @@ namespace NoiseGenerator.TerrainGeneration
         {
             _Material.shader = Shader.Find("Shader Graphs/Terrain_IndividualValues");
 
-            _Material.SetColor("_GrassColor", _ShaderSettings.IndividualValuesSettings.GrassColor);
-            _Material.SetColor("_SnowColor", _ShaderSettings.IndividualValuesSettings.SnowColor);
-            _Material.SetFloat("_MinSnowHeight", _ShaderSettings.IndividualValuesSettings.MinSnowHeight);
-            _Material.SetFloat("_MaxGrassHeight", _ShaderSettings.IndividualValuesSettings.MaxGrassHeight);
-            _Material.SetFloat("_BlendDst", _ShaderSettings.IndividualValuesSettings.BlendDst);
+            _Material.SetColor("_GrassColor", Settings.IndividualValuesSettings.GrassColor);
+            _Material.SetColor("_SnowColor", Settings.IndividualValuesSettings.SnowColor);
+            _Material.SetFloat("_MinSnowHeight", Settings.IndividualValuesSettings.MinSnowHeight);
+            _Material.SetFloat("_MaxGrassHeight", Settings.IndividualValuesSettings.MaxGrassHeight);
+            _Material.SetFloat("_BlendDst", Settings.IndividualValuesSettings.BlendDst);
         }
 
-        public void Save() => _Preset.TerrainShaderSettings = _ShaderSettings;
+        public void Save() => Preset.TerrainShaderSettings = Settings;
         public void Undo() {
-            _ShaderSettings = _Preset.TerrainShaderSettings;
+            Settings = Preset.TerrainShaderSettings;
             UpdateShader();
         }
 

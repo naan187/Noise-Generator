@@ -1,9 +1,5 @@
-﻿using System;
-using JetBrains.Annotations;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 namespace NoiseGenerator.Core
 {
@@ -47,7 +43,7 @@ namespace NoiseGenerator.Core
                 int y = i / NoiseSettings.Size;
                 
                 float weight = 1;
-                float scale = NoiseSettings.Scale / 20f;
+                float scale = NoiseSettings.Scale / 30f;
                 float noiseValue = 0;
 
                 for (int o = 0; o < NoiseSettings.OctaveAmount; o++)
@@ -90,7 +86,7 @@ namespace NoiseGenerator.Core
             
             HeightMapComputeShader.SetInt("seed", NoiseSettings.Seed);
             HeightMapComputeShader.SetInt("mapSize", NoiseSettings.Size);
-            HeightMapComputeShader.SetFloat("noiseScale", NoiseSettings.Scale / 50);
+            HeightMapComputeShader.SetFloat("noiseScale", NoiseSettings.Scale / 50f);
             HeightMapComputeShader.SetInt("numOctaves", NoiseSettings.OctaveAmount);
             HeightMapComputeShader.SetFloat("persistence", NoiseSettings.Persistence);
             HeightMapComputeShader.SetFloat("lacunarity", NoiseSettings.Lacunarity);
@@ -98,8 +94,8 @@ namespace NoiseGenerator.Core
             var prng = new System.Random(NoiseSettings.Seed);
 
             var globalOffset = new Vector2 (
-                prng.Next(-10000, 10000) + (NoiseSettings.Offset.y + transform.position.x),
-                prng.Next(-10000, 10000) - (NoiseSettings.Offset.x + transform.position.z)
+                prng.Next(-10000, 10000) - (NoiseSettings.Offset.y + transform.position.z) / NoiseSettings.Size,
+                prng.Next(-10000, 10000) + (NoiseSettings.Offset.x + transform.position.x) / NoiseSettings.Size
             );
             
             HeightMapComputeShader.SetVector("globalOffset", globalOffset);

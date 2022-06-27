@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NoiseGenerator.Core;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace NoiseGenerator.TerrainGeneration
@@ -74,7 +73,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void GenerateHeightMap() 
         {
-            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize + _BorderSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize);
         }
         
         public float[] Erode(float[] heightmap = null)
