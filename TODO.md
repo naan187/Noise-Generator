@@ -11,7 +11,9 @@ ___
 
 * ### New Features
   * [x] Terrain Shader Workflow Modes
+  * [x] Merge Terrain Shader and Generator into one script
   * [ ] => Custom Inspectors
     * [x] Heightmap Generator
     * [x] Terrain Shader
-    * [ ] => Terrain Generator
+    * [x] Terrain Generator
+    * [ ] => Noise Display

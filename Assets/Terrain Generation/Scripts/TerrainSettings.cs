@@ -3,8 +3,9 @@
 namespace NoiseGenerator.TerrainGeneration
 {
 	[System.Serializable]
-	public class TerrainShaderSettings
+	public class TerrainSettings
 	{
+		public float HeightMultiplier;
 		public Color SteepTerrainColor;
 		[Range(0f, 1f)]
 		public float SteepnessThreshold;

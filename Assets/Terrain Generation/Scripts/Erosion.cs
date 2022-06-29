@@ -60,8 +60,6 @@ namespace NoiseGenerator.TerrainGeneration
         [Range(0, 1)]
         public float Inertia = 0.3f;
 
-        [SerializeField]
-        private bool _Erode;
 
         // Internal
         private float[] _Map;
@@ -89,9 +87,6 @@ namespace NoiseGenerator.TerrainGeneration
                     _Map = heightmap;
                     break;
             }
-            
-            if (!_Erode)
-                return _Map;
 
             int numThreads = NumErosionIterations / 1024;
 
@@ -175,9 +170,6 @@ namespace NoiseGenerator.TerrainGeneration
         
         private void ErodeInternal(float[] heightmap)
         {
-            if (!_Erode)
-                return;
-            
             _BorderSize = ErosionBrushRadius * 2;
 
             _Map = heightmap;

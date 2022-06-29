@@ -7,6 +7,6 @@ namespace NoiseGenerator.TerrainGeneration
 	[CreateAssetMenu(fileName = "Terrain Preset", menuName = "Custom/Terrain Preset", order = 0)]
 	public class TerrainPreset : HeightmapPreset
 	{
-		public TerrainShaderSettings TerrainShaderSettings;
+		[FormerlySerializedAs("TerrainShaderSettings")] public TerrainSettings TerrainSettings;
 	}
 }

@@ -53,29 +53,30 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  TerrainShaderSettings:
+  TerrainSettings:
+    HeightMultiplier: 65
     SteepTerrainColor: {r: 0.3018868, g: 0.17568527, b: 0.10081878, a: 0}
-    SteepnessThreshold: 0.3
-    Sharpness: 0
+    SteepnessThreshold: 0.125
+    Sharpness: 0.1
     GradientBasedSettings:
       ColorGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
-        key4: {r: 0, g: 0, b: 0, a: 0}
-        key5: {r: 0, g: 0, b: 0, a: 0}
-        key6: {r: 0, g: 0, b: 0, a: 0}
-        key7: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 0, g: 0.11938381, b: 1, a: 1}
+        key1: {r: 0.8544925, g: 0.9056604, b: 0.44770378, a: 1}
+        key2: {r: 0.09363808, g: 0.31132078, b: 0.089284435, a: 0}
+        key3: {r: 0.16100375, g: 0.4637972, b: 0.13532479, a: 0}
+        key4: {r: 0.3679245, g: 0.24394195, b: 0.16834283, a: 0}
+        key5: {r: 0.3301887, g: 0.1598378, b: 0.05762727, a: 0}
+        key6: {r: 1, g: 1, b: 1, a: 0}
+        key7: {r: 1, g: 1, b: 1, a: 0}
         ctime0: 0
-        ctime1: 65535
-        ctime2: 0
-        ctime3: 0
-        ctime4: 0
-        ctime5: 0
-        ctime6: 0
-        ctime7: 0
+        ctime1: 508
+        ctime2: 3151
+        ctime3: 11383
+        ctime4: 28144
+        ctime5: 38305
+        ctime6: 44401
+        ctime7: 65535
         atime0: 0
         atime1: 65535
         atime2: 0
@@ -85,11 +86,11 @@ MonoBehaviour:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 8
         m_NumAlphaKeys: 2
     IndividualValuesSettings:
-      GrassColor: {r: 39, g: 114, b: 33, a: 1}
+      GrassColor: {r: 0.4874835, g: 0.6132076, b: 0.26900142, a: 1}
       SnowColor: {r: 1, g: 1, b: 1, a: 1}
-      MaxGrassHeight: 0
-      MinSnowHeight: 0
-      BlendDst: 0
+      MaxGrassHeight: 0.55
+      MinSnowHeight: 0.6
+      BlendDst: 1
