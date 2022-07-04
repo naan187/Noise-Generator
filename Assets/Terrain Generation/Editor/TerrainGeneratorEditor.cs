@@ -66,7 +66,7 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 				EditorGUI.indentLevel += 1;
 
 				
-				var settings = t.Settings;
+				ref var settings = ref t.Settings;
 
 				settings.HeightMultiplier =
 					EditorGUILayout.FloatField("Height Multiplier", settings.HeightMultiplier);

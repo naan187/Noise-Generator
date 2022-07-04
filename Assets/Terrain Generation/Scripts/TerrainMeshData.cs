@@ -10,11 +10,11 @@ namespace NoiseGenerator.TerrainGeneration
 
         private int _TriangleIndex;
 
-        public TerrainMeshData(int width, int height)
+        public TerrainMeshData(int size)
         {
-            Vertices = new Vector3[width * height];
-            Triangles = new int[(width - 1) * (height - 1) * 6];
-            UVs = new Vector2[width * height];
+            Vertices = new Vector3[size * size];
+            Triangles = new int[(size - 1) * (size - 1) * 6];
+            UVs = new Vector2[size * size];
         }
         
         public void AddTriangle(int a, int b, int c)

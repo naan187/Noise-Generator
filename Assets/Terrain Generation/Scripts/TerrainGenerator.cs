@@ -31,7 +31,6 @@ namespace NoiseGenerator.TerrainGeneration
         
 
         private TerrainMeshData _MeshData;
-
         private float[] _HeightMap;
 
 
@@ -50,6 +49,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         #endregion
 
+
         private void Start() => Generate();
 
         public void Generate(float[] heightmap = null)
@@ -67,13 +67,9 @@ namespace NoiseGenerator.TerrainGeneration
 
             _HeightMap = heightMap;
 
-            _MeshData = 
-                new TerrainMeshData(
-                    _HeightMapGenerator.NoiseSettings.Size,
-                    _HeightMapGenerator.NoiseSettings.Size
-                );
-
             int size = _HeightMapGenerator.NoiseSettings.Size;
+            
+            _MeshData = new TerrainMeshData(size);
 
             float halfSize  = size * .5f;
             _MeshFilter.sharedMesh.indexFormat = IndexFormat.UInt32;
@@ -104,7 +100,9 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void UpdateMesh()
         {
-            int size = _HeightMapGenerator.NoiseSettings.Size;
+            ref var size = ref _HeightMapGenerator.NoiseSettings.Size;
+
+            _MeshData ??= new(size);
 
             for (int i = 0; i < size * size; i++) 
                 _MeshData.Vertices[i].y = _HeightMap[i] * Settings.HeightMultiplier;
