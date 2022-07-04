@@ -68,6 +68,9 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 				
 				var settings = t.Settings;
 
+				settings.HeightMultiplier =
+					EditorGUILayout.FloatField("Height Multiplier", settings.HeightMultiplier);
+
 				settings.SteepTerrainColor =
 					EditorGUILayout.ColorField("Steep Terrain Color", settings.SteepTerrainColor);
 
@@ -89,7 +92,7 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 					ivSettings.GrassColor =
 						EditorGUILayout.ColorField("Grass Color", ivSettings.GrassColor);
 					ivSettings.SnowColor =
-						EditorGUILayout.ColorField("Grass Color", ivSettings.SnowColor);
+						EditorGUILayout.ColorField("Snow Color", ivSettings.SnowColor);
 					ivSettings.MaxGrassHeight =
 						EditorGUILayout.Slider("Max Grass Height", ivSettings.MaxGrassHeight, 0f, 1f);
 					ivSettings.MinSnowHeight =
@@ -101,7 +104,6 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 				
 				EditorGUILayout.Separator();
 
-				GUI.backgroundColor = Color.gray * 2f;
 				GUI.backgroundColor = Color.gray * 2f;
  
 				EditorGUILayout.EndVertical();
@@ -116,7 +118,10 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 			if (EditorGUI.EndChangeCheck())
 			{
 				if (t.AutoGenerate)
+				{
 					t.UpdateShader();
+					t.UpdateMesh();
+				}
 				if (t.AutoSave)
 					t.Save();
 			}

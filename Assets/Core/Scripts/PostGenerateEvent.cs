@@ -9,36 +9,52 @@ namespace NoiseGenerator.Core
 {
     public class PostGenerateEvent
     {
-        private readonly Dictionary<int, UnityAction<float[]>> _PostGenerateWithHeightmap = new ();
-        private readonly Dictionary<int, UnityAction> _PostGenerate = new ();
+        private readonly Dictionary<int, Action> _Voids = new ();
+        private readonly Dictionary<int, Action<float[]>> _VoidsTakingInHeightmaps = new ();
+        private readonly Dictionary<int, Func<float[], float[]>> _PostProcessing = new ();
 
-        //integer is the priority, byte is the action type(0 if takes in nothing, 1 if taking in heightmap)
-        private readonly Dictionary<int, byte> _Priorities = new ();
-        
+        private readonly Dictionary<int, ActionType> _Priorities = new ();
+
 
         public void Register(Action action, int priority)
         {
-            if (_PostGenerate.ContainsKey(-priority) || _PostGenerateWithHeightmap.ContainsKey(-priority))
+            if (ContainsKey(-priority))
                 return;
 
-            _PostGenerate.Add(-priority, new UnityAction(action));
-            _Priorities.Add(-priority, 0);
+            _Voids.Add(-priority, action);
+            _Priorities.Add(-priority, ActionType.Void);
         }
 
         public void Register(Action<float[]> action, int priority)
         {
-            if (_PostGenerateWithHeightmap.ContainsKey(-priority) || _PostGenerate.ContainsKey(-priority))
+            if (ContainsKey(-priority))
                 return;
 
-            _PostGenerateWithHeightmap.Add(-priority, new UnityAction<float[]>(action));
-            _Priorities.Add(-priority, 1);
+            _VoidsTakingInHeightmaps.Add(-priority, action);
+            _Priorities.Add(-priority, ActionType.VoidTakingInHeightmap);
         }
 
-        public void RemoveListener(Action<float[]> action)
+        public void Register(Func<float[], float[]> action, int priority)
+        {
+            if (ContainsKey(-priority))
+                return;
+
+            _PostProcessing.Add(-priority, action);
+            _Priorities.Add(-priority, ActionType.PostProcessing);
+        }
+
+        private bool ContainsKey(int key)
+        {
+            return _Voids.ContainsKey(key)
+                   || _VoidsTakingInHeightmaps.ContainsKey(key)
+                   || _PostProcessing.ContainsKey(key);
+        }
+
+        /*public void RemoveListener(Action<float[]> action)
         {
             var elementKey =
                 _PostGenerateWithHeightmap
-                    .FirstOrDefault(a => a.Value == new UnityAction<float[]>(action)).Key;
+                    .FirstOrDefault(a => a.Value == action).Key;
             
             _PostGenerateWithHeightmap.Remove(elementKey);
         }
@@ -46,10 +62,10 @@ namespace NoiseGenerator.Core
         public void RemoveListener(Action action)
         {
             var elementKey =
-                _PostGenerate.FirstOrDefault(a => a.Value == new UnityAction(action)).Key;
+                _PostGenerate.FirstOrDefault(a => a.Value == action).Key;
             
             _PostGenerate.Remove(elementKey);
-        }
+        }*/
 
         public void Invoke(float[] heightmap)
         {
@@ -61,14 +77,26 @@ namespace NoiseGenerator.Core
             {
                 switch (actionType)
                 {
-                    case 0:
-                        _PostGenerate[priority]?.Invoke();
+                    case ActionType.Void:
+                        _Voids[priority]?.Invoke();
                         break;
-                    case 1:
-                        _PostGenerateWithHeightmap[priority]?.Invoke(heightmap);
+                    case ActionType.VoidTakingInHeightmap:
+                        _VoidsTakingInHeightmaps[priority]?.Invoke(heightmap);
                         break;
+                    case ActionType.PostProcessing:
+                        heightmap = _PostProcessing[priority]?.Invoke(heightmap);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        private enum ActionType
+        {
+            Void = 0,
+            VoidTakingInHeightmap = 1,
+            PostProcessing = 3
         }
     }
 }

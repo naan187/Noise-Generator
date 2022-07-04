@@ -25,6 +25,7 @@
  * 
  */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -73,7 +74,7 @@ namespace NoiseGenerator.TerrainGeneration
         {
             _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize);
         }
-        
+
         public float[] Erode(float[] heightmap = null)
         {
             _BorderSize = ErosionBrushRadius * 2;
@@ -102,7 +103,7 @@ namespace NoiseGenerator.TerrainGeneration
                     float sqrDst = brushX * brushX + brushY * brushY;
                     if (!(sqrDst < ErosionBrushRadius * ErosionBrushRadius))
                         continue;
-                    
+
                     brushIndexOffsets.Add(brushY * mapSize + brushX);
                     float brushWeight = 1 - Mathf.Sqrt(sqrDst) / ErosionBrushRadius;
                     weightSum += brushWeight;
@@ -134,12 +135,12 @@ namespace NoiseGenerator.TerrainGeneration
             ComputeBuffer randomIndexBuffer = new ComputeBuffer(randomIndices.Length, sizeof(int));
             randomIndexBuffer.SetData(randomIndices);
             ErosionComputeShader.SetBuffer(0, "randomIndices", randomIndexBuffer);
-            
+
             // Heightmap buffer
             ComputeBuffer mapBuffer = new ComputeBuffer(_Map.Length, sizeof(float));
             mapBuffer.SetData(_Map);
             ErosionComputeShader.SetBuffer(0, "map", mapBuffer);
-            
+ 
             // Settings
             ErosionComputeShader.SetInt("borderSize", _BorderSize);
             ErosionComputeShader.SetInt("mapSize", mapSize);
@@ -164,98 +165,14 @@ namespace NoiseGenerator.TerrainGeneration
             randomIndexBuffer.Release();
             brushIndexBuffer.Release();
             brushWeightBuffer.Release();
+
+            ConstructMesh();
 
             return _Map;
-        }
-        
-        private void ErodeInternal(float[] heightmap)
-        {
-            _BorderSize = ErosionBrushRadius * 2;
-
-            _Map = heightmap;
-            
-            int numThreads = NumErosionIterations / 1024;
-
-            // Create brush
-            List<int> brushIndexOffsets = new List<int>();
-            List<float> brushWeights = new List<float>();
-
-            float weightSum = 0;
-            for (int brushY = -ErosionBrushRadius; brushY <= ErosionBrushRadius; brushY++)
-            {
-                for (int brushX = -ErosionBrushRadius; brushX <= ErosionBrushRadius; brushX++)
-                {
-                    float sqrDst = brushX * brushX + brushY * brushY;
-                    if (!(sqrDst < ErosionBrushRadius * ErosionBrushRadius))
-                        continue;
-                    
-                    brushIndexOffsets.Add(brushY * mapSize + brushX);
-                    float brushWeight = 1 - Mathf.Sqrt(sqrDst) / ErosionBrushRadius;
-                    weightSum += brushWeight;
-                    brushWeights.Add(brushWeight);
-                }
-            }
-
-            for (int i = 0; i < brushWeights.Count; i++)
-                brushWeights[i] /= weightSum;
-
-            // Send brush data to compute shader
-            ComputeBuffer brushIndexBuffer = new ComputeBuffer(brushIndexOffsets.Count, sizeof(int));
-            ComputeBuffer brushWeightBuffer = new ComputeBuffer(brushWeights.Count, sizeof(int));
-            brushIndexBuffer.SetData(brushIndexOffsets);
-            brushWeightBuffer.SetData(brushWeights);
-            ErosionComputeShader.SetBuffer(0, "brushIndices", brushIndexBuffer);
-            ErosionComputeShader.SetBuffer(0, "brushWeights", brushWeightBuffer);
-
-            // Generate random indices for droplet placement
-            int[] randomIndices = new int[NumErosionIterations];
-            for (int i = 0; i < NumErosionIterations; i++)
-            {
-                int randomX = Random.Range(ErosionBrushRadius, mapSize + ErosionBrushRadius);
-                int randomY = Random.Range(ErosionBrushRadius, mapSize + ErosionBrushRadius);
-                randomIndices[i] = randomY * mapSize + randomX;
-            }
-
-            // Send random indices to compute shader
-            ComputeBuffer randomIndexBuffer = new ComputeBuffer(randomIndices.Length, sizeof(int));
-            randomIndexBuffer.SetData(randomIndices);
-            ErosionComputeShader.SetBuffer(0, "randomIndices", randomIndexBuffer);
-            
-            // Heightmap buffer
-            ComputeBuffer mapBuffer = new ComputeBuffer(_Map.Length, sizeof(float));
-            mapBuffer.SetData(_Map);
-            ErosionComputeShader.SetBuffer(0, "map", mapBuffer);
-            
-            // Settings
-            ErosionComputeShader.SetInt("borderSize", _BorderSize);
-            ErosionComputeShader.SetInt("mapSize", mapSize);
-            ErosionComputeShader.SetInt("brushLength", brushIndexOffsets.Count);
-            ErosionComputeShader.SetInt("maxLifetime", MaxLifetime);
-            ErosionComputeShader.SetFloat("inertia", Inertia);
-            ErosionComputeShader.SetFloat("sedimentCapacityFactor", SedimentCapacityFactor);
-            ErosionComputeShader.SetFloat("minSedimentCapacity", MinSedimentCapacity);
-            ErosionComputeShader.SetFloat("depositSpeed", DepositSpeed);
-            ErosionComputeShader.SetFloat("erodeSpeed", ErodeSpeed);
-            ErosionComputeShader.SetFloat("evaporateSpeed", EvaporateSpeed);
-            ErosionComputeShader.SetFloat("gravity", Gravity);
-            ErosionComputeShader.SetFloat("startSpeed", StartSpeed);
-            ErosionComputeShader.SetFloat("startWater", StartWater);
-
-            // Run compute shader
-            ErosionComputeShader.Dispatch(0, numThreads, 1, 1);
-            mapBuffer.GetData(_Map);
-
-            // Release buffers
-            mapBuffer.Release();
-            randomIndexBuffer.Release();
-            brushIndexBuffer.Release();
-            brushWeightBuffer.Release();
-            
-            ConstructMesh();
         }
 
         public void ConstructMesh() => TerrainGenerator.GenerateMesh(_Map);
 
-        private void OnValidate() => HeightMapGenerator.postGenerate.Register(ErodeInternal, 4998);
+        private void OnValidate() => HeightMapGenerator.postGenerate.Register(Erode, 2147483647);
     }
 }

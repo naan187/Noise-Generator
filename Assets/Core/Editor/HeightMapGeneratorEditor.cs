@@ -95,7 +95,6 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.Separator();
 
                 GUI.backgroundColor = Color.gray * 2f;
-                GUI.backgroundColor = Color.gray * 2f;
  
                 EditorGUILayout.EndVertical();
 

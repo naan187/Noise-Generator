@@ -34,33 +34,45 @@ namespace NoiseGenerator.TerrainGeneration
 
         private float[] _HeightMap;
 
+
+        #region property IDs
+
         private static readonly int _gradientTexture = Shader.PropertyToID("_GradientTexture");
         private static readonly int _steepTerrainColor = Shader.PropertyToID("_SteepTerrainColor");
         private static readonly int _steepnessThreshold = Shader.PropertyToID("_SteepnessThreshold");
         private static readonly int _sharpness = Shader.PropertyToID("_Sharpness");
         private static readonly int _heightMultiplier = Shader.PropertyToID("_HeightMultiplier");
+        private static readonly int _grassColor = Shader.PropertyToID("_GrassColor");
+        private static readonly int _snowColor = Shader.PropertyToID("_SnowColor");
+        private static readonly int _minSnowHeight = Shader.PropertyToID("_MinSnowHeight");
+        private static readonly int _maxGrassHeight = Shader.PropertyToID("_MaxGrassHeight");
+        private static readonly int _blendDst = Shader.PropertyToID("_BlendDst");
+
+        #endregion
 
         private void Start() => Generate();
 
         public void Generate(float[] heightmap = null)
         {
-            GenerateMesh(heightmap);
+            if (_Erode)
+                _Erosion.Erode(heightmap);
+            else
+                GenerateMesh(heightmap);
             UpdateShader();
         }
-        
+
         public void GenerateMesh(float[] heightMap = null)
         {
-            heightMap ??= _Erode ? _Erosion.Erode(heightMap) 
-                                 : _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
-            
+            heightMap ??= _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
+
             _HeightMap = heightMap;
-            
+
             _MeshData = 
                 new TerrainMeshData(
                     _HeightMapGenerator.NoiseSettings.Size,
                     _HeightMapGenerator.NoiseSettings.Size
                 );
-            
+
             int size = _HeightMapGenerator.NoiseSettings.Size;
 
             float halfSize  = size * .5f;
@@ -92,12 +104,6 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void UpdateMesh()
         {
-            if (_HeightMap is null || _MeshData is null)
-            {
-                GenerateMesh();
-                return;
-            }
-            
             int size = _HeightMapGenerator.NoiseSettings.Size;
 
             for (int i = 0; i < size * size; i++) 
@@ -147,11 +153,11 @@ namespace NoiseGenerator.TerrainGeneration
         {
             _Material.shader = Shader.Find("Shader Graphs/Terrain_IndividualValues");
 
-            _Material.SetColor("_GrassColor", Settings.IndividualValuesSettings.GrassColor);
-            _Material.SetColor("_SnowColor", Settings.IndividualValuesSettings.SnowColor);
-            _Material.SetFloat("_MinSnowHeight", Settings.IndividualValuesSettings.MinSnowHeight);
-            _Material.SetFloat("_MaxGrassHeight", Settings.IndividualValuesSettings.MaxGrassHeight);
-            _Material.SetFloat("_BlendDst", Settings.IndividualValuesSettings.BlendDst);
+            _Material.SetColor(_grassColor, Settings.IndividualValuesSettings.GrassColor);
+            _Material.SetColor(_snowColor, Settings.IndividualValuesSettings.SnowColor);
+            _Material.SetFloat(_minSnowHeight, Settings.IndividualValuesSettings.MinSnowHeight);
+            _Material.SetFloat(_maxGrassHeight, Settings.IndividualValuesSettings.MaxGrassHeight);
+            _Material.SetFloat(_blendDst, Settings.IndividualValuesSettings.BlendDst);
         }
 
         public void Save() => Preset.TerrainSettings = Settings;
@@ -162,7 +168,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         private void OnEnable()
         {
-            _HeightMapGenerator.postGenerate.Register(Generate, 5000);
+            _HeightMapGenerator.postGenerate.Register(Generate, 2147483646);
         }
     }
 }

@@ -14,6 +14,9 @@ ___
   * [x] Merge Terrain Shader and Generator into one script
   * [ ] => Custom Inspectors
     * [x] Heightmap Generator
-    * [x] Terrain Shader
+    * [x] (deprecated) Terrain Shader
     * [x] Terrain Generator
     * [ ] => Noise Display
+
+* ### More
+  * [x] Expand PostGenerateEvent
