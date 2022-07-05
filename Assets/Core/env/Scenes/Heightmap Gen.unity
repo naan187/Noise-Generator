@@ -209,7 +209,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -234,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327907245}
   m_LocalRotation: {x: 0.70710665, y: -0, z: -0, w: 0.70710695}
-  m_LocalPosition: {x: 0, y: 8.677209, z: 0}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -251,10 +251,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1799874357}
   - component: {fileID: 1799874356}
-  - component: {fileID: 1799874353}
   - component: {fileID: 1799874358}
   - component: {fileID: 1799874355}
   - component: {fileID: 1799874354}
+  - component: {fileID: 1799874359}
   m_Layer: 0
   m_Name: Noise Display
   m_TagString: Untagged
@@ -262,51 +262,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1799874353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799874352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cea2ca359fb287546a2089a1455bdd07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _TextureRenderer: {fileID: 1799874354}
-  _FilterMode: 0
-  _SampleFromCustomGradient: 0
-  _InvertNoise: 0
-  _NoiseGradient:
-    serializedVersion: 2
-    key0: {r: 0, g: 0.11938381, b: 1, a: 1}
-    key1: {r: 0.8544925, g: 0.9056604, b: 0.44770378, a: 1}
-    key2: {r: 0.09363808, g: 0.31132078, b: 0.089284435, a: 0}
-    key3: {r: 0.16100375, g: 0.4637972, b: 0.13532479, a: 0}
-    key4: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 0}
-    key5: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
-    key6: {r: 1, g: 1, b: 1, a: 0}
-    key7: {r: 1, g: 1, b: 1, a: 0}
-    ctime0: 508
-    ctime1: 2743
-    ctime2: 4574
-    ctime3: 28661
-    ctime4: 39638
-    ctime5: 48770
-    ctime6: 53664
-    ctime7: 65535
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 8
-    m_NumAlphaKeys: 2
 --- !u!23 &1799874354
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -372,11 +327,10 @@ MonoBehaviour:
   Preset: {fileID: 11400000, guid: 6bd63722d745d2843afc86bd84735959, type: 2}
   RandomizeSeed: 0
   NoiseSettings:
-    Seed: 0
-    Size: 128
+    Seed: 69420
+    Size: 256
     Offset: {x: 0, y: 0}
-    Scale: 64.36
-    OctaveAmount: 4
+    Scale: 65
     Persistence: 0.5
     Lacunarity: 2
     HeightCurve:
@@ -403,13 +357,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WarpNoise: 1
-    BlendValue: 0.325
-    f: 0
   AutoGenerate: 1
   AutoSave: 0
-  UseComputeShader: 0
-  HeightMapComputeShader: {fileID: 0}
+  UseComputeShader: 1
+  HeightMapComputeShader: {fileID: 7200000, guid: 9d74b25d36636bc4a941250fbfefed2b, type: 3}
 --- !u!4 &1799874357
 Transform:
   m_ObjectHideFlags: 0
@@ -439,6 +390,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _HeightMapGenerator: {fileID: 1799874356}
   _Speed: 0.5
+--- !u!114 &1799874359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799874352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea2ca359fb287546a2089a1455bdd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _HeightMapGenerator: {fileID: 1799874356}
+  _TextureRenderer: {fileID: 1799874354}
+  _FilterMode: 1
+  _SampleFromCustomGradient: 0
+  _InvertNoise: 1
+  _NoiseGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.11938381, b: 1, a: 1}
+    key1: {r: 0.8544925, g: 0.9056604, b: 0.44770378, a: 1}
+    key2: {r: 0.09363808, g: 0.31132078, b: 0.089284435, a: 0}
+    key3: {r: 0.16100375, g: 0.4637972, b: 0.13532479, a: 0}
+    key4: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 0}
+    key5: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
+    key6: {r: 1, g: 1, b: 1, a: 0}
+    key7: {r: 1, g: 1, b: 1, a: 0}
+    ctime0: 5161
+    ctime1: 7429
+    ctime2: 10558
+    ctime3: 28661
+    ctime4: 39638
+    ctime5: 48770
+    ctime6: 53664
+    ctime7: 65535
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 8
+    m_NumAlphaKeys: 2
 --- !u!1 &1989259560
 GameObject:
   m_ObjectHideFlags: 0

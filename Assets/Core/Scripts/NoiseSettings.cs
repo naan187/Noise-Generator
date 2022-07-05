@@ -16,8 +16,11 @@ namespace NoiseGenerator.Core
         [Min(.75f)]
         public float Scale = 50;
 
-        [Range(1, 8)]
-        public int OctaveAmount = 4;
+        public int OctaveAmount
+        {
+            get => Octaves.OctaveAmount;
+            set => Octaves.OctaveAmount = value;
+        }
 
         public OctaveList Octaves = new (4);
 
@@ -26,7 +29,5 @@ namespace NoiseGenerator.Core
         public float Lacunarity = 2;
 
         public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
-
-        public void UpdateValues() => Octaves.OctaveAmount = OctaveAmount;
     }
 }

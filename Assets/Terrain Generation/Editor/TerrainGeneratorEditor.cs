@@ -9,16 +9,16 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 	public class TerrainGeneratorEditor : UEditor.Editor
 	{
 		bool _SettingsFoldout;
-		
+
 		public override void OnInspectorGUI()
 		{
 			var t = target as TerrainGenerator;
-			
+
 			EditorGUI.BeginChangeCheck();
-			
-			
+
+
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("Preset"));
-			
+
 			if (serializedObject.ApplyModifiedProperties())
 				t.Undo();
 
@@ -37,35 +37,35 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 					serializedObject.FindProperty("_Erode").boolValue,
 					GUILayout.Width(50)
 				);
-			
+
 			EditorGUILayout.EndHorizontal();
-			
+
 			serializedObject.ApplyModifiedProperties();
 
 			EditorGUILayout.Separator();
-			
+
 			EditorGUILayout.BeginHorizontal();
-			
+
 			_SettingsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_SettingsFoldout, "Settings");
 			EditorGUILayout.LabelField("Workflow Mode", GUILayout.Width(100));
 			t.WorkflowMode =
 				(TerrainSettings.WorkflowModes) EditorGUILayout.EnumPopup(t.WorkflowMode, GUILayout.Width(150));
-			
+
 			EditorGUILayout.EndHorizontal();
 
 
 			if (_SettingsFoldout)
 			{
 				EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-                
+
 				EditorGUILayout.Separator();
-                
+
 				GUI.contentColor = Color.white * 2f;
 				GUI.backgroundColor = new Color(1.4f, 1.4f, 1.4f);
 
 				EditorGUI.indentLevel += 1;
 
-				
+
 				ref var settings = ref t.Settings;
 
 				settings.HeightMultiplier =
@@ -79,7 +79,7 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 
 				settings.Sharpness =
 					EditorGUILayout.Slider("Sharpness", settings.Sharpness, 0f, 1f);
-				
+
 				EditorGUILayout.Separator();
 
 				if (t.WorkflowMode == TerrainSettings.WorkflowModes.GradientBased)
@@ -101,7 +101,7 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 						EditorGUILayout.Slider("Blend Dst", ivSettings.BlendDst, 0f, 1f);
 				}
 
-				
+
 				EditorGUILayout.Separator();
 
 				GUI.backgroundColor = Color.gray * 2f;
@@ -110,11 +110,11 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 
 				EditorGUI.indentLevel -= 1;
 			}
-			
-			
+
+
 			EditorGUILayout.EndFoldoutHeaderGroup();
-			
-			
+
+
 			if (EditorGUI.EndChangeCheck())
 			{
 				if (t.AutoGenerate)
@@ -130,30 +130,30 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 
 			if (GUILayout.Button("Generate", GUILayout.MaxWidth(225)))
 				t.Generate();
-            
+
 			t.AutoGenerate =
 				EditorGUILayout.ToggleLeft(
 					"Auto Generate", t.AutoGenerate,
 					GUILayout.Width(100),
 					GUILayout.ExpandWidth(false)
 				);
-            
+
 			EditorGUILayout.EndHorizontal();
 
 			EditorGUILayout.BeginHorizontal();
-            
+
 			if (GUILayout.Button("Save Settings", GUILayout.MaxWidth(225)))
 				t.Save();
-            
+
 			t.AutoSave =
 				EditorGUILayout.ToggleLeft(
 					"Auto Save", t.AutoSave,
 					GUILayout.Width(100),
 					GUILayout.ExpandWidth(false)
 				);
-            
+
 			EditorGUILayout.EndHorizontal();
-            
+
 			if (GUILayout.Button("Undo Changes", GUILayout.MaxWidth(225)))
 				t.Undo(); 
 		}
