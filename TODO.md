@@ -12,11 +12,11 @@ ___
 * ### New Features
   * [x] Terrain Shader Workflow Modes
   * [x] Merge Terrain Shader and Generator into one script
-  * [x] => Custom Inspectors
+  * [ ] => Custom Inspectors
     * [x] Heightmap Generator
     * [x] (deprecated) Terrain Shader
     * [x] Terrain Generator
-    * [x] => Noise Display
+    * [ ] => Noise Display
 
 * ### More
   * [x] Expand PostGenerateEvent

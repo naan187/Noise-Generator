@@ -23,6 +23,7 @@ namespace NoiseGenerator.Core
             float[] heightMap = new float[NoiseSettings.Size * NoiseSettings.Size];
             MinMax minMax = new MinMax{Max = float.MinValue, Min = float.MaxValue};
 
+            
             if (NoiseSettings.OctaveAmount != NoiseSettings.Octaves.length)
                 NoiseSettings.Octaves.Resize(NoiseSettings.Octaves.OctaveAmount);
 
@@ -32,7 +33,7 @@ namespace NoiseGenerator.Core
                 prng.Next(-10000, 10000) + (NoiseSettings.Offset.x + transform.localPosition.x),
                 prng.Next(-10000, 10000) - (NoiseSettings.Offset.y + transform.localPosition.z)
             );
-
+             
             float halfSize = NoiseSettings.Size / 2f;
 
             for (int i = 0; i < heightMap.Length; i++)

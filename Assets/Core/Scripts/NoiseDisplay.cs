@@ -6,8 +6,6 @@ namespace NoiseGenerator.Core
     public class NoiseDisplay : MonoBehaviour
     {
         [SerializeField]
-        private HeightMapGenerator _HeightMapGenerator;
-        [SerializeField]
         private Renderer _TextureRenderer;
         [SerializeField]
         private FilterMode _FilterMode;
@@ -17,22 +15,23 @@ namespace NoiseGenerator.Core
         private bool _InvertNoise;
         [SerializeField]
         private Gradient _NoiseGradient;
-
+        
         private const int _Priority = 4998;
 
+        private HeightMapGenerator _HeightMapGenerator;
 
-        public void UpdateTex(float[] heightmap)
+        public void UpdateTex(float[] noiseVal)
         {
-            int size = (int) Mathf.Sqrt(heightmap.Length);
+            int size = (int) Mathf.Sqrt(noiseVal.Length);
 
             Texture2D tex = new Texture2D(size, size);
 
             Color[] texColors = new Color[size * size];
 
             float v;
-
+            
             for (int i = 0; i < size*size; i++) {
-                v = _InvertNoise ? Mathf.Abs(1 - heightmap[i]) : heightmap[i];
+                v = _InvertNoise ? Mathf.Abs(1 - noiseVal[i]) : noiseVal[i];
                 if (v is float.NaN)
                     v = 0;
 
@@ -52,10 +51,12 @@ namespace NoiseGenerator.Core
             _TextureRenderer.sharedMaterial.mainTexture = tex;
         }
 
-        public void OnValidate()
+        public void OnEnable()
         {
+            _HeightMapGenerator ??= GetComponent<HeightMapGenerator>();
+            
             _HeightMapGenerator.postGenerate.Register(UpdateTex, _Priority);
-
+            
             if (_HeightMapGenerator.AutoGenerate) _HeightMapGenerator.Generate(_HeightMapGenerator.UseComputeShader);
         }
     }

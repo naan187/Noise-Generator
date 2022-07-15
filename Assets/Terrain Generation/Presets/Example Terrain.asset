@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Example Terrain
   m_EditorClassIdentifier: 
   NoiseSettings:
-    Seed: 69420
+    Seed: 677565
     Size: 256
     Offset: {x: 0, y: 0}
     Scale: 50
@@ -26,20 +26,29 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
+        time: 0.3
+        value: 0.025
+        inSlope: 0.15670659
+        outSlope: 0.15670659
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.37440985
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
+        inSlope: 3.6576908
+        outSlope: 3.6576908
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.042138815
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -48,7 +57,7 @@ MonoBehaviour:
     HeightMultiplier: 65
     SteepTerrainColor: {r: 0.3018868, g: 0.17568527, b: 0.10081878, a: 0}
     SteepnessThreshold: 0.125
-    Sharpness: 0.4
+    Sharpness: 0.1
     GradientBasedSettings:
       ColorGradient:
         serializedVersion: 2
@@ -82,6 +91,6 @@ MonoBehaviour:
     IndividualValuesSettings:
       GrassColor: {r: 0.4874835, g: 0.6132076, b: 0.26900142, a: 1}
       SnowColor: {r: 1, g: 1, b: 1, a: 1}
-      MaxGrassHeight: 0.4
-      MinSnowHeight: 0.55
+      MaxGrassHeight: 0.55
+      MinSnowHeight: 0.6
       BlendDst: 1

@@ -7,7 +7,7 @@ namespace NoiseGenerator.Core
 {
     public class OctaveList : IEnumerable
     {
-        [Min(1)] public int OctaveAmount = 1;
+        [Range(1, 8)] public int OctaveAmount = 1;
         private List<Octave> _Octaves;
         
         public int length => _Octaves.Count;
