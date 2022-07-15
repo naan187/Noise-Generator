@@ -100,6 +100,8 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void UpdateMesh()
         {
+            _HeightMap = _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
+            
             ref var size = ref _HeightMapGenerator.NoiseSettings.Size;
 
             _MeshData ??= new(size);

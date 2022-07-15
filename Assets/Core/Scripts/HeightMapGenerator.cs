@@ -5,7 +5,7 @@ namespace NoiseGenerator.Core
 {
     public class HeightMapGenerator : MonoBehaviour
     {
-        [FormerlySerializedAs("_Preset")] public HeightmapPreset Preset;
+        public HeightmapPreset Preset;
         public bool RandomizeSeed;
         
         public NoiseSettings NoiseSettings;
@@ -155,11 +155,11 @@ namespace NoiseGenerator.Core
             return heightMap;
         }
 
-        public void Save() => Preset.NoiseSettings = NoiseSettings;
+        public void Save() => Preset.NoiseSettings = new(NoiseSettings);
 
         public void Undo()
         {
-            NoiseSettings = Preset.NoiseSettings;
+            NoiseSettings = new(Preset.NoiseSettings);
             Generate(UseComputeShader);
         }
     }

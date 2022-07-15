@@ -9,12 +9,12 @@ namespace NoiseGenerator.Core
         public int Seed;
 
         [Range(16, 256)]
-        public int Size = 200;
+        public int Size;
 
         public Vector2 Offset;
 
         [Min(.75f)]
-        public float Scale = 50;
+        public float Scale;
 
         public int OctaveAmount
         {
@@ -22,12 +22,27 @@ namespace NoiseGenerator.Core
             set => Octaves.OctaveAmount = value;
         }
 
-        public OctaveList Octaves = new (4);
+        public OctaveList Octaves;
 
         [Range(0f, 1f)]
-        public float Persistence = .5f;
-        public float Lacunarity = 2;
+        public float Persistence;
+        public float Lacunarity;
 
-        public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
+        public AnimationCurve HeightCurve;
+
+        public NoiseSettings() { }
+
+        public NoiseSettings(NoiseSettings source)
+        {
+            Seed = source.Seed;
+            Size = source.Size;
+            Offset = source.Offset;
+            Scale = source.Scale;
+            Octaves = source.Octaves;
+            Octaves.OctaveAmount = source.Octaves.OctaveAmount;
+            Persistence = source.Persistence;
+            Lacunarity = source.Lacunarity;
+            HeightCurve = source.HeightCurve;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace NoiseGenerator.TerrainGeneration
 		[Range(0f, 1f)]
 		public float Sharpness;
 
-		
+
 		public GradientBased GradientBasedSettings;
 		public IndividualValues IndividualValuesSettings;
 
@@ -21,7 +21,7 @@ namespace NoiseGenerator.TerrainGeneration
 		{
 			public Gradient ColorGradient;
 		}
-		
+
 		[System.Serializable]
 		public class IndividualValues
 		{
@@ -34,7 +34,7 @@ namespace NoiseGenerator.TerrainGeneration
 			[Range(0f, 1f)]
 			public float BlendDst;
 		}
-		
+
 		public enum WorkflowModes
 		{
 			GradientBased = 0,
