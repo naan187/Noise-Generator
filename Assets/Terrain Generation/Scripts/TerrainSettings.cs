@@ -17,28 +17,45 @@ namespace NoiseGenerator.TerrainGeneration
 		public IndividualValues IndividualValuesSettings;
 
 		[System.Serializable]
-		public class GradientBased
+		public struct GradientBased
 		{
 			public Gradient ColorGradient;
 		}
 
 		[System.Serializable]
-		public class IndividualValues
+		public struct IndividualValues
 		{
-			public Color GrassColor = new (39, 114, 33);
-			public Color SnowColor = Color.white;
+			public Color GrassColor;
+			public Color SnowColor;
 			[Range(0f, 1f)]
 			public float MaxGrassHeight;
 			[Range(0f, 1f)]
 			public float MinSnowHeight;
-			[Range(0f, 1f)]
-			public float BlendDst;
 		}
 
 		public enum WorkflowModes
 		{
 			GradientBased = 0,
 			IndividualValues = 1
+		}
+		
+		public TerrainSettings(TerrainSettings source)
+		{
+			HeightMultiplier = source.HeightMultiplier;
+			SteepTerrainColor = source.SteepTerrainColor;
+			SteepnessThreshold = source.SteepnessThreshold;
+			Sharpness = source.Sharpness;
+
+			{
+				GradientBasedSettings.ColorGradient = source.GradientBasedSettings.ColorGradient;
+			}
+
+			{
+				IndividualValuesSettings.GrassColor = source.IndividualValuesSettings.GrassColor;
+				IndividualValuesSettings.SnowColor = source.IndividualValuesSettings.SnowColor;
+				IndividualValuesSettings.MaxGrassHeight = source.IndividualValuesSettings.MaxGrassHeight;
+				IndividualValuesSettings.MinSnowHeight = source.IndividualValuesSettings.MinSnowHeight;
+			}
 		}
 	}
 }

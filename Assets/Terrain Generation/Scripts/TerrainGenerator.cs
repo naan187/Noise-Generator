@@ -45,7 +45,6 @@ namespace NoiseGenerator.TerrainGeneration
         private static readonly int _snowColor = Shader.PropertyToID("_SnowColor");
         private static readonly int _minSnowHeight = Shader.PropertyToID("_MinSnowHeight");
         private static readonly int _maxGrassHeight = Shader.PropertyToID("_MaxGrassHeight");
-        private static readonly int _blendDst = Shader.PropertyToID("_BlendDst");
 
         #endregion
 
@@ -157,12 +156,11 @@ namespace NoiseGenerator.TerrainGeneration
             _Material.SetColor(_snowColor, Settings.IndividualValuesSettings.SnowColor);
             _Material.SetFloat(_minSnowHeight, Settings.IndividualValuesSettings.MinSnowHeight);
             _Material.SetFloat(_maxGrassHeight, Settings.IndividualValuesSettings.MaxGrassHeight);
-            _Material.SetFloat(_blendDst, Settings.IndividualValuesSettings.BlendDst);
         }
 
-        public void Save() => Preset.TerrainSettings = Settings;
+        public void Save() => Preset.TerrainSettings = new(Settings);
         public void Undo() {
-            Settings = Preset.TerrainSettings;
+            Settings = new(Preset.TerrainSettings);
             UpdateShader();
         }
 

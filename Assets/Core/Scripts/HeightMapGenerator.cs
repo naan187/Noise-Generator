@@ -80,7 +80,7 @@ namespace NoiseGenerator.Core
             var minMax = new []{1000f * NoiseSettings.OctaveAmount, 0f};
             ComputeBuffer minMaxBuffer = new ComputeBuffer(minMax.Length, sizeof(float));
             minMaxBuffer.SetData(minMax);
-            HeightMapComputeShader.SetBuffer(0, "minMax", minMaxBuffer);
+            HeightMapComputeShader.SetBuffer(0, "minMaxBuffer", minMaxBuffer);
             
             HeightMapComputeShader.SetInt("seed", NoiseSettings.Seed);
             HeightMapComputeShader.SetInt("mapSize", NoiseSettings.Size);
@@ -143,7 +143,7 @@ namespace NoiseGenerator.Core
         public float[] Generate(bool useComputeShader, int size = 0)
         {
             if (RandomizeSeed)
-                NoiseSettings.Seed = UnityEngine.Random.Range(-100000, 100000);
+                NoiseSettings.Seed = Random.Range(-100000, 100000);
             
             if (size is not 0)
                 NoiseSettings.Size = size;

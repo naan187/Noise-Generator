@@ -97,8 +97,6 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 						EditorGUILayout.Slider("Max Grass Height", ivSettings.MaxGrassHeight, 0f, 1f);
 					ivSettings.MinSnowHeight =
 						EditorGUILayout.Slider("Min Snow Height", ivSettings.MinSnowHeight, 0f, 1f);
-					ivSettings.BlendDst = 
-						EditorGUILayout.Slider("Blend Dst", ivSettings.BlendDst, 0f, 1f);
 				}
 
 				

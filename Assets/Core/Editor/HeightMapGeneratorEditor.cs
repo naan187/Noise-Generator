@@ -76,8 +76,8 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Octave Amount");
-                t.NoiseSettings.Octaves.OctaveAmount =
-                    EditorGUILayout.IntSlider(t.NoiseSettings.Octaves.OctaveAmount, 1, 8);
+                t.NoiseSettings.OctaveAmount =
+                    EditorGUILayout.IntSlider(t.NoiseSettings.OctaveAmount, 1, 8);
                 
                 EditorGUILayout.EndHorizontal();
                 

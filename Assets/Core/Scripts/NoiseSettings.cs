@@ -3,43 +3,45 @@ using UnityEngine;
 
 namespace NoiseGenerator.Core
 {
-    [Serializable]
-    public class NoiseSettings
-    {
-        public int Seed;
+	[Serializable]
+	public class NoiseSettings
+	{
+		public int Seed;
 
-        [Range(16, 256)]
-        public int Size;
+		[Range(16, 256)]
+		public int Size = 200;
 
-        public Vector2 Offset;
+		public Vector2 Offset;
 
-        [Min(.75f)]
-        public float Scale;
+		[Min(.75f)]
+		public float Scale = 50;
 
-        [Range(1, 8)]
-        public int OctaveAmount = 4;
+		public int OctaveAmount
+		{
+			get => Octaves.OctaveAmount;
+			set => Octaves.OctaveAmount = value;
+		}
 
-        public OctaveList Octaves;
+		public OctaveList Octaves = new (4);
 
-        [Range(0f, 1f)]
-        public float Persistence;
-        public float Lacunarity;
-        
-        public AnimationCurve HeightCurve;
+		[Range(0f, 1f)]
+		public float Persistence = .5f;
+		public float Lacunarity = 2;
 
-        public NoiseSettings() { }
+		public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
-        public NoiseSettings(NoiseSettings source)
-        {
-            Seed = source.Seed;
-            Size = source.Size;
-            Offset = source.Offset;
-            Scale = source.Scale;
-            Octaves = source.Octaves;
-            Octaves.OctaveAmount = source.Octaves.OctaveAmount;
-            Persistence = source.Persistence;
-            Lacunarity = source.Lacunarity;
-            HeightCurve = source.HeightCurve;
-        }
-    }
+		public NoiseSettings() { }
+
+		public NoiseSettings(NoiseSettings source)
+		{
+			Seed = source.Seed;
+			Size = source.Size;
+			Offset = source.Offset;
+			Scale = source.Scale;
+			Octaves = source.Octaves;
+			Persistence = source.Persistence;
+			Lacunarity = source.Lacunarity;
+			HeightCurve = source.HeightCurve;
+		}
+	}
 }
