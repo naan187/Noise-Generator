@@ -31,7 +31,21 @@ namespace NoiseGenerator.TerrainGeneration
         
 
         private TerrainMeshData _MeshData;
-        private float[] _HeightMap;
+        private float[] _HeightMapBackingField;
+        private bool _HeightMapChanged;
+        private float[] _HeightMap
+        {
+            get => _HeightMapBackingField; 
+            set
+            {
+                if (value != _HeightMapBackingField)
+                    _HeightMapChanged = true;
+                _HeightMapBackingField = value;
+            }
+        }
+        
+        [HideInInspector]
+        public int MapSize;
 
 
         #region property IDs
@@ -53,10 +67,20 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void Generate(float[] heightmap = null)
         {
+            _HeightMap = heightmap;
             if (_Erode)
-                _Erosion.Erode(heightmap);
+            {
+                if (_HeightMapChanged)
+                    _HeightMap = _Erosion.Erode(heightmap);
+                _HeightMapChanged = false;
+                MapSize = _HeightMapGenerator.NoiseSettings.Size - _Erosion.BorderSize;
+            }
             else
+            {
                 GenerateMesh(heightmap);
+                MapSize = _HeightMapGenerator.NoiseSettings.Size;
+            }
+
             UpdateShader();
         }
 
@@ -88,8 +112,6 @@ namespace NoiseGenerator.TerrainGeneration
                     _MeshData.AddTriangle(i, i + size + 1, i + size);
                     _MeshData.AddTriangle(i + size + 1, i, i + 1);
                 }
-                
-                i++;
             });
 
             _MeshFilter.sharedMesh = _MeshData.Get();
@@ -99,7 +121,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void UpdateMesh()
         {
-            _HeightMap = _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
+            _HeightMap ??= _HeightMapGenerator.GenerateHeightMap(_HeightMapGenerator.UseComputeShader);
             
             ref var size = ref _HeightMapGenerator.NoiseSettings.Size;
 
@@ -110,8 +132,9 @@ namespace NoiseGenerator.TerrainGeneration
 
             _MeshFilter.sharedMesh = _MeshData.Get();
             _MeshFilter.sharedMesh.RecalculateNormals();
-            _MeshCollider.sharedMesh = _MeshFilter.sharedMesh;
+            _MeshCollider.sharedMesh = _MeshData.Get();
         }
+
 
         public void UpdateShader()
         {
@@ -164,9 +187,6 @@ namespace NoiseGenerator.TerrainGeneration
             UpdateShader();
         }
 
-        private void OnEnable()
-        {
-            _HeightMapGenerator.postGenerate.Register(Generate, 2147483646);
-        }
+        private void OnValidate() => _HeightMapGenerator.postGenerate.Register(Generate, 2147483646);
     }
 }

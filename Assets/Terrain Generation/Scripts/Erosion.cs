@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NoiseGenerator.Core;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace NoiseGenerator.TerrainGeneration
@@ -47,6 +48,8 @@ namespace NoiseGenerator.TerrainGeneration
         public ComputeShader ErosionComputeShader;
         public int NumErosionIterations = 50000;
         public int ErosionBrushRadius = 3;
+        [FormerlySerializedAs("_BorderSize")]
+        public int BorderSize;
 
         public int MaxLifetime = 30;
         public float SedimentCapacityFactor = 3;
@@ -61,24 +64,21 @@ namespace NoiseGenerator.TerrainGeneration
         [Range(0, 1)]
         public float Inertia = 0.3f;
 
-
+        
         // Internal
         private float[] _Map;
         private Mesh _Mesh;
-        private int _BorderSize;
 
         private MeshRenderer _MeshRenderer;
         private MeshFilter _MeshFilter;
 
         public void GenerateHeightMap() 
         {
-            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize + BorderSize);
         }
 
-        public float[] Erode(float[] heightmap = null)
+        public float[] Erode(float[] heightmap = null, bool stripEdges = true)
         {
-            _BorderSize = ErosionBrushRadius * 2;
-
             switch (heightmap)
             {
                 case null:
@@ -142,7 +142,7 @@ namespace NoiseGenerator.TerrainGeneration
             ErosionComputeShader.SetBuffer(0, "map", mapBuffer);
  
             // Settings
-            ErosionComputeShader.SetInt("borderSize", _BorderSize);
+            ErosionComputeShader.SetInt("borderSize", BorderSize);
             ErosionComputeShader.SetInt("mapSize", mapSize);
             ErosionComputeShader.SetInt("brushLength", brushIndexOffsets.Count);
             ErosionComputeShader.SetInt("maxLifetime", MaxLifetime);
@@ -165,14 +165,11 @@ namespace NoiseGenerator.TerrainGeneration
             randomIndexBuffer.Release();
             brushIndexBuffer.Release();
             brushWeightBuffer.Release();
-
             ConstructMesh();
 
             return _Map;
         }
 
         public void ConstructMesh() => TerrainGenerator.GenerateMesh(_Map);
-
-        private void OnValidate() => HeightMapGenerator.postGenerate.Register(Erode, 2147483647);
     }
 }

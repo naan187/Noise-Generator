@@ -373,10 +373,9 @@ MonoBehaviour:
   RandomizeSeed: 0
   NoiseSettings:
     Seed: 0
-    Size: 128
+    Size: 144
     Offset: {x: 0, y: 0}
     Scale: 64.36
-    OctaveAmount: 4
     Persistence: 0.5
     Lacunarity: 2
     HeightCurve:
@@ -403,13 +402,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WarpNoise: 1
-    BlendValue: 0.325
-    f: 0
   AutoGenerate: 1
   AutoSave: 0
-  UseComputeShader: 0
-  HeightMapComputeShader: {fileID: 0}
+  UseComputeShader: 1
+  HeightMapComputeShader: {fileID: 7200000, guid: 9d74b25d36636bc4a941250fbfefed2b, type: 3}
 --- !u!4 &1799874357
 Transform:
   m_ObjectHideFlags: 0

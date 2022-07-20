@@ -3,7 +3,7 @@
 namespace NoiseGenerator.TerrainGeneration
 {
 	[System.Serializable]
-	public class TerrainSettings
+	public struct TerrainSettings
 	{
 		public float HeightMultiplier;
 		public Color SteepTerrainColor;
@@ -12,7 +12,7 @@ namespace NoiseGenerator.TerrainGeneration
 		[Range(0f, 1f)]
 		public float Sharpness;
 
-
+ 
 		public GradientBased GradientBasedSettings;
 		public IndividualValues IndividualValuesSettings;
 

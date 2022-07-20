@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace NoiseGenerator.Core
 {
-    public class OctaveList : IEnumerable
+    internal struct OctaveList : IEnumerable
     {
-        [Range(1, 8)] public int OctaveAmount = 1;
+        [Range(1, 8)] 
+        private int _OctaveAmount;
+        public int OctaveAmount { get => _OctaveAmount; set { _OctaveAmount = value; Resize(value); } }
         private List<Octave> _Octaves;
         
-        public int length => _Octaves.Count;
+        public int Length => _Octaves.Count;
 
         public Octave this[int i]
         {
@@ -22,14 +24,12 @@ namespace NoiseGenerator.Core
             }
         }
 
-        public OctaveList() => _Octaves = new List<Octave>(8);
-
-        public OctaveList(int length)
+        public OctaveList(int numOctaves = 4)
         {
             _Octaves = new List<Octave>(8);
-            OctaveAmount = length;
+            _OctaveAmount = numOctaves;
             
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < numOctaves; i++)
                 _Octaves.Add(new Octave());
         }
 
@@ -37,16 +37,18 @@ namespace NoiseGenerator.Core
 
         public void Resize(int newLength)
         {
-            if (newLength == length)
+            if (_Octaves is null)
+                _Octaves = new List<Octave>(8);
+            else if (newLength == Length)
                 return;
-            
+    
             var result = _Octaves;
 
-            if (newLength > length)
-                for (int i = length; i < newLength; i++)
+            if (newLength > Length)
+                for (int i = Length; i < newLength; i++)
                     result.Add(new Octave());
             else
-                for (int i = length; i > newLength; i--)
+                for (int i = Length; i > newLength; i--)
                     result.Remove(result[^1]);
 
             _Octaves = result;

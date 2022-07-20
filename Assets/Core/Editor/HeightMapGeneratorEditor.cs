@@ -56,13 +56,7 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.EndHorizontal();
 
                 
-                EditorGUILayout.BeginHorizontal();
-
-                EditorGUILayout.LabelField("Map Size", GUILayout.Width(85));
-                t.NoiseSettings.Size = EditorGUILayout.IntSlider(t.NoiseSettings.Size, 16, 256);
-                
-                EditorGUILayout.EndHorizontal();
-
+                t.NoiseSettings.Size = EditorGUILayout.IntSlider("Map Size", t.NoiseSettings.Size, 16, 256);
                 
                 t.NoiseSettings.Offset =
                     EditorGUILayout.Vector2Field("Offset", t.NoiseSettings.Offset, GUILayout.ExpandHeight(false));
@@ -73,6 +67,7 @@ namespace NoiseGenerator.Editor
                 if (t.NoiseSettings.Scale <= .75f)
                     t.NoiseSettings.Scale = .75f;
 
+                
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.LabelField("Octave Amount");

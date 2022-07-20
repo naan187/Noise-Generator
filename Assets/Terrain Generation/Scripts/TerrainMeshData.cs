@@ -28,13 +28,12 @@ namespace NoiseGenerator.TerrainGeneration
 
         public Mesh Get()
         {
-            var mesh = new Mesh
+            return new Mesh
             {
                 vertices = Vertices,
                 triangles = Triangles,
                 uv = UVs
             };
-            return mesh;
         }
     }
 }

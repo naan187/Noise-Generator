@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace NoiseGenerator.Core
 {
@@ -8,7 +11,7 @@ namespace NoiseGenerator.Core
         public HeightmapPreset Preset;
         public bool RandomizeSeed;
         
-        public NoiseSettings NoiseSettings;
+        public NoiseSettings NoiseSettings = new (4);
         public bool AutoGenerate;
         public bool AutoSave;
         public bool UseComputeShader;
@@ -23,7 +26,7 @@ namespace NoiseGenerator.Core
             float[] heightMap = new float[NoiseSettings.Size * NoiseSettings.Size];
             MinMax minMax = new MinMax{Max = float.MinValue, Min = float.MaxValue};
 
-            if (NoiseSettings.OctaveAmount != NoiseSettings.Octaves.length)
+            if (NoiseSettings.OctaveAmount != NoiseSettings.Octaves.Length)
                 NoiseSettings.Octaves.Resize(NoiseSettings.Octaves.OctaveAmount);
 
             var prng = new System.Random(NoiseSettings.Seed);
@@ -80,7 +83,7 @@ namespace NoiseGenerator.Core
             var minMax = new []{1000f * NoiseSettings.OctaveAmount, 0f};
             ComputeBuffer minMaxBuffer = new ComputeBuffer(minMax.Length, sizeof(float));
             minMaxBuffer.SetData(minMax);
-            HeightMapComputeShader.SetBuffer(0, "minMaxBuffer", minMaxBuffer);
+            HeightMapComputeShader.SetBuffer(0, "minMax", minMaxBuffer);
             
             HeightMapComputeShader.SetInt("seed", NoiseSettings.Seed);
             HeightMapComputeShader.SetInt("mapSize", NoiseSettings.Size);

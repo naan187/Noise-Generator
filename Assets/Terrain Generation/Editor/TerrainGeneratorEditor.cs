@@ -6,7 +6,7 @@ using UEditor = UnityEditor;
 namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 {
 	[CustomEditor(typeof(TerrainGenerator))]
-	public class TerrainGeneratorEditor : UEditor.Editor
+	internal class TerrainGeneratorEditor : UEditor.Editor
 	{
 		bool _SettingsFoldout;
 		
@@ -31,16 +31,20 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 			EditorGUILayout.BeginHorizontal();
 
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("_Erosion"));
-			serializedObject.FindProperty("_Erode").boolValue =
+
+			var erode = serializedObject.FindProperty("_Erode").boolValue;
+			erode =
 				EditorGUILayout.ToggleLeft(
 					"Erode",
-					serializedObject.FindProperty("_Erode").boolValue,
+					erode,
 					GUILayout.Width(50)
 				);
+			serializedObject.FindProperty("_Erode").boolValue = erode;
 			
 			EditorGUILayout.EndHorizontal();
-			
-			serializedObject.ApplyModifiedProperties();
+
+			if (serializedObject.ApplyModifiedProperties() && t.AutoGenerate)
+				t.Generate();
 
 			EditorGUILayout.Separator();
 			
@@ -117,8 +121,8 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 			{
 				if (t.AutoGenerate)
 				{
-					t.UpdateShader();
 					t.UpdateMesh();
+					t.UpdateShader();
 				}
 				if (t.AutoSave)
 					t.Save();

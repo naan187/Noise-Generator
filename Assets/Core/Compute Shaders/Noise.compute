@@ -1,8 +1,7 @@
 #pragma kernel fractalNoise
 
 RWStructuredBuffer<float> heightMap;
-RWStructuredBuffer<float> minMaxBuffer;
-groupshared float minMax[2];
+RWStructuredBuffer<float> minMax;
 
 int seed;
 int mapSize;
@@ -92,7 +91,7 @@ float snoise(float2 v)
   return 130.0 * dot(m, g);
 }
 
-[numthreads(64,1,1)]
+[numthreads(1,1,1)]
 void fractalNoise (uint3 id : SV_DispatchThreadID)
 {
   int x = id.x % mapSize;
@@ -110,10 +109,6 @@ void fractalNoise (uint3 id : SV_DispatchThreadID)
     weight *= persistence;
   }
 
-  GroupMemoryBarrierWithGroupSync();
   minMax[0] = min(minMax[0], heightMap[id.x]);
   minMax[1] = max(minMax[1], heightMap[id.x]);
-
-  minMaxBuffer[0] = minMax[0];
-  minMaxBuffer[1] = minMax[1];
 }

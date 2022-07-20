@@ -4,17 +4,17 @@ using UnityEngine;
 namespace NoiseGenerator.Core
 {
 	[Serializable]
-	public class NoiseSettings
+	public struct NoiseSettings
 	{
 		public int Seed;
 
-		[Range(16, 256)]
-		public int Size = 200;
+		[Min(16)]
+		public int Size;
 
 		public Vector2 Offset;
 
 		[Min(.75f)]
-		public float Scale = 50;
+		public float Scale;
 
 		public int OctaveAmount
 		{
@@ -22,15 +22,25 @@ namespace NoiseGenerator.Core
 			set => Octaves.OctaveAmount = value;
 		}
 
-		public OctaveList Octaves = new (4);
+		internal OctaveList Octaves;
 
 		[Range(0f, 1f)]
-		public float Persistence = .5f;
-		public float Lacunarity = 2;
+		public float Persistence;
+		public float Lacunarity;
 
-		public AnimationCurve HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
+		public AnimationCurve HeightCurve;
 
-		public NoiseSettings() { }
+		public NoiseSettings(int numOctaves = 4)
+		{
+			Seed = 0;
+			Size = 128;
+			Offset = Vector2.zero;
+			Scale = 50;
+			Octaves = new OctaveList(numOctaves);
+			Persistence = .5f;
+			Lacunarity = 2f;
+			HeightCurve = AnimationCurve.Linear(0, 0, 1, 1);
+		}
 
 		public NoiseSettings(NoiseSettings source)
 		{

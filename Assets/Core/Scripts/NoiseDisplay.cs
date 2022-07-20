@@ -51,7 +51,7 @@ namespace NoiseGenerator.Core
             _TextureRenderer.sharedMaterial.mainTexture = tex;
         }
 
-        public void OnEnable()
+        public void OnValidate()
         {
             _HeightMapGenerator ??= GetComponent<HeightMapGenerator>();
             
