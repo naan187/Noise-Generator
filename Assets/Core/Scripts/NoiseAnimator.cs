@@ -22,7 +22,7 @@ namespace NoiseGenerator.Core
 
 			_HeightMapGenerator.NoiseSettings.Offset.x += Time.deltaTime * _Speed;
 			if (_HeightMapGenerator.AutoGenerate)
-				_HeightMapGenerator.Generate(_HeightMapGenerator.UseComputeShader);
+				_HeightMapGenerator.Generate();
 		}
 	}
 }

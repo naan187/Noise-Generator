@@ -120,7 +120,7 @@ Material:
     - _Metallic1: 0
     - _Metallic2: 0
     - _Metallic3: 0
-    - _MinSnowHeight: 0.55
+    - _MinSnowHeight: 0.45
     - _Min_Snow_Height: 0.65
     - _NumLayersCount: 1
     - _QueueControl: 0
@@ -132,7 +132,7 @@ Material:
     - _Smoothness2: 0.5
     - _Smoothness3: 0.5
     - _SrcBlend: 1
-    - _SteepnessThreshold: 0.125
+    - _SteepnessThreshold: 0.132
     - _Surface: 0
     - _WaterLevel: 0.439
     - _WorkflowMode: 1

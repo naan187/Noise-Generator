@@ -1,9 +1,8 @@
-﻿using NoiseGenerator.TerrainGeneration;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using UEditor = UnityEditor;
 
-namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
+namespace NoiseGenerator.TerrainGeneration.Editor
 {
 	[CustomEditor(typeof(TerrainGenerator))]
 	internal class TerrainGeneratorEditor : UEditor.Editor
@@ -72,9 +71,12 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 				
 				ref var settings = ref t.Settings;
 
+				EditorGUI.BeginChangeCheck();
 				settings.HeightMultiplier =
 					EditorGUILayout.FloatField("Height Multiplier", settings.HeightMultiplier);
-
+				if (EditorGUI.EndChangeCheck())
+					t.UpdateMesh();
+				
 				settings.SteepTerrainColor =
 					EditorGUILayout.ColorField("Steep Terrain Color", settings.SteepTerrainColor);
 
@@ -121,7 +123,7 @@ namespace NoiseGenerator.Editor.TerrainGeneration.Terrain_Generation.Editor
 			{
 				if (t.AutoGenerate)
 				{
-					t.UpdateMesh();
+					//t.UpdateMesh();
 					t.UpdateShader();
 				}
 				if (t.AutoSave)

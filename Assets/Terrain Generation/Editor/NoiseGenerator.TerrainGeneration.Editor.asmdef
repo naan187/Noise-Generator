@@ -1,8 +1,9 @@
 {
-    "name": "NoiseGenerator.Editor.TerrainGeneration",
-    "rootNamespace": "NoiseGenerator.Editor.TerrainGeneration",
+    "name": "NoiseGenerator.TerrainGeneration.Editor",
+    "rootNamespace": "NoiseGenerator.TerrainGeneration.Editor",
     "references": [
-        "GUID:fa8bfc970ae4a404da0663f34b0b73aa"
+        "GUID:fa8bfc970ae4a404da0663f34b0b73aa",
+        "GUID:fe395751f06aa674a954e726bc64e88d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

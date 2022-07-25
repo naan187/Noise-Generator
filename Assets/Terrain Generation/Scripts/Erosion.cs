@@ -74,10 +74,10 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void GenerateHeightMap() 
         {
-            _Map = HeightMapGenerator.GenerateHeightMap(HeightMapGenerator.UseComputeShader, mapSize + BorderSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(mapSize + BorderSize);
         }
 
-        public float[] Erode(float[] heightmap = null, bool stripEdges = true)
+        public float[] Erode(float[] heightmap = null)
         {
             switch (heightmap)
             {

@@ -30,7 +30,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace NoiseGenerator.TerrainGeneration
+namespace NoiseGenerator.TerrainGeneration.Editor
 {
     [CustomEditor(typeof(Erosion))]
     public class EroderEditor : UnityEditor.Editor

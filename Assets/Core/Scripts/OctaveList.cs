@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace NoiseGenerator.Core
 {
     internal struct OctaveList : IEnumerable
     {
-        [Range(1, 8)] 
+        [SerializeField, Range(1, 8)] 
         private int _OctaveAmount;
         public int OctaveAmount { get => _OctaveAmount; set { _OctaveAmount = value; Resize(value); } }
         private List<Octave> _Octaves;

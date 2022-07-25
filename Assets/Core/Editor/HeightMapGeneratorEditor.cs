@@ -1,9 +1,8 @@
 ﻿using UEditor = UnityEditor;
 using UnityEditor;
 using UnityEngine;
-using NoiseGenerator.Core;
 
-namespace NoiseGenerator.Editor
+namespace NoiseGenerator.Core.Editor
 {
     [CustomEditor(typeof(HeightMapGenerator))]
     public class HeightMapGeneratorEditor : UEditor.Editor
@@ -24,7 +23,7 @@ namespace NoiseGenerator.Editor
 
 
             _SettingsFoldout = 
-                EditorGUILayout.BeginFoldoutHeaderGroup(_SettingsFoldout, "Noise Settings");
+                EditorGUILayout.BeginFoldoutHeaderGroup(_SettingsFoldout, "Settings");
             
             if (_SettingsFoldout)
             {
@@ -56,7 +55,8 @@ namespace NoiseGenerator.Editor
                 EditorGUILayout.EndHorizontal();
 
                 
-                t.NoiseSettings.Size = EditorGUILayout.IntSlider("Map Size", t.NoiseSettings.Size, 16, 256);
+                t.NoiseSettings.Size = 
+                    EditorGUILayout.IntSlider("Map Size", t.NoiseSettings.Size, 16, 256);
                 
                 t.NoiseSettings.Offset =
                     EditorGUILayout.Vector2Field("Offset", t.NoiseSettings.Offset, GUILayout.ExpandHeight(false));
@@ -99,12 +99,12 @@ namespace NoiseGenerator.Editor
             EditorGUILayout.EndFoldoutHeaderGroup();
             
  
-            t.UseComputeShader = EditorGUILayout.Toggle("Use Compute Shader", t.UseComputeShader)!;
+            t.UseComputeShader = EditorGUILayout.Toggle("Use Compute Shader", t.UseComputeShader);
 
             if (EditorGUI.EndChangeCheck())
             {
                 if (t.AutoGenerate)
-                    t.Generate(t.UseComputeShader);
+                    t.Generate();
                 if (t.AutoSave)
                     t.Save();
             }
@@ -112,7 +112,7 @@ namespace NoiseGenerator.Editor
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button("Generate", GUILayout.MaxWidth(225)))
-                t.Generate(t.UseComputeShader);
+                t.Generate();
             
             t.AutoGenerate =
                 EditorGUILayout.ToggleLeft(
