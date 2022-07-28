@@ -1,6 +1,6 @@
 ﻿//Made by Sebastian Lague at: https://github.com/SebLague/Hydraulic-Erosion
 
-#pragma kernel fractalNoise
+#pragma kernel CSMain
 
 RWStructuredBuffer<float> map;
 StructuredBuffer<int> randomIndices;
@@ -50,7 +50,7 @@ float3 CalculateHeightAndGradient (float posX, float posY) {
 }
 
 [numthreads(1024,1,1)]
-void fractalNoise (uint3 id : SV_DispatchThreadID)
+void CSMain (uint3 id : SV_DispatchThreadID)
 {
     int index = randomIndices[id.x];
     float posX = float(index)%mapSize;

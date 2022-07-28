@@ -47,8 +47,9 @@ namespace NoiseGenerator.TerrainGeneration
         [Header("Erosion Settings")]
         public ComputeShader ErosionComputeShader;
         public int NumErosionIterations = 50000;
+        [Min(1)]
         public int ErosionBrushRadius = 3;
-        [FormerlySerializedAs("_BorderSize")]
+        [Min(0)]
         public int BorderSize;
 
         public int MaxLifetime = 30;
@@ -74,7 +75,7 @@ namespace NoiseGenerator.TerrainGeneration
 
         public void GenerateHeightMap() 
         {
-            _Map = HeightMapGenerator.GenerateHeightMap(mapSize + BorderSize);
+            _Map = HeightMapGenerator.GenerateHeightMap(mapSize);
         }
 
         public float[] Erode(float[] heightmap = null)

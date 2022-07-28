@@ -1,4 +1,4 @@
-#pragma kernel fractalNoise
+#pragma kernel CSMain
 
 RWStructuredBuffer<float> heightMap;
 RWStructuredBuffer<float> minMax;
@@ -92,7 +92,7 @@ float snoise(float2 v)
 }
 
 [numthreads(1,1,1)]
-void fractalNoise (uint3 id : SV_DispatchThreadID)
+void CSMain (uint3 id : SV_DispatchThreadID)
 {
   int x = id.x % mapSize;
   int y = id.x / mapSize;
